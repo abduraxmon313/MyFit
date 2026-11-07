@@ -1,0 +1,52 @@
+{
+  "functions": {
+    "source": "functions",
+    "runtime": "nodejs22"
+  },
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "auth": {
+    "providers": {
+      "emailPassword": true,
+      "phone": true
+    }
+  },
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "myfit-d6275",
+          "appId": "1:581944634628:android:adce4123b6dc4577fa7451",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "myfit-d6275",
+          "configurations": {
+            "android": "1:581944634628:android:adce4123b6dc4577fa7451",
+            "web": "1:581944634628:web:f146137f0a4ca692fa7451"
+          }
+        }
+      }
+    }
+  }
+}

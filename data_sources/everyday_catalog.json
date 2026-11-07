@@ -1,0 +1,6102 @@
+{
+  "source": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_json_2018-04.zip",
+  "sha256": "70d4235ae3a2bdf48a7b9eaa1286a83fa67b6f3270436c9ce8b008213f500129",
+  "foods": [
+    {
+      "fdcId": 172217,
+      "description": "Milk, whole, 3.25% milkfat, without added vitamin A and vitamin D",
+      "source": "https://fdc.nal.usda.gov/food-details/172217/nutrients",
+      "names": {
+        "uz": "Sut 3,25%",
+        "ru": "Молоко 3,25%"
+      },
+      "category": "Sut mahsulotlari",
+      "nutrients": {
+        "carbohydrates": 4.78,
+        "monounsaturatedFat": 0.812,
+        "polyunsaturatedFat": 0.195,
+        "sugars": 5.05,
+        "calories": 61,
+        "saturatedFat": 1.86,
+        "vitaminDMcg": 0.1,
+        "water": 88.1,
+        "calciumMg": 113,
+        "potassiumMg": 132,
+        "zincMg": 0.37,
+        "vitaminEMg": 0.07,
+        "fat": 3.27,
+        "fiber": 0,
+        "ironMg": 0.03,
+        "magnesiumMg": 10,
+        "phosphorusMg": 84,
+        "sodiumMg": 43,
+        "cholesterolMg": 10,
+        "protein": 3.15,
+        "salt": 0.1075
+      },
+      "servings": [
+        {
+          "description": "1 fl oz",
+          "amount": 30.5,
+          "unit": "g"
+        },
+        {
+          "description": "1 tbsp",
+          "amount": 15,
+          "unit": "g"
+        },
+        {
+          "description": "1 quart",
+          "amount": 976,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup",
+          "amount": 244,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 172205,
+      "description": "Milk, reduced fat, fluid, 2% milkfat, without added vitamin A and vitamin D",
+      "source": "https://fdc.nal.usda.gov/food-details/172205/nutrients",
+      "names": {
+        "uz": "Sut 2%",
+        "ru": "Молоко 2%"
+      },
+      "category": "Sut mahsulotlari",
+      "nutrients": {
+        "saturatedFat": 1.26,
+        "vitaminDMcg": 0,
+        "monounsaturatedFat": 0.56,
+        "polyunsaturatedFat": 0.073,
+        "carbohydrates": 4.8,
+        "calories": 50,
+        "fat": 1.98,
+        "water": 89.2,
+        "sugars": 5.06,
+        "calciumMg": 120,
+        "potassiumMg": 140,
+        "zincMg": 0.48,
+        "vitaminEMg": 0.03,
+        "protein": 3.3,
+        "fiber": 0,
+        "ironMg": 0.02,
+        "magnesiumMg": 11,
+        "phosphorusMg": 92,
+        "sodiumMg": 47,
+        "cholesterolMg": 8,
+        "salt": 0.1175
+      },
+      "servings": [
+        {
+          "description": "1 cup",
+          "amount": 246,
+          "unit": "g"
+        },
+        {
+          "description": "1 quart",
+          "amount": 984,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170872,
+      "description": "Milk, lowfat, fluid, 1% milkfat, with added vitamin A and vitamin D",
+      "source": "https://fdc.nal.usda.gov/food-details/170872/nutrients",
+      "names": {
+        "uz": "Sut 1% (A va D vitaminli)",
+        "ru": "Молоко 1% (витамины A и D)"
+      },
+      "category": "Sut mahsulotlari",
+      "nutrients": {
+        "potassiumMg": 150,
+        "zincMg": 0.42,
+        "magnesiumMg": 11,
+        "phosphorusMg": 95,
+        "sodiumMg": 44,
+        "protein": 3.37,
+        "cholesterolMg": 5,
+        "water": 89.9,
+        "fat": 0.97,
+        "vitaminDMcg": 1.2,
+        "saturatedFat": 0.633,
+        "monounsaturatedFat": 0.277,
+        "polyunsaturatedFat": 0.035,
+        "carbohydrates": 4.99,
+        "calories": 42,
+        "fiber": 0,
+        "sugars": 5.2,
+        "vitaminEMg": 0.01,
+        "ironMg": 0.03,
+        "calciumMg": 125,
+        "salt": 0.11
+      },
+      "servings": [
+        {
+          "description": "1 fl oz",
+          "amount": 30.5,
+          "unit": "g"
+        },
+        {
+          "description": "1 quart",
+          "amount": 976,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup",
+          "amount": 244,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 173432,
+      "description": "Milk, nonfat, fluid, without added vitamin A and vitamin D (fat free or skim)",
+      "source": "https://fdc.nal.usda.gov/food-details/173432/nutrients",
+      "names": {
+        "uz": "Yog‘siz sut",
+        "ru": "Обезжиренное молоко"
+      },
+      "category": "Sut mahsulotlari",
+      "nutrients": {
+        "vitaminDMcg": 0,
+        "monounsaturatedFat": 0.047,
+        "polyunsaturatedFat": 0.007,
+        "fat": 0.18,
+        "carbohydrates": 4.86,
+        "calories": 35,
+        "saturatedFat": 0.117,
+        "cholesterolMg": 2,
+        "fiber": 0,
+        "ironMg": 0.03,
+        "magnesiumMg": 11,
+        "phosphorusMg": 101,
+        "sodiumMg": 42,
+        "protein": 3.37,
+        "water": 90.8,
+        "sugars": 5.09,
+        "calciumMg": 122,
+        "potassiumMg": 156,
+        "zincMg": 0.42,
+        "vitaminEMg": 0.01,
+        "salt": 0.105
+      },
+      "servings": [
+        {
+          "description": "1 quart",
+          "amount": 980,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup",
+          "amount": 245,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170904,
+      "description": "Kefir, lowfat, plain, LIFEWAY",
+      "source": "https://fdc.nal.usda.gov/food-details/170904/nutrients",
+      "names": {
+        "uz": "LIFEWAY oddiy kam yog‘li kefir (AQSh)",
+        "ru": "LIFEWAY кефир нежирный (США)"
+      },
+      "category": "Sut mahsulotlari",
+      "nutrients": {
+        "protein": 3.79,
+        "fiber": 0,
+        "ironMg": 0.04,
+        "magnesiumMg": 12,
+        "phosphorusMg": 105,
+        "sodiumMg": 40,
+        "vitaminDMcg": 1,
+        "cholesterolMg": 5,
+        "saturatedFat": 0.658,
+        "sugars": 4.61,
+        "calciumMg": 130,
+        "potassiumMg": 164,
+        "zincMg": 0.46,
+        "vitaminEMg": 0.02,
+        "monounsaturatedFat": 0.31,
+        "polyunsaturatedFat": 0.053,
+        "fat": 1.02,
+        "carbohydrates": 4.77,
+        "calories": 43,
+        "water": 89.7,
+        "salt": 0.1
+      },
+      "servings": [
+        {
+          "description": "1 bottle",
+          "amount": 971,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup",
+          "amount": 243,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 171301,
+      "description": "Kefir, lowfat, strawberry, LIFEWAY",
+      "source": "https://fdc.nal.usda.gov/food-details/171301/nutrients",
+      "names": {
+        "uz": "LIFEWAY qulupnayli kefir (AQSh)",
+        "ru": "LIFEWAY кефир клубничный (США)"
+      },
+      "category": "Sut mahsulotlari",
+      "nutrients": {
+        "fat": 0.9,
+        "carbohydrates": 10.2,
+        "calories": 62,
+        "water": 84.8,
+        "sugars": 9.21,
+        "calciumMg": 119,
+        "potassiumMg": 154,
+        "zincMg": 0.44,
+        "vitaminEMg": 0.06,
+        "monounsaturatedFat": 0.262,
+        "polyunsaturatedFat": 0.041,
+        "protein": 3.39,
+        "fiber": 0,
+        "ironMg": 0.04,
+        "magnesiumMg": 11,
+        "phosphorusMg": 96,
+        "sodiumMg": 37,
+        "vitaminDMcg": 1.1,
+        "cholesterolMg": 5,
+        "saturatedFat": 0.533,
+        "salt": 0.0925
+      },
+      "servings": [
+        {
+          "description": "1 bottle",
+          "amount": 989,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup",
+          "amount": 247,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 171284,
+      "description": "Yogurt, plain, whole milk",
+      "source": "https://fdc.nal.usda.gov/food-details/171284/nutrients",
+      "names": {
+        "uz": "Tabiiy qatiq — yogurt, to‘liq sutdan",
+        "ru": "Натуральная простокваша — йогурт из цельного молока"
+      },
+      "category": "Sut mahsulotlari",
+      "nutrients": {
+        "sugars": 4.66,
+        "vitaminEMg": 0.06,
+        "calories": 61,
+        "vitaminDMcg": 0.1,
+        "cholesterolMg": 13,
+        "saturatedFat": 2.1,
+        "protein": 3.47,
+        "fiber": 0,
+        "ironMg": 0.05,
+        "magnesiumMg": 12,
+        "phosphorusMg": 95,
+        "sodiumMg": 46,
+        "fat": 3.25,
+        "carbohydrates": 4.66,
+        "monounsaturatedFat": 0.893,
+        "polyunsaturatedFat": 0.092,
+        "water": 87.9,
+        "calciumMg": 121,
+        "potassiumMg": 155,
+        "zincMg": 0.59,
+        "salt": 0.115
+      },
+      "servings": [
+        {
+          "description": "1 container (8 oz)",
+          "amount": 227,
+          "unit": "g"
+        },
+        {
+          "description": "1 container (6 oz)",
+          "amount": 170,
+          "unit": "g"
+        },
+        {
+          "description": "0.5 container (4 oz)",
+          "amount": 113,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup (8 fl oz)",
+          "amount": 245,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 171257,
+      "description": "Cream, sour, cultured",
+      "source": "https://fdc.nal.usda.gov/food-details/171257/nutrients",
+      "names": {
+        "uz": "Smetana, achitilgan qaymoq",
+        "ru": "Сметана"
+      },
+      "category": "Sut mahsulotlari",
+      "nutrients": {
+        "ironMg": 0.07,
+        "vitaminDMcg": 0,
+        "phosphorusMg": 76,
+        "sodiumMg": 31,
+        "protein": 2.44,
+        "cholesterolMg": 59,
+        "saturatedFat": 10.1,
+        "monounsaturatedFat": 4.59,
+        "polyunsaturatedFat": 0.8,
+        "sugars": 3.41,
+        "calciumMg": 101,
+        "potassiumMg": 125,
+        "zincMg": 0.33,
+        "vitaminEMg": 0.38,
+        "water": 73.1,
+        "fat": 19.4,
+        "carbohydrates": 4.63,
+        "calories": 198,
+        "fiber": 0,
+        "magnesiumMg": 10,
+        "salt": 0.0775
+      },
+      "servings": [
+        {
+          "description": "1 tbsp",
+          "amount": 12,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup",
+          "amount": 230,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 173443,
+      "description": "Sour cream, light",
+      "source": "https://fdc.nal.usda.gov/food-details/173443/nutrients",
+      "names": {
+        "uz": "Kam yog‘li smetana",
+        "ru": "Сметана лёгкая"
+      },
+      "category": "Sut mahsulotlari",
+      "nutrients": {
+        "sugars": 0.22,
+        "vitaminEMg": 0.3,
+        "fat": 10.6,
+        "carbohydrates": 7.1,
+        "water": 78.1,
+        "calciumMg": 141,
+        "potassiumMg": 212,
+        "zincMg": 0.5,
+        "monounsaturatedFat": 3.1,
+        "polyunsaturatedFat": 0.4,
+        "protein": 3.5,
+        "fiber": 0,
+        "ironMg": 0.07,
+        "magnesiumMg": 10,
+        "phosphorusMg": 71,
+        "vitaminDMcg": 0.2,
+        "cholesterolMg": 35,
+        "saturatedFat": 6.6,
+        "sodiumMg": 83,
+        "calories": 136,
+        "salt": 0.2075
+      },
+      "servings": [
+        {
+          "description": "1 cup",
+          "amount": 230,
+          "unit": "g"
+        },
+        {
+          "description": "1 tablespoon",
+          "amount": 12,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170857,
+      "description": "Cream, fluid, light (coffee cream or table cream)",
+      "source": "https://fdc.nal.usda.gov/food-details/170857/nutrients",
+      "names": {
+        "uz": "Qaymoq, yengil",
+        "ru": "Сливки лёгкие"
+      },
+      "category": "Sut mahsulotlari",
+      "nutrients": {
+        "protein": 2.96,
+        "phosphorusMg": 92,
+        "sodiumMg": 72,
+        "ironMg": 0.05,
+        "vitaminDMcg": 1.1,
+        "cholesterolMg": 59,
+        "saturatedFat": 10.2,
+        "fat": 19.1,
+        "monounsaturatedFat": 4.52,
+        "polyunsaturatedFat": 0.789,
+        "sugars": 3.67,
+        "calciumMg": 91,
+        "potassiumMg": 136,
+        "zincMg": 0.32,
+        "vitaminEMg": 0.12,
+        "carbohydrates": 3.66,
+        "calories": 195,
+        "water": 73.8,
+        "fiber": 0,
+        "magnesiumMg": 9,
+        "salt": 0.18
+      },
+      "servings": [
+        {
+          "description": "1 container, individual",
+          "amount": 11.1,
+          "unit": "g"
+        },
+        {
+          "description": "1 fl oz",
+          "amount": 30,
+          "unit": "g"
+        },
+        {
+          "description": "1 tbsp",
+          "amount": 15,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup",
+          "amount": 240,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170859,
+      "description": "Cream, fluid, heavy whipping",
+      "source": "https://fdc.nal.usda.gov/food-details/170859/nutrients",
+      "names": {
+        "uz": "Qaymoq, yog‘li",
+        "ru": "Сливки жирные"
+      },
+      "category": "Sut mahsulotlari",
+      "nutrients": {
+        "fat": 36.1,
+        "calories": 340,
+        "sugars": 2.92,
+        "calciumMg": 66,
+        "potassiumMg": 95,
+        "zincMg": 0.24,
+        "vitaminEMg": 0.92,
+        "monounsaturatedFat": 9.1,
+        "polyunsaturatedFat": 1.57,
+        "phosphorusMg": 58,
+        "sodiumMg": 27,
+        "vitaminDMcg": 1.6,
+        "ironMg": 0.1,
+        "cholesterolMg": 113,
+        "protein": 2.84,
+        "saturatedFat": 23,
+        "magnesiumMg": 7,
+        "fiber": 0,
+        "water": 57.7,
+        "carbohydrates": 2.84,
+        "salt": 0.0675
+      },
+      "servings": [
+        {
+          "description": "1 cup, whipped",
+          "amount": 120,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup, fluid (yields 2 cups whipped)",
+          "amount": 238,
+          "unit": "g"
+        },
+        {
+          "description": "1 tbsp",
+          "amount": 15,
+          "unit": "g"
+        },
+        {
+          "description": "1 fl oz",
+          "amount": 29.8,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 173410,
+      "description": "Butter, salted",
+      "source": "https://fdc.nal.usda.gov/food-details/173410/nutrients",
+      "names": {
+        "uz": "Sariyog‘, tuzli",
+        "ru": "Масло сливочное солёное"
+      },
+      "category": "Yog‘lar",
+      "nutrients": {
+        "fiber": 0,
+        "ironMg": 0.02,
+        "magnesiumMg": 2,
+        "phosphorusMg": 24,
+        "cholesterolMg": 215,
+        "potassiumMg": 24,
+        "zincMg": 0.09,
+        "sodiumMg": 643,
+        "calories": 717,
+        "vitaminEMg": 2.32,
+        "monounsaturatedFat": 21,
+        "polyunsaturatedFat": 3.04,
+        "saturatedFat": 51.4,
+        "vitaminDMcg": 0,
+        "fat": 81.1,
+        "carbohydrates": 0.06,
+        "protein": 0.85,
+        "sugars": 0.06,
+        "calciumMg": 24,
+        "water": 16.2,
+        "salt": 1.6075
+      },
+      "servings": [
+        {
+          "description": "1 pat (1\" sq, 1/3\" high)",
+          "amount": 5,
+          "unit": "g"
+        },
+        {
+          "description": "1 stick",
+          "amount": 113,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup",
+          "amount": 227,
+          "unit": "g"
+        },
+        {
+          "description": "1 tbsp",
+          "amount": 14.2,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 173430,
+      "description": "Butter, without salt",
+      "source": "https://fdc.nal.usda.gov/food-details/173430/nutrients",
+      "names": {
+        "uz": "Sariyog‘, tuzsiz",
+        "ru": "Масло сливочное несолёное"
+      },
+      "category": "Yog‘lar",
+      "nutrients": {
+        "sugars": 0.06,
+        "calciumMg": 24,
+        "magnesiumMg": 2,
+        "vitaminEMg": 2.32,
+        "calories": 717,
+        "ironMg": 0.02,
+        "phosphorusMg": 24,
+        "cholesterolMg": 215,
+        "potassiumMg": 24,
+        "zincMg": 0.09,
+        "monounsaturatedFat": 23.4,
+        "polyunsaturatedFat": 3.01,
+        "vitaminDMcg": 0,
+        "saturatedFat": 50.5,
+        "fat": 81.1,
+        "carbohydrates": 0.06,
+        "protein": 0.85,
+        "fiber": 0,
+        "sodiumMg": 11,
+        "water": 16.2,
+        "salt": 0.0275
+      },
+      "servings": [
+        {
+          "description": "1 pat (1\" sq, 1/3\" high)",
+          "amount": 5,
+          "unit": "g"
+        },
+        {
+          "description": "1 tbsp",
+          "amount": 14.2,
+          "unit": "g"
+        },
+        {
+          "description": "1 stick",
+          "amount": 113,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup",
+          "amount": 227,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 171314,
+      "description": "Butter, Clarified butter (ghee)",
+      "source": "https://fdc.nal.usda.gov/food-details/171314/nutrients",
+      "names": {
+        "uz": "Eritilgan sariyog‘, ghee",
+        "ru": "Топлёное масло, гхи"
+      },
+      "category": "Yog‘lar",
+      "nutrients": {
+        "protein": 0,
+        "fiber": 0,
+        "ironMg": 0,
+        "sodiumMg": 0,
+        "cholesterolMg": 300,
+        "saturatedFat": 60,
+        "fat": 100,
+        "carbohydrates": 0,
+        "calories": 900,
+        "water": 0.5,
+        "sugars": 0,
+        "calciumMg": 0,
+        "polyunsaturatedFat": 4,
+        "salt": 0
+      },
+      "servings": []
+    },
+    {
+      "fdcId": 171025,
+      "description": "Oil, sunflower, linoleic, (approx. 65%)",
+      "source": "https://fdc.nal.usda.gov/food-details/171025/nutrients",
+      "names": {
+        "uz": "Kungaboqar yog‘i",
+        "ru": "Подсолнечное масло"
+      },
+      "category": "Yog‘lar",
+      "nutrients": {
+        "cholesterolMg": 0,
+        "saturatedFat": 10.3,
+        "fiber": 0,
+        "ironMg": 0,
+        "magnesiumMg": 0,
+        "phosphorusMg": 0,
+        "sodiumMg": 0,
+        "protein": 0,
+        "fat": 100,
+        "carbohydrates": 0,
+        "calories": 884,
+        "water": 0,
+        "calciumMg": 0,
+        "potassiumMg": 0,
+        "zincMg": 0,
+        "monounsaturatedFat": 19.5,
+        "polyunsaturatedFat": 65.7,
+        "vitaminEMg": 41.1,
+        "sugars": 0,
+        "vitaminDMcg": 0,
+        "salt": 0
+      },
+      "servings": [
+        {
+          "description": "1 tbsp",
+          "amount": 13.6,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup",
+          "amount": 218,
+          "unit": "g"
+        },
+        {
+          "description": "1 tsp",
+          "amount": 4.5,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 172338,
+      "description": "Oil, sunflower, high oleic (70% and over)",
+      "source": "https://fdc.nal.usda.gov/food-details/172338/nutrients",
+      "names": {
+        "uz": "Yuqori oleinli kungaboqar yog‘i",
+        "ru": "Высокоолеиновое подсолнечное масло"
+      },
+      "category": "Yog‘lar",
+      "nutrients": {
+        "cholesterolMg": 0,
+        "calciumMg": 0,
+        "potassiumMg": 0,
+        "zincMg": 0,
+        "fat": 100,
+        "carbohydrates": 0,
+        "calories": 884,
+        "water": 0,
+        "protein": 0,
+        "fiber": 0,
+        "ironMg": 0,
+        "magnesiumMg": 0,
+        "phosphorusMg": 0,
+        "sodiumMg": 0,
+        "monounsaturatedFat": 83.7,
+        "polyunsaturatedFat": 3.8,
+        "vitaminDMcg": 0,
+        "saturatedFat": 9.86,
+        "vitaminEMg": 41.1,
+        "sugars": 0,
+        "salt": 0
+      },
+      "servings": [
+        {
+          "description": "1 cup",
+          "amount": 218,
+          "unit": "g"
+        },
+        {
+          "description": "1 tsp",
+          "amount": 4.5,
+          "unit": "g"
+        },
+        {
+          "description": "1 tbsp",
+          "amount": 14,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 171029,
+      "description": "Oil, corn, industrial and retail, all purpose salad or cooking",
+      "source": "https://fdc.nal.usda.gov/food-details/171029/nutrients",
+      "names": {
+        "uz": "Makkajo‘xori yog‘i",
+        "ru": "Кукурузное масло"
+      },
+      "category": "Yog‘lar",
+      "nutrients": {
+        "saturatedFat": 12.9,
+        "fat": 100,
+        "monounsaturatedFat": 27.6,
+        "polyunsaturatedFat": 54.7,
+        "protein": 0,
+        "fiber": 0,
+        "ironMg": 0,
+        "magnesiumMg": 0,
+        "phosphorusMg": 0,
+        "sodiumMg": 0,
+        "cholesterolMg": 0,
+        "carbohydrates": 0,
+        "water": 0,
+        "calciumMg": 0,
+        "potassiumMg": 0,
+        "zincMg": 0,
+        "vitaminEMg": 14.3,
+        "calories": 900,
+        "sugars": 0,
+        "vitaminDMcg": 0,
+        "salt": 0
+      },
+      "servings": [
+        {
+          "description": "1 cup",
+          "amount": 218,
+          "unit": "g"
+        },
+        {
+          "description": "1 tsp",
+          "amount": 4.5,
+          "unit": "g"
+        },
+        {
+          "description": "1 tbsp",
+          "amount": 13.6,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 171411,
+      "description": "Oil, soybean, salad or cooking",
+      "source": "https://fdc.nal.usda.gov/food-details/171411/nutrients",
+      "names": {
+        "uz": "Soya yog‘i",
+        "ru": "Соевое масло"
+      },
+      "category": "Yog‘lar",
+      "nutrients": {
+        "potassiumMg": 0,
+        "zincMg": 0.01,
+        "water": 0,
+        "vitaminEMg": 8.18,
+        "monounsaturatedFat": 22.8,
+        "ironMg": 0.05,
+        "sodiumMg": 0,
+        "saturatedFat": 15.6,
+        "protein": 0,
+        "cholesterolMg": 0,
+        "polyunsaturatedFat": 57.7,
+        "fiber": 0,
+        "magnesiumMg": 0,
+        "phosphorusMg": 0,
+        "calciumMg": 0,
+        "fat": 100,
+        "carbohydrates": 0,
+        "calories": 884,
+        "sugars": 0,
+        "vitaminDMcg": 0,
+        "salt": 0
+      },
+      "servings": [
+        {
+          "description": "1 tbsp",
+          "amount": 13.6,
+          "unit": "g"
+        },
+        {
+          "description": "1 tsp",
+          "amount": 4.5,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup",
+          "amount": 218,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 173414,
+      "description": "Cheese, cheddar (Includes foods for USDA's Food Distribution Program)",
+      "source": "https://fdc.nal.usda.gov/food-details/173414/nutrients",
+      "names": {
+        "uz": "Cheddar pishlog‘i",
+        "ru": "Сыр чеддер"
+      },
+      "category": "Pishloqlar",
+      "nutrients": {
+        "polyunsaturatedFat": 0.942,
+        "water": 36.8,
+        "calciumMg": 710,
+        "potassiumMg": 76,
+        "zincMg": 3.64,
+        "carbohydrates": 3.37,
+        "calories": 403,
+        "protein": 22.9,
+        "phosphorusMg": 455,
+        "fat": 33.3,
+        "sugars": 0.48,
+        "vitaminEMg": 0.71,
+        "cholesterolMg": 99,
+        "saturatedFat": 18.9,
+        "sodiumMg": 653,
+        "ironMg": 0.14,
+        "magnesiumMg": 27,
+        "fiber": 0,
+        "monounsaturatedFat": 9.39,
+        "vitaminDMcg": 0.6,
+        "salt": 1.6325
+      },
+      "servings": [
+        {
+          "description": "1 cup, melted",
+          "amount": 244,
+          "unit": "g"
+        },
+        {
+          "description": "1 slice (1 oz)",
+          "amount": 28,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup, shredded",
+          "amount": 113,
+          "unit": "g"
+        },
+        {
+          "description": "1 oz",
+          "amount": 28.35,
+          "unit": "g"
+        },
+        {
+          "description": "1 cubic inch",
+          "amount": 17,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup, diced",
+          "amount": 132,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170845,
+      "description": "Cheese, mozzarella, whole milk",
+      "source": "https://fdc.nal.usda.gov/food-details/170845/nutrients",
+      "names": {
+        "uz": "Mozzarella pishlog‘i, to‘liq sutdan",
+        "ru": "Сыр моцарелла из цельного молока"
+      },
+      "category": "Pishloqlar",
+      "nutrients": {
+        "vitaminEMg": 0.19,
+        "monounsaturatedFat": 6.57,
+        "polyunsaturatedFat": 0.765,
+        "vitaminDMcg": 0.4,
+        "cholesterolMg": 79,
+        "ironMg": 0.44,
+        "magnesiumMg": 20,
+        "phosphorusMg": 354,
+        "protein": 22.2,
+        "calciumMg": 505,
+        "potassiumMg": 76,
+        "zincMg": 2.92,
+        "water": 50,
+        "sodiumMg": 486,
+        "saturatedFat": 13.9,
+        "sugars": 0,
+        "fat": 22.1,
+        "carbohydrates": 2.4,
+        "calories": 299,
+        "fiber": 0,
+        "salt": 1.215
+      },
+      "servings": [
+        {
+          "description": "1 oz",
+          "amount": 28.35,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup, shredded",
+          "amount": 112,
+          "unit": "g"
+        },
+        {
+          "description": "6 slices",
+          "amount": 170,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170847,
+      "description": "Cheese, mozzarella, part skim milk",
+      "source": "https://fdc.nal.usda.gov/food-details/170847/nutrients",
+      "names": {
+        "uz": "Mozzarella, kam yog‘li sutdan",
+        "ru": "Моцарелла из частично обезжиренного молока"
+      },
+      "category": "Pishloqlar",
+      "nutrients": {
+        "vitaminEMg": 0.14,
+        "calories": 254,
+        "vitaminDMcg": 0.3,
+        "calciumMg": 782,
+        "cholesterolMg": 64,
+        "fat": 15.9,
+        "water": 53.8,
+        "sugars": 1.13,
+        "protein": 24.3,
+        "sodiumMg": 619,
+        "saturatedFat": 10.1,
+        "potassiumMg": 84,
+        "zincMg": 2.76,
+        "monounsaturatedFat": 4.51,
+        "polyunsaturatedFat": 0.472,
+        "carbohydrates": 2.77,
+        "fiber": 0,
+        "ironMg": 0.22,
+        "magnesiumMg": 23,
+        "phosphorusMg": 463,
+        "salt": 1.5475
+      },
+      "servings": [
+        {
+          "description": "1 oz",
+          "amount": 28.35,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 173418,
+      "description": "Cheese, cream",
+      "source": "https://fdc.nal.usda.gov/food-details/173418/nutrients",
+      "names": {
+        "uz": "Qaymoqli pishloq",
+        "ru": "Сливочный сыр"
+      },
+      "category": "Pishloqlar",
+      "nutrients": {
+        "phosphorusMg": 107,
+        "ironMg": 0.11,
+        "vitaminDMcg": 0,
+        "protein": 6.15,
+        "saturatedFat": 20.2,
+        "cholesterolMg": 101,
+        "water": 52.6,
+        "fat": 34.4,
+        "carbohydrates": 5.52,
+        "calories": 350,
+        "sugars": 3.76,
+        "calciumMg": 97,
+        "potassiumMg": 132,
+        "zincMg": 0.5,
+        "vitaminEMg": 0.86,
+        "monounsaturatedFat": 8.91,
+        "polyunsaturatedFat": 1.48,
+        "magnesiumMg": 9,
+        "sodiumMg": 314,
+        "fiber": 0,
+        "salt": 0.785
+      },
+      "servings": [
+        {
+          "description": "1 cubic inch",
+          "amount": 16,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup",
+          "amount": 232,
+          "unit": "g"
+        },
+        {
+          "description": "1 tbsp, whipped",
+          "amount": 10,
+          "unit": "g"
+        },
+        {
+          "description": "1 package, small (3 oz)",
+          "amount": 85,
+          "unit": "g"
+        },
+        {
+          "description": "1 tbsp",
+          "amount": 14.5,
+          "unit": "g"
+        },
+        {
+          "description": "1 oz",
+          "amount": 28.35,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 173420,
+      "description": "Cheese, feta",
+      "source": "https://fdc.nal.usda.gov/food-details/173420/nutrients",
+      "names": {
+        "uz": "Feta pishlog‘i",
+        "ru": "Сыр фета"
+      },
+      "category": "Pishloqlar",
+      "nutrients": {
+        "vitaminEMg": 0.18,
+        "vitaminDMcg": 0.4,
+        "sugars": 0,
+        "fat": 21.5,
+        "carbohydrates": 3.88,
+        "calories": 265,
+        "saturatedFat": 13.3,
+        "sodiumMg": 1140,
+        "water": 55.2,
+        "calciumMg": 493,
+        "potassiumMg": 62,
+        "zincMg": 2.88,
+        "monounsaturatedFat": 4.62,
+        "polyunsaturatedFat": 0.591,
+        "cholesterolMg": 89,
+        "protein": 14.2,
+        "fiber": 0,
+        "ironMg": 0.65,
+        "magnesiumMg": 19,
+        "phosphorusMg": 337,
+        "salt": 2.85
+      },
+      "servings": [
+        {
+          "description": "1 cup, crumbled",
+          "amount": 150,
+          "unit": "g"
+        },
+        {
+          "description": "1 oz",
+          "amount": 28.35,
+          "unit": "g"
+        },
+        {
+          "description": "1 cubic inch",
+          "amount": 17,
+          "unit": "g"
+        },
+        {
+          "description": "1 wedge (1.33 oz)",
+          "amount": 38,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 171251,
+      "description": "Cheese, swiss",
+      "source": "https://fdc.nal.usda.gov/food-details/171251/nutrients",
+      "names": {
+        "uz": "Shveysariya pishlog‘i",
+        "ru": "Швейцарский сыр"
+      },
+      "category": "Pishloqlar",
+      "nutrients": {
+        "monounsaturatedFat": 8.05,
+        "polyunsaturatedFat": 1.34,
+        "fat": 31,
+        "carbohydrates": 1.44,
+        "calories": 393,
+        "water": 37.6,
+        "sugars": 0,
+        "calciumMg": 890,
+        "potassiumMg": 72,
+        "zincMg": 4.37,
+        "vitaminEMg": 0.6,
+        "ironMg": 0.13,
+        "magnesiumMg": 33,
+        "phosphorusMg": 574,
+        "sodiumMg": 187,
+        "vitaminDMcg": 0,
+        "protein": 27,
+        "cholesterolMg": 93,
+        "saturatedFat": 18.2,
+        "fiber": 0,
+        "salt": 0.4675
+      },
+      "servings": [
+        {
+          "description": "1 cup, melted",
+          "amount": 244,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup, shredded",
+          "amount": 108,
+          "unit": "g"
+        },
+        {
+          "description": "1 cubic inch",
+          "amount": 15,
+          "unit": "g"
+        },
+        {
+          "description": "1 oz",
+          "amount": 28.35,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup, diced",
+          "amount": 132,
+          "unit": "g"
+        },
+        {
+          "description": "1 slice (1 oz)",
+          "amount": 28,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170848,
+      "description": "Cheese, parmesan, hard",
+      "source": "https://fdc.nal.usda.gov/food-details/170848/nutrients",
+      "names": {
+        "uz": "Parmezan pishlog‘i",
+        "ru": "Сыр пармезан"
+      },
+      "category": "Pishloqlar",
+      "nutrients": {
+        "vitaminEMg": 0.22,
+        "vitaminDMcg": 0.5,
+        "sodiumMg": 1180,
+        "saturatedFat": 14.8,
+        "water": 30,
+        "sugars": 0.11,
+        "fat": 25,
+        "fiber": 0,
+        "ironMg": 0.82,
+        "magnesiumMg": 44,
+        "phosphorusMg": 694,
+        "cholesterolMg": 68,
+        "protein": 35.8,
+        "carbohydrates": 3.22,
+        "calories": 392,
+        "calciumMg": 1180,
+        "potassiumMg": 92,
+        "zincMg": 2.75,
+        "monounsaturatedFat": 7.52,
+        "polyunsaturatedFat": 0.569,
+        "salt": 2.95
+      },
+      "servings": [
+        {
+          "description": "1 cubic inch",
+          "amount": 10.3,
+          "unit": "g"
+        },
+        {
+          "description": "5 package (5 oz)",
+          "amount": 142,
+          "unit": "g"
+        },
+        {
+          "description": "1 oz",
+          "amount": 28.35,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170853,
+      "description": "Cheese, pasteurized process, American, fortified with vitamin D",
+      "source": "https://fdc.nal.usda.gov/food-details/170853/nutrients",
+      "names": {
+        "uz": "Eritilgan American pishlog‘i (D vitaminli)",
+        "ru": "Плавленый сыр American (витамин D)"
+      },
+      "category": "Pishloqlar",
+      "nutrients": {
+        "vitaminEMg": 0.8,
+        "sugars": 2.26,
+        "calciumMg": 1040,
+        "potassiumMg": 132,
+        "zincMg": 2.49,
+        "water": 39.6,
+        "monounsaturatedFat": 8.24,
+        "polyunsaturatedFat": 1.29,
+        "cholesterolMg": 100,
+        "saturatedFat": 18.1,
+        "protein": 18.1,
+        "ironMg": 0.63,
+        "magnesiumMg": 26,
+        "phosphorusMg": 641,
+        "sodiumMg": 1670,
+        "vitaminDMcg": 7.5,
+        "fat": 30.7,
+        "carbohydrates": 4.78,
+        "calories": 366,
+        "fiber": 0,
+        "salt": 4.175
+      },
+      "servings": [
+        {
+          "description": "1 cup, shredded",
+          "amount": 113,
+          "unit": "g"
+        },
+        {
+          "description": "1 slice (1 oz)",
+          "amount": 28,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup, diced",
+          "amount": 140,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup, melted",
+          "amount": 244,
+          "unit": "g"
+        },
+        {
+          "description": "1 slice (3/4 oz)",
+          "amount": 21,
+          "unit": "g"
+        },
+        {
+          "description": "1 oz",
+          "amount": 28.35,
+          "unit": "g"
+        },
+        {
+          "description": "1 cubic inch",
+          "amount": 18,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 171952,
+      "description": "Fish, carp, raw",
+      "source": "https://fdc.nal.usda.gov/food-details/171952/nutrients",
+      "names": {
+        "uz": "Sazan baliq, xom",
+        "ru": "Карп, сырой"
+      },
+      "category": "Baliqlar",
+      "nutrients": {
+        "sugars": 0,
+        "vitaminEMg": 0.63,
+        "vitaminDMcg": 24.7,
+        "fat": 5.6,
+        "carbohydrates": 0,
+        "calories": 127,
+        "water": 76.3,
+        "calciumMg": 41,
+        "potassiumMg": 333,
+        "zincMg": 1.48,
+        "monounsaturatedFat": 2.33,
+        "polyunsaturatedFat": 1.43,
+        "protein": 17.8,
+        "fiber": 0,
+        "ironMg": 1.24,
+        "magnesiumMg": 29,
+        "phosphorusMg": 415,
+        "sodiumMg": 49,
+        "cholesterolMg": 66,
+        "saturatedFat": 1.08,
+        "salt": 0.1225
+      },
+      "servings": [
+        {
+          "description": "1 fillet",
+          "amount": 218,
+          "unit": "g"
+        },
+        {
+          "description": "3 oz",
+          "amount": 85,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 174185,
+      "description": "Fish, carp, cooked, dry heat",
+      "source": "https://fdc.nal.usda.gov/food-details/174185/nutrients",
+      "names": {
+        "uz": "Sazan baliq, pechda pishirilgan",
+        "ru": "Карп, запечённый"
+      },
+      "category": "Baliqlar",
+      "nutrients": {
+        "cholesterolMg": 84,
+        "saturatedFat": 1.39,
+        "protein": 22.9,
+        "fiber": 0,
+        "ironMg": 1.59,
+        "magnesiumMg": 38,
+        "phosphorusMg": 531,
+        "sodiumMg": 63,
+        "fat": 7.17,
+        "carbohydrates": 0,
+        "calories": 162,
+        "water": 69.6,
+        "calciumMg": 52,
+        "potassiumMg": 427,
+        "zincMg": 1.9,
+        "monounsaturatedFat": 2.98,
+        "polyunsaturatedFat": 1.84,
+        "salt": 0.1575
+      },
+      "servings": [
+        {
+          "description": "3 oz",
+          "amount": 85,
+          "unit": "g"
+        },
+        {
+          "description": "1 fillet",
+          "amount": 170,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 175167,
+      "description": "Fish, salmon, Atlantic, farmed, raw",
+      "source": "https://fdc.nal.usda.gov/food-details/175167/nutrients",
+      "names": {
+        "uz": "Losos, Atlantika, fermada yetishtirilgan, xom",
+        "ru": "Лосось атлантический, фермерский, сырой"
+      },
+      "category": "Baliqlar",
+      "nutrients": {
+        "monounsaturatedFat": 3.77,
+        "polyunsaturatedFat": 3.89,
+        "calories": 208,
+        "water": 64.9,
+        "calciumMg": 9,
+        "potassiumMg": 363,
+        "zincMg": 0.36,
+        "vitaminEMg": 3.55,
+        "fat": 13.4,
+        "cholesterolMg": 55,
+        "saturatedFat": 3.05,
+        "protein": 20.4,
+        "ironMg": 0.34,
+        "magnesiumMg": 27,
+        "phosphorusMg": 240,
+        "sodiumMg": 59,
+        "vitaminDMcg": 11,
+        "sugars": 0,
+        "fiber": 0,
+        "carbohydrates": 0,
+        "salt": 0.1475
+      },
+      "servings": [
+        {
+          "description": "3 oz",
+          "amount": 85,
+          "unit": "g"
+        },
+        {
+          "description": "0.5 fillet",
+          "amount": 198,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 175168,
+      "description": "Fish, salmon, Atlantic, farmed, cooked, dry heat",
+      "source": "https://fdc.nal.usda.gov/food-details/175168/nutrients",
+      "names": {
+        "uz": "Losos, Atlantika, fermada yetishtirilgan, pishirilgan",
+        "ru": "Лосось атлантический, фермерский, запечённый"
+      },
+      "category": "Baliqlar",
+      "nutrients": {
+        "calciumMg": 15,
+        "sugars": 0,
+        "vitaminEMg": 1.14,
+        "monounsaturatedFat": 4.18,
+        "polyunsaturatedFat": 4.55,
+        "vitaminDMcg": 13.1,
+        "saturatedFat": 2.4,
+        "water": 64.8,
+        "potassiumMg": 384,
+        "zincMg": 0.43,
+        "fat": 12.4,
+        "carbohydrates": 0,
+        "protein": 22.1,
+        "cholesterolMg": 63,
+        "fiber": 0,
+        "ironMg": 0.34,
+        "magnesiumMg": 30,
+        "phosphorusMg": 252,
+        "sodiumMg": 61,
+        "calories": 206,
+        "salt": 0.1525
+      },
+      "servings": [
+        {
+          "description": "0.5 fillet",
+          "amount": 178,
+          "unit": "g"
+        },
+        {
+          "description": "3 oz",
+          "amount": 85,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 173686,
+      "description": "Fish, salmon, Atlantic, wild, raw",
+      "source": "https://fdc.nal.usda.gov/food-details/173686/nutrients",
+      "names": {
+        "uz": "Losos, Atlantika, yovvoyi, xom",
+        "ru": "Лосось атлантический, дикий, сырой"
+      },
+      "category": "Baliqlar",
+      "nutrients": {
+        "cholesterolMg": 55,
+        "saturatedFat": 0.981,
+        "fiber": 0,
+        "ironMg": 0.8,
+        "magnesiumMg": 29,
+        "phosphorusMg": 200,
+        "sodiumMg": 44,
+        "protein": 19.8,
+        "fat": 6.34,
+        "carbohydrates": 0,
+        "calories": 142,
+        "water": 68.5,
+        "calciumMg": 12,
+        "potassiumMg": 490,
+        "zincMg": 0.64,
+        "monounsaturatedFat": 2.1,
+        "polyunsaturatedFat": 2.54,
+        "salt": 0.11
+      },
+      "servings": [
+        {
+          "description": "3 oz",
+          "amount": 85,
+          "unit": "g"
+        },
+        {
+          "description": "0.5 fillet",
+          "amount": 198,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 171998,
+      "description": "Fish, salmon, Atlantic, wild, cooked, dry heat",
+      "source": "https://fdc.nal.usda.gov/food-details/171998/nutrients",
+      "names": {
+        "uz": "Losos, Atlantika, yovvoyi, pishirilgan",
+        "ru": "Лосось атлантический, дикий, запечённый"
+      },
+      "category": "Baliqlar",
+      "nutrients": {
+        "protein": 25.4,
+        "fiber": 0,
+        "ironMg": 1.03,
+        "magnesiumMg": 37,
+        "phosphorusMg": 256,
+        "sodiumMg": 56,
+        "cholesterolMg": 71,
+        "saturatedFat": 1.26,
+        "fat": 8.13,
+        "carbohydrates": 0,
+        "calories": 182,
+        "water": 59.6,
+        "calciumMg": 15,
+        "potassiumMg": 628,
+        "zincMg": 0.82,
+        "monounsaturatedFat": 2.7,
+        "polyunsaturatedFat": 3.26,
+        "salt": 0.14
+      },
+      "servings": [
+        {
+          "description": "3 oz",
+          "amount": 85,
+          "unit": "g"
+        },
+        {
+          "description": "0.5 fillet",
+          "amount": 154,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 173687,
+      "description": "Fish, salmon, chinook, smoked",
+      "source": "https://fdc.nal.usda.gov/food-details/173687/nutrients",
+      "names": {
+        "uz": "Losos chinook, dudlangan",
+        "ru": "Лосось чавыча, копчёный"
+      },
+      "category": "Baliqlar",
+      "nutrients": {
+        "sugars": 0,
+        "vitaminDMcg": 17.1,
+        "vitaminEMg": 1.35,
+        "sodiumMg": 672,
+        "calciumMg": 11,
+        "potassiumMg": 175,
+        "zincMg": 0.31,
+        "monounsaturatedFat": 2.02,
+        "polyunsaturatedFat": 0.995,
+        "fat": 4.32,
+        "carbohydrates": 0,
+        "calories": 117,
+        "water": 72,
+        "protein": 18.3,
+        "fiber": 0,
+        "ironMg": 0.85,
+        "magnesiumMg": 18,
+        "phosphorusMg": 164,
+        "cholesterolMg": 23,
+        "saturatedFat": 0.929,
+        "salt": 1.68
+      },
+      "servings": [
+        {
+          "description": "3 oz",
+          "amount": 85,
+          "unit": "g"
+        },
+        {
+          "description": "1 cubic inch, boneless",
+          "amount": 17,
+          "unit": "g"
+        },
+        {
+          "description": "1 oz, boneless",
+          "amount": 28.35,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup, cooked",
+          "amount": 136,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 173706,
+      "description": "Fish, tuna, fresh, bluefin, raw",
+      "source": "https://fdc.nal.usda.gov/food-details/173706/nutrients",
+      "names": {
+        "uz": "Tunets, ko‘k suzgichli, xom",
+        "ru": "Тунец голубой, сырой"
+      },
+      "category": "Baliqlar",
+      "nutrients": {
+        "monounsaturatedFat": 1.6,
+        "polyunsaturatedFat": 1.43,
+        "sugars": 0,
+        "vitaminEMg": 1,
+        "vitaminDMcg": 5.7,
+        "fat": 4.9,
+        "carbohydrates": 0,
+        "calories": 144,
+        "water": 68.1,
+        "calciumMg": 8,
+        "potassiumMg": 252,
+        "zincMg": 0.6,
+        "protein": 23.3,
+        "fiber": 0,
+        "ironMg": 1.02,
+        "magnesiumMg": 50,
+        "phosphorusMg": 254,
+        "sodiumMg": 39,
+        "cholesterolMg": 38,
+        "saturatedFat": 1.26,
+        "salt": 0.0975
+      },
+      "servings": [
+        {
+          "description": "3 oz",
+          "amount": 85,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 173707,
+      "description": "Fish, tuna, fresh, bluefin, cooked, dry heat",
+      "source": "https://fdc.nal.usda.gov/food-details/173707/nutrients",
+      "names": {
+        "uz": "Tunets, ko‘k suzgichli, pishirilgan",
+        "ru": "Тунец голубой, запечённый"
+      },
+      "category": "Baliqlar",
+      "nutrients": {
+        "protein": 29.9,
+        "fiber": 0,
+        "ironMg": 1.31,
+        "magnesiumMg": 64,
+        "phosphorusMg": 326,
+        "sodiumMg": 50,
+        "cholesterolMg": 49,
+        "saturatedFat": 1.61,
+        "fat": 6.28,
+        "carbohydrates": 0,
+        "calories": 184,
+        "water": 59.1,
+        "calciumMg": 10,
+        "potassiumMg": 323,
+        "zincMg": 0.77,
+        "monounsaturatedFat": 2.05,
+        "polyunsaturatedFat": 1.84,
+        "salt": 0.125
+      },
+      "servings": [
+        {
+          "description": "3 oz",
+          "amount": 85,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 173709,
+      "description": "Fish, tuna, light, canned in water, drained solids (Includes foods for USDA's Food Distribution Program)",
+      "source": "https://fdc.nal.usda.gov/food-details/173709/nutrients",
+      "names": {
+        "uz": "Tunets, suvdagi konserva, suyuqligi to‘kilgan",
+        "ru": "Тунец в воде, консервы без жидкости"
+      },
+      "category": "Baliqlar",
+      "nutrients": {
+        "vitaminEMg": 0.33,
+        "sugars": 0,
+        "calciumMg": 17,
+        "potassiumMg": 179,
+        "zincMg": 0.69,
+        "fat": 0.96,
+        "calories": 86,
+        "water": 78.1,
+        "monounsaturatedFat": 0.107,
+        "polyunsaturatedFat": 0.277,
+        "vitaminDMcg": 1.2,
+        "cholesterolMg": 36,
+        "saturatedFat": 0.211,
+        "protein": 19.4,
+        "ironMg": 1.63,
+        "magnesiumMg": 23,
+        "phosphorusMg": 139,
+        "sodiumMg": 247,
+        "fiber": 0,
+        "carbohydrates": 0,
+        "salt": 0.6175
+      },
+      "servings": [
+        {
+          "description": "3 oz",
+          "amount": 85,
+          "unit": "g"
+        },
+        {
+          "description": "1 can",
+          "amount": 165,
+          "unit": "g"
+        },
+        {
+          "description": "1 can (12.5 oz), drained",
+          "amount": 315,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup, solid or chunks",
+          "amount": 154,
+          "unit": "g"
+        },
+        {
+          "description": "1 oz",
+          "amount": 28.35,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 173708,
+      "description": "Fish, tuna, light, canned in oil, drained solids",
+      "source": "https://fdc.nal.usda.gov/food-details/173708/nutrients",
+      "names": {
+        "uz": "Tunets, yog‘dagi konserva, yog‘i to‘kilgan",
+        "ru": "Тунец в масле, консервы без жидкости"
+      },
+      "category": "Baliqlar",
+      "nutrients": {
+        "sugars": 0,
+        "calories": 198,
+        "vitaminEMg": 0.87,
+        "vitaminDMcg": 6.7,
+        "sodiumMg": 416,
+        "calciumMg": 13,
+        "potassiumMg": 207,
+        "zincMg": 0.9,
+        "water": 59.8,
+        "fat": 8.21,
+        "carbohydrates": 0,
+        "monounsaturatedFat": 2.95,
+        "polyunsaturatedFat": 2.88,
+        "protein": 29.1,
+        "fiber": 0,
+        "ironMg": 1.39,
+        "magnesiumMg": 31,
+        "phosphorusMg": 311,
+        "cholesterolMg": 18,
+        "saturatedFat": 1.53,
+        "salt": 1.04
+      },
+      "servings": [
+        {
+          "description": "1 oz",
+          "amount": 28.35,
+          "unit": "g"
+        },
+        {
+          "description": "3 oz",
+          "amount": 85,
+          "unit": "g"
+        },
+        {
+          "description": "1 can (12.5 oz), drained",
+          "amount": 321,
+          "unit": "g"
+        },
+        {
+          "description": "1 can",
+          "amount": 171,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup, solid or chunks",
+          "amount": 146,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 173717,
+      "description": "Fish, trout, rainbow, farmed, raw",
+      "source": "https://fdc.nal.usda.gov/food-details/173717/nutrients",
+      "names": {
+        "uz": "Forel, kamalak, fermada yetishtirilgan, xom",
+        "ru": "Форель радужная, фермерская, сырая"
+      },
+      "category": "Baliqlar",
+      "nutrients": {
+        "sugars": 0,
+        "fat": 6.18,
+        "potassiumMg": 377,
+        "zincMg": 0.45,
+        "vitaminEMg": 2.34,
+        "calories": 141,
+        "water": 73.8,
+        "calciumMg": 25,
+        "monounsaturatedFat": 1.98,
+        "polyunsaturatedFat": 1.51,
+        "protein": 19.9,
+        "sodiumMg": 51,
+        "vitaminDMcg": 15.9,
+        "ironMg": 0.31,
+        "magnesiumMg": 25,
+        "phosphorusMg": 226,
+        "cholesterolMg": 59,
+        "saturatedFat": 1.38,
+        "fiber": 0,
+        "carbohydrates": 0,
+        "salt": 0.1275
+      },
+      "servings": [
+        {
+          "description": "1 fillet",
+          "amount": 79,
+          "unit": "g"
+        },
+        {
+          "description": "3 oz",
+          "amount": 85,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 173718,
+      "description": "Fish, trout, rainbow, farmed, cooked, dry heat",
+      "source": "https://fdc.nal.usda.gov/food-details/173718/nutrients",
+      "names": {
+        "uz": "Forel, kamalak, fermada yetishtirilgan, pishirilgan",
+        "ru": "Форель радужная, фермерская, запечённая"
+      },
+      "category": "Baliqlar",
+      "nutrients": {
+        "protein": 23.8,
+        "fiber": 0,
+        "ironMg": 0.36,
+        "magnesiumMg": 30,
+        "phosphorusMg": 270,
+        "sodiumMg": 61,
+        "vitaminDMcg": 19,
+        "cholesterolMg": 70,
+        "saturatedFat": 1.65,
+        "fat": 7.38,
+        "carbohydrates": 0,
+        "calories": 168,
+        "water": 68.7,
+        "sugars": 0,
+        "calciumMg": 30,
+        "potassiumMg": 450,
+        "zincMg": 0.54,
+        "vitaminEMg": 2.79,
+        "monounsaturatedFat": 2.36,
+        "polyunsaturatedFat": 1.8,
+        "salt": 0.1525
+      },
+      "servings": [
+        {
+          "description": "1 fillet",
+          "amount": 71,
+          "unit": "g"
+        },
+        {
+          "description": "3 oz",
+          "amount": 85,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170685,
+      "description": "Buckwheat groats, roasted, dry",
+      "source": "https://fdc.nal.usda.gov/food-details/170685/nutrients",
+      "names": {
+        "uz": "Grechka, qovurilgan yorma, quruq",
+        "ru": "Гречневая крупа обжаренная, сухая"
+      },
+      "category": "Garnirlar",
+      "nutrients": {
+        "fiber": 10.3,
+        "cholesterolMg": 0,
+        "saturatedFat": 0.591,
+        "protein": 11.7,
+        "ironMg": 2.47,
+        "magnesiumMg": 221,
+        "phosphorusMg": 319,
+        "sodiumMg": 11,
+        "fat": 2.71,
+        "carbohydrates": 75,
+        "calories": 346,
+        "water": 8.41,
+        "calciumMg": 17,
+        "potassiumMg": 320,
+        "zincMg": 2.42,
+        "monounsaturatedFat": 0.828,
+        "polyunsaturatedFat": 0.828,
+        "vitaminDMcg": 0,
+        "salt": 0.0275
+      },
+      "servings": [
+        {
+          "description": "1 cup",
+          "amount": 164,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170686,
+      "description": "Buckwheat groats, roasted, cooked",
+      "source": "https://fdc.nal.usda.gov/food-details/170686/nutrients",
+      "names": {
+        "uz": "Grechka, qaynatilgan",
+        "ru": "Гречневая каша, варёная"
+      },
+      "category": "Garnirlar",
+      "nutrients": {
+        "vitaminEMg": 0.09,
+        "sugars": 0.9,
+        "fiber": 2.7,
+        "fat": 0.62,
+        "carbohydrates": 19.9,
+        "calories": 92,
+        "water": 75.6,
+        "calciumMg": 7,
+        "potassiumMg": 88,
+        "zincMg": 0.61,
+        "monounsaturatedFat": 0.188,
+        "polyunsaturatedFat": 0.188,
+        "protein": 3.38,
+        "ironMg": 0.8,
+        "magnesiumMg": 51,
+        "phosphorusMg": 70,
+        "sodiumMg": 4,
+        "cholesterolMg": 0,
+        "saturatedFat": 0.134,
+        "vitaminDMcg": 0,
+        "salt": 0.01
+      },
+      "servings": [
+        {
+          "description": "1 cup",
+          "amount": 168,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 169736,
+      "description": "Pasta, dry, enriched",
+      "source": "https://fdc.nal.usda.gov/food-details/169736/nutrients",
+      "names": {
+        "uz": "Makaron, spagetti, quruq, boyitilgan",
+        "ru": "Макароны, спагетти, сухие, обогащённые"
+      },
+      "category": "Garnirlar",
+      "nutrients": {
+        "magnesiumMg": 53,
+        "phosphorusMg": 189,
+        "sodiumMg": 6,
+        "sugars": 2.67,
+        "calciumMg": 21,
+        "potassiumMg": 223,
+        "zincMg": 1.41,
+        "ironMg": 3.3,
+        "saturatedFat": 0.277,
+        "carbohydrates": 74.7,
+        "calories": 371,
+        "monounsaturatedFat": 0.171,
+        "polyunsaturatedFat": 0.564,
+        "cholesterolMg": 0,
+        "vitaminEMg": 0.11,
+        "water": 9.9,
+        "fat": 1.51,
+        "fiber": 3.2,
+        "protein": 13,
+        "vitaminDMcg": 0,
+        "salt": 0.015
+      },
+      "servings": [
+        {
+          "description": "1 cup shells",
+          "amount": 64,
+          "unit": "g"
+        },
+        {
+          "description": "2 oz",
+          "amount": 57,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup rotini",
+          "amount": 96,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup elbows",
+          "amount": 122,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup spaghetti",
+          "amount": 91,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup penne",
+          "amount": 95,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup farfalle",
+          "amount": 81,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup lasagna",
+          "amount": 90,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 169737,
+      "description": "Pasta, cooked, enriched, without added salt",
+      "source": "https://fdc.nal.usda.gov/food-details/169737/nutrients",
+      "names": {
+        "uz": "Makaron, spagetti, qaynatilgan, tuzsiz, boyitilgan",
+        "ru": "Макароны, спагетти, варёные без соли, обогащённые"
+      },
+      "category": "Garnirlar",
+      "nutrients": {
+        "water": 62.1,
+        "fat": 0.93,
+        "protein": 5.8,
+        "sugars": 0.56,
+        "calciumMg": 7,
+        "potassiumMg": 44,
+        "zincMg": 0.51,
+        "ironMg": 1.28,
+        "magnesiumMg": 18,
+        "phosphorusMg": 58,
+        "monounsaturatedFat": 0.131,
+        "polyunsaturatedFat": 0.326,
+        "carbohydrates": 30.9,
+        "calories": 158,
+        "saturatedFat": 0.176,
+        "cholesterolMg": 0,
+        "fiber": 1.8,
+        "sodiumMg": 1,
+        "vitaminEMg": 0.06,
+        "vitaminDMcg": 0,
+        "salt": 0.0025
+      },
+      "servings": [
+        {
+          "description": "1 cup lasagne",
+          "amount": 116,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup shells",
+          "amount": 105,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup farfalle",
+          "amount": 107,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup spaghetti not packed",
+          "amount": 124,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup elbows packed",
+          "amount": 132,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup elbows not packed",
+          "amount": 120,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup rotini",
+          "amount": 107,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup penne",
+          "amount": 107,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup spaghetti packed",
+          "amount": 151,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 168927,
+      "description": "Pasta, dry, unenriched",
+      "source": "https://fdc.nal.usda.gov/food-details/168927/nutrients",
+      "names": {
+        "uz": "Makaron, quruq, boyitilmagan",
+        "ru": "Макароны сухие, необогащённые"
+      },
+      "category": "Garnirlar",
+      "nutrients": {
+        "protein": 13,
+        "fiber": 3.2,
+        "fat": 1.51,
+        "vitaminEMg": 0.11,
+        "water": 9.9,
+        "saturatedFat": 0.277,
+        "magnesiumMg": 53,
+        "phosphorusMg": 189,
+        "sodiumMg": 6,
+        "carbohydrates": 74.7,
+        "calories": 371,
+        "sugars": 2.67,
+        "calciumMg": 21,
+        "potassiumMg": 223,
+        "zincMg": 1.41,
+        "monounsaturatedFat": 0.171,
+        "polyunsaturatedFat": 0.564,
+        "ironMg": 1.3,
+        "cholesterolMg": 0,
+        "vitaminDMcg": 0,
+        "salt": 0.015
+      },
+      "servings": [
+        {
+          "description": "1 cup rotini",
+          "amount": 96,
+          "unit": "g"
+        },
+        {
+          "description": "2 oz",
+          "amount": 57,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup lasagna",
+          "amount": 90,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup farfalle",
+          "amount": 81,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup shells",
+          "amount": 64,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup elbows",
+          "amount": 122,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup spaghetti",
+          "amount": 91,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup penne",
+          "amount": 95,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 168928,
+      "description": "Pasta, cooked, unenriched, without added salt",
+      "source": "https://fdc.nal.usda.gov/food-details/168928/nutrients",
+      "names": {
+        "uz": "Makaron, qaynatilgan, tuzsiz",
+        "ru": "Макароны варёные без соли"
+      },
+      "category": "Garnirlar",
+      "nutrients": {
+        "vitaminEMg": 0.06,
+        "water": 62.1,
+        "fat": 0.93,
+        "protein": 5.8,
+        "fiber": 1.8,
+        "sodiumMg": 1,
+        "carbohydrates": 30.9,
+        "calories": 158,
+        "sugars": 0.56,
+        "calciumMg": 7,
+        "potassiumMg": 44,
+        "zincMg": 0.51,
+        "magnesiumMg": 18,
+        "phosphorusMg": 58,
+        "saturatedFat": 0.176,
+        "ironMg": 0.5,
+        "monounsaturatedFat": 0.131,
+        "polyunsaturatedFat": 0.326,
+        "cholesterolMg": 0,
+        "vitaminDMcg": 0,
+        "salt": 0.0025
+      },
+      "servings": [
+        {
+          "description": "1 cup penne",
+          "amount": 107,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup farfalle",
+          "amount": 107,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup elbows packed",
+          "amount": 132,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup spaghetti packed",
+          "amount": 151,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup shells",
+          "amount": 105,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup rotini",
+          "amount": 107,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup elbows not packed",
+          "amount": 120,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup lasagne",
+          "amount": 116,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup spaghetti not packed",
+          "amount": 124,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 169738,
+      "description": "Pasta, whole-wheat, dry (Includes foods for USDA's Food Distribution Program)",
+      "source": "https://fdc.nal.usda.gov/food-details/169738/nutrients",
+      "names": {
+        "uz": "Butun bug‘doyli makaron, quruq",
+        "ru": "Цельнозерновые макароны сухие"
+      },
+      "category": "Garnirlar",
+      "nutrients": {
+        "saturatedFat": 0.428,
+        "protein": 13.9,
+        "fiber": 9.2,
+        "ironMg": 3.62,
+        "magnesiumMg": 128,
+        "phosphorusMg": 343,
+        "sodiumMg": 6,
+        "monounsaturatedFat": 0.361,
+        "polyunsaturatedFat": 1.14,
+        "fat": 2.93,
+        "carbohydrates": 73.4,
+        "calories": 352,
+        "water": 8.21,
+        "sugars": 2.74,
+        "calciumMg": 29,
+        "potassiumMg": 434,
+        "zincMg": 2.97,
+        "vitaminEMg": 0.46,
+        "cholesterolMg": 0,
+        "vitaminDMcg": 0,
+        "salt": 0.015
+      },
+      "servings": [
+        {
+          "description": "1 cup rotini",
+          "amount": 96,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup lasagne",
+          "amount": 90,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup spaghetti",
+          "amount": 91,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup penne",
+          "amount": 95,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup farfalle",
+          "amount": 81,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup elbows",
+          "amount": 122,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup shells",
+          "amount": 64,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 168910,
+      "description": "Pasta, whole-wheat, cooked (Includes foods for USDA's Food Distribution Program)",
+      "source": "https://fdc.nal.usda.gov/food-details/168910/nutrients",
+      "names": {
+        "uz": "Butun bug‘doyli makaron, qaynatilgan",
+        "ru": "Цельнозерновые макароны варёные"
+      },
+      "category": "Garnirlar",
+      "nutrients": {
+        "fat": 1.71,
+        "carbohydrates": 30.1,
+        "calories": 149,
+        "water": 61.8,
+        "sugars": 0.75,
+        "calciumMg": 13,
+        "potassiumMg": 96,
+        "zincMg": 1.34,
+        "vitaminEMg": 0.23,
+        "monounsaturatedFat": 0.176,
+        "polyunsaturatedFat": 0.574,
+        "protein": 5.99,
+        "fiber": 3.9,
+        "ironMg": 1.72,
+        "magnesiumMg": 54,
+        "phosphorusMg": 127,
+        "sodiumMg": 4,
+        "saturatedFat": 0.243,
+        "cholesterolMg": 0,
+        "vitaminDMcg": 0,
+        "salt": 0.01
+      },
+      "servings": [
+        {
+          "description": "1 cup farfalle",
+          "amount": 107,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup spaghetti not packed",
+          "amount": 117,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup penne",
+          "amount": 97,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup spaghetti packed",
+          "amount": 151,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup elbows",
+          "amount": 117,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup lasagne",
+          "amount": 116,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup shells",
+          "amount": 105,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup rotini",
+          "amount": 107,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 168899,
+      "description": "Pasta, gluten-free, corn, dry",
+      "source": "https://fdc.nal.usda.gov/food-details/168899/nutrients",
+      "names": {
+        "uz": "Glutensiz makkajo‘xori makaroni, quruq",
+        "ru": "Безглютеновые кукурузные макароны сухие"
+      },
+      "category": "Garnirlar",
+      "nutrients": {
+        "fat": 2.08,
+        "carbohydrates": 79.3,
+        "calories": 357,
+        "water": 10,
+        "calciumMg": 4,
+        "potassiumMg": 294,
+        "zincMg": 1.79,
+        "monounsaturatedFat": 0.543,
+        "polyunsaturatedFat": 0.924,
+        "protein": 7.46,
+        "cholesterolMg": 0,
+        "saturatedFat": 0.29,
+        "fiber": 11,
+        "ironMg": 0.93,
+        "magnesiumMg": 119,
+        "phosphorusMg": 253,
+        "sodiumMg": 3,
+        "salt": 0.0075
+      },
+      "servings": [
+        {
+          "description": "1 cup",
+          "amount": 105,
+          "unit": "g"
+        },
+        {
+          "description": "2 oz",
+          "amount": 57,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 168900,
+      "description": "Pasta, gluten-free, corn, cooked",
+      "source": "https://fdc.nal.usda.gov/food-details/168900/nutrients",
+      "names": {
+        "uz": "Glutensiz makkajo‘xori makaroni, pishirilgan",
+        "ru": "Безглютеновые кукурузные макароны варёные"
+      },
+      "category": "Garnirlar",
+      "nutrients": {
+        "cholesterolMg": 0,
+        "saturatedFat": 0.102,
+        "protein": 2.63,
+        "fiber": 4.8,
+        "ironMg": 0.25,
+        "magnesiumMg": 36,
+        "phosphorusMg": 76,
+        "sodiumMg": 0,
+        "monounsaturatedFat": 0.191,
+        "polyunsaturatedFat": 0.325,
+        "fat": 0.73,
+        "carbohydrates": 27.9,
+        "calories": 126,
+        "water": 68.3,
+        "calciumMg": 1,
+        "potassiumMg": 31,
+        "zincMg": 0.63,
+        "salt": 0
+      },
+      "servings": [
+        {
+          "description": "1 cup",
+          "amount": 140,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 173757,
+      "description": "Chickpeas (garbanzo beans, bengal gram), mature seeds, cooked, boiled, without salt",
+      "source": "https://fdc.nal.usda.gov/food-details/173757/nutrients",
+      "names": {
+        "uz": "No‘xat, qaynatilgan, tuzsiz",
+        "ru": "Нут варёный без соли"
+      },
+      "category": "Garnirlar",
+      "nutrients": {
+        "fiber": 7.6,
+        "sugars": 4.8,
+        "vitaminEMg": 0.35,
+        "carbohydrates": 27.4,
+        "calories": 164,
+        "vitaminDMcg": 0,
+        "monounsaturatedFat": 0.583,
+        "polyunsaturatedFat": 1.16,
+        "fat": 2.59,
+        "calciumMg": 49,
+        "potassiumMg": 291,
+        "zincMg": 1.53,
+        "water": 60.2,
+        "ironMg": 2.89,
+        "magnesiumMg": 48,
+        "phosphorusMg": 168,
+        "sodiumMg": 7,
+        "protein": 8.86,
+        "cholesterolMg": 0,
+        "saturatedFat": 0.269,
+        "salt": 0.0175
+      },
+      "servings": [
+        {
+          "description": "1 cup",
+          "amount": 164,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 173740,
+      "description": "Beans, kidney, all types, mature seeds, cooked, boiled, without salt",
+      "source": "https://fdc.nal.usda.gov/food-details/173740/nutrients",
+      "names": {
+        "uz": "Loviya, qaynatilgan, tuzsiz",
+        "ru": "Фасоль варёная без соли"
+      },
+      "category": "Garnirlar",
+      "nutrients": {
+        "sugars": 0.32,
+        "calciumMg": 35,
+        "potassiumMg": 405,
+        "zincMg": 1,
+        "ironMg": 2.22,
+        "magnesiumMg": 42,
+        "phosphorusMg": 138,
+        "sodiumMg": 1,
+        "saturatedFat": 0.073,
+        "calories": 127,
+        "water": 66.9,
+        "fat": 0.5,
+        "carbohydrates": 22.8,
+        "vitaminEMg": 0.03,
+        "monounsaturatedFat": 0.039,
+        "polyunsaturatedFat": 0.278,
+        "vitaminDMcg": 0,
+        "protein": 8.67,
+        "fiber": 6.4,
+        "cholesterolMg": 0,
+        "salt": 0.0025
+      },
+      "servings": [
+        {
+          "description": "1 cup",
+          "amount": 177,
+          "unit": "g"
+        },
+        {
+          "description": "1 tbsp",
+          "amount": 11,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 174257,
+      "description": "Mung beans, mature seeds, cooked, boiled, without salt",
+      "source": "https://fdc.nal.usda.gov/food-details/174257/nutrients",
+      "names": {
+        "uz": "Mosh, qaynatilgan, tuzsiz",
+        "ru": "Маш варёный без соли"
+      },
+      "category": "Garnirlar",
+      "nutrients": {
+        "sugars": 2,
+        "vitaminEMg": 0.15,
+        "carbohydrates": 19.2,
+        "calories": 105,
+        "vitaminDMcg": 0,
+        "fat": 0.38,
+        "calciumMg": 27,
+        "potassiumMg": 266,
+        "zincMg": 0.84,
+        "water": 72.7,
+        "monounsaturatedFat": 0.054,
+        "polyunsaturatedFat": 0.128,
+        "protein": 7.02,
+        "fiber": 7.6,
+        "ironMg": 1.4,
+        "magnesiumMg": 48,
+        "phosphorusMg": 99,
+        "sodiumMg": 2,
+        "cholesterolMg": 0,
+        "saturatedFat": 0.116,
+        "salt": 0.005
+      },
+      "servings": [
+        {
+          "description": "1 cup",
+          "amount": 202,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170567,
+      "description": "Nuts, almonds",
+      "source": "https://fdc.nal.usda.gov/food-details/170567/nutrients",
+      "names": {
+        "uz": "Bodom, xom",
+        "ru": "Миндаль сырой"
+      },
+      "category": "Yong‘oq va urug‘lar",
+      "nutrients": {
+        "vitaminDMcg": 0,
+        "protein": 21.2,
+        "fiber": 12.5,
+        "ironMg": 3.71,
+        "magnesiumMg": 270,
+        "phosphorusMg": 481,
+        "cholesterolMg": 0,
+        "saturatedFat": 3.8,
+        "monounsaturatedFat": 31.6,
+        "polyunsaturatedFat": 12.3,
+        "water": 4.41,
+        "fat": 49.9,
+        "carbohydrates": 21.6,
+        "calories": 579,
+        "calciumMg": 269,
+        "potassiumMg": 733,
+        "zincMg": 3.12,
+        "vitaminEMg": 25.6,
+        "sodiumMg": 1,
+        "sugars": 4.35,
+        "salt": 0.0025
+      },
+      "servings": [
+        {
+          "description": "1 oz (23 whole kernels)",
+          "amount": 28.35,
+          "unit": "g"
+        },
+        {
+          "description": "1 almond",
+          "amount": 1.2,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup, whole",
+          "amount": 143,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup, slivered",
+          "amount": 108,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup, ground",
+          "amount": 95,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup, sliced",
+          "amount": 92,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170158,
+      "description": "Nuts, almonds, dry roasted, without salt added",
+      "source": "https://fdc.nal.usda.gov/food-details/170158/nutrients",
+      "names": {
+        "uz": "Bodom, quruq qovurilgan, tuzsiz",
+        "ru": "Миндаль сухой обжарки без соли"
+      },
+      "category": "Yong‘oq va urug‘lar",
+      "nutrients": {
+        "vitaminDMcg": 0,
+        "fiber": 10.9,
+        "sodiumMg": 3,
+        "sugars": 4.86,
+        "calciumMg": 268,
+        "potassiumMg": 713,
+        "zincMg": 3.31,
+        "vitaminEMg": 23.9,
+        "fat": 52.5,
+        "carbohydrates": 21,
+        "calories": 598,
+        "water": 2.41,
+        "monounsaturatedFat": 33.1,
+        "polyunsaturatedFat": 13,
+        "protein": 21,
+        "ironMg": 3.73,
+        "magnesiumMg": 279,
+        "phosphorusMg": 471,
+        "cholesterolMg": 0,
+        "saturatedFat": 4.09,
+        "salt": 0.0075
+      },
+      "servings": [
+        {
+          "description": "1 cup whole kernels",
+          "amount": 138,
+          "unit": "g"
+        },
+        {
+          "description": "1 oz (22 whole kernels)",
+          "amount": 28.35,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170187,
+      "description": "Nuts, walnuts, english",
+      "source": "https://fdc.nal.usda.gov/food-details/170187/nutrients",
+      "names": {
+        "uz": "Yong‘oq mag‘zi",
+        "ru": "Грецкий орех"
+      },
+      "category": "Yong‘oq va urug‘lar",
+      "nutrients": {
+        "calciumMg": 98,
+        "vitaminEMg": 0.7,
+        "monounsaturatedFat": 8.93,
+        "polyunsaturatedFat": 47.2,
+        "carbohydrates": 13.7,
+        "calories": 654,
+        "saturatedFat": 6.13,
+        "vitaminDMcg": 0,
+        "sugars": 2.61,
+        "cholesterolMg": 0,
+        "protein": 15.2,
+        "fiber": 6.7,
+        "ironMg": 2.91,
+        "magnesiumMg": 158,
+        "phosphorusMg": 346,
+        "sodiumMg": 2,
+        "potassiumMg": 441,
+        "zincMg": 3.09,
+        "water": 4.07,
+        "fat": 65.2,
+        "salt": 0.005
+      },
+      "servings": [
+        {
+          "description": "1 cup, ground",
+          "amount": 80,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup, chopped",
+          "amount": 117,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup, in shell, edible yield (7 nuts)",
+          "amount": 28,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup pieces or chips",
+          "amount": 120,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup shelled (50 halves)",
+          "amount": 100,
+          "unit": "g"
+        },
+        {
+          "description": "1 oz (14 halves)",
+          "amount": 28.35,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 172430,
+      "description": "Peanuts, all types, raw",
+      "source": "https://fdc.nal.usda.gov/food-details/172430/nutrients",
+      "names": {
+        "uz": "Yeryong‘oq, xom",
+        "ru": "Арахис сырой"
+      },
+      "category": "Yong‘oq va urug‘lar",
+      "nutrients": {
+        "fiber": 8.5,
+        "cholesterolMg": 0,
+        "sugars": 4.72,
+        "sodiumMg": 18,
+        "saturatedFat": 6.28,
+        "ironMg": 4.58,
+        "magnesiumMg": 168,
+        "phosphorusMg": 376,
+        "protein": 25.8,
+        "calciumMg": 92,
+        "potassiumMg": 705,
+        "zincMg": 3.27,
+        "vitaminEMg": 8.33,
+        "monounsaturatedFat": 24.4,
+        "polyunsaturatedFat": 15.6,
+        "fat": 49.2,
+        "carbohydrates": 16.1,
+        "calories": 567,
+        "water": 6.5,
+        "vitaminDMcg": 0,
+        "salt": 0.045
+      },
+      "servings": [
+        {
+          "description": "1 oz",
+          "amount": 28.35,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup",
+          "amount": 146,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 173806,
+      "description": "Peanuts, all types, dry-roasted, without salt",
+      "source": "https://fdc.nal.usda.gov/food-details/173806/nutrients",
+      "names": {
+        "uz": "Yeryong‘oq, quruq qovurilgan, tuzsiz",
+        "ru": "Арахис сухой обжарки без соли"
+      },
+      "category": "Yong‘oq va urug‘lar",
+      "nutrients": {
+        "fiber": 8.4,
+        "cholesterolMg": 0,
+        "saturatedFat": 7.72,
+        "protein": 24.4,
+        "ironMg": 1.58,
+        "magnesiumMg": 178,
+        "phosphorusMg": 363,
+        "carbohydrates": 21.3,
+        "calories": 587,
+        "water": 1.81,
+        "sugars": 4.9,
+        "calciumMg": 58,
+        "potassiumMg": 634,
+        "zincMg": 2.77,
+        "vitaminEMg": 4.93,
+        "monounsaturatedFat": 26.2,
+        "polyunsaturatedFat": 9.77,
+        "vitaminDMcg": 0,
+        "sodiumMg": 6,
+        "fat": 49.7,
+        "salt": 0.015
+      },
+      "servings": [
+        {
+          "description": "1 oz",
+          "amount": 28.35,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup",
+          "amount": 146,
+          "unit": "g"
+        },
+        {
+          "description": "1 peanut",
+          "amount": 1,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170184,
+      "description": "Nuts, pistachio nuts, raw",
+      "source": "https://fdc.nal.usda.gov/food-details/170184/nutrients",
+      "names": {
+        "uz": "Pista, xom",
+        "ru": "Фисташки сырые"
+      },
+      "category": "Yong‘oq va urug‘lar",
+      "nutrients": {
+        "potassiumMg": 1020,
+        "ironMg": 3.92,
+        "sodiumMg": 1,
+        "vitaminDMcg": 0,
+        "sugars": 7.66,
+        "calciumMg": 105,
+        "monounsaturatedFat": 23.3,
+        "polyunsaturatedFat": 14.4,
+        "water": 4.37,
+        "fat": 45.3,
+        "carbohydrates": 27.2,
+        "calories": 560,
+        "vitaminEMg": 2.86,
+        "saturatedFat": 5.91,
+        "fiber": 10.6,
+        "protein": 20.2,
+        "zincMg": 2.2,
+        "magnesiumMg": 121,
+        "phosphorusMg": 490,
+        "cholesterolMg": 0,
+        "salt": 0.0025
+      },
+      "servings": [
+        {
+          "description": "1 oz (49 kernels)",
+          "amount": 28.35,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup",
+          "amount": 123,
+          "unit": "g"
+        },
+        {
+          "description": "1 kernel",
+          "amount": 0.7,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170185,
+      "description": "Nuts, pistachio nuts, dry roasted, without salt added",
+      "source": "https://fdc.nal.usda.gov/food-details/170185/nutrients",
+      "names": {
+        "uz": "Pista, qovurilgan, tuzsiz",
+        "ru": "Фисташки жареные без соли"
+      },
+      "category": "Yong‘oq va urug‘lar",
+      "nutrients": {
+        "vitaminDMcg": 0,
+        "saturatedFat": 5.64,
+        "protein": 21,
+        "fiber": 10.3,
+        "monounsaturatedFat": 24.5,
+        "polyunsaturatedFat": 13.3,
+        "vitaminEMg": 2.17,
+        "fat": 45.8,
+        "carbohydrates": 28.3,
+        "calories": 572,
+        "ironMg": 4.03,
+        "magnesiumMg": 109,
+        "phosphorusMg": 469,
+        "sodiumMg": 6,
+        "water": 1.85,
+        "sugars": 7.74,
+        "calciumMg": 107,
+        "potassiumMg": 1010,
+        "zincMg": 2.34,
+        "cholesterolMg": 0,
+        "salt": 0.015
+      },
+      "servings": [
+        {
+          "description": "1 kernel",
+          "amount": 0.7,
+          "unit": "g"
+        },
+        {
+          "description": "1 oz (49 kernels)",
+          "amount": 28.35,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup",
+          "amount": 123,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170162,
+      "description": "Nuts, cashew nuts, raw",
+      "source": "https://fdc.nal.usda.gov/food-details/170162/nutrients",
+      "names": {
+        "uz": "Keshyu, xom",
+        "ru": "Кешью сырой"
+      },
+      "category": "Yong‘oq va urug‘lar",
+      "nutrients": {
+        "protein": 18.2,
+        "ironMg": 6.68,
+        "magnesiumMg": 292,
+        "phosphorusMg": 593,
+        "sodiumMg": 12,
+        "water": 5.2,
+        "calciumMg": 37,
+        "potassiumMg": 660,
+        "zincMg": 5.78,
+        "fat": 43.8,
+        "carbohydrates": 30.2,
+        "calories": 553,
+        "vitaminDMcg": 0,
+        "saturatedFat": 7.78,
+        "monounsaturatedFat": 23.8,
+        "polyunsaturatedFat": 7.84,
+        "fiber": 3.3,
+        "cholesterolMg": 0,
+        "vitaminEMg": 0.9,
+        "sugars": 5.91,
+        "salt": 0.03
+      },
+      "servings": [
+        {
+          "description": "1 oz",
+          "amount": 28.35,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170581,
+      "description": "Nuts, hazelnuts or filberts",
+      "source": "https://fdc.nal.usda.gov/food-details/170581/nutrients",
+      "names": {
+        "uz": "Funduk",
+        "ru": "Фундук"
+      },
+      "category": "Yong‘oq va urug‘lar",
+      "nutrients": {
+        "monounsaturatedFat": 45.7,
+        "polyunsaturatedFat": 7.92,
+        "carbohydrates": 16.7,
+        "calories": 628,
+        "saturatedFat": 4.46,
+        "vitaminDMcg": 0,
+        "sugars": 4.34,
+        "cholesterolMg": 0,
+        "vitaminEMg": 15,
+        "calciumMg": 114,
+        "potassiumMg": 680,
+        "zincMg": 2.45,
+        "water": 5.31,
+        "fat": 60.8,
+        "fiber": 9.7,
+        "ironMg": 4.7,
+        "magnesiumMg": 163,
+        "phosphorusMg": 290,
+        "sodiumMg": 0,
+        "protein": 15,
+        "salt": 0
+      },
+      "servings": [
+        {
+          "description": "1 cup, chopped",
+          "amount": 115,
+          "unit": "g"
+        },
+        {
+          "description": "10 nuts",
+          "amount": 14,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup, whole",
+          "amount": 135,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup, ground",
+          "amount": 75,
+          "unit": "g"
+        },
+        {
+          "description": "1 oz (21 whole kernels)",
+          "amount": 28.35,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170562,
+      "description": "Seeds, sunflower seed kernels, dried",
+      "source": "https://fdc.nal.usda.gov/food-details/170562/nutrients",
+      "names": {
+        "uz": "Kungaboqar urug‘i mag‘zi, quritilgan",
+        "ru": "Семечки подсолнечника очищенные, сушёные"
+      },
+      "category": "Yong‘oq va urug‘lar",
+      "nutrients": {
+        "vitaminDMcg": 0,
+        "saturatedFat": 4.46,
+        "protein": 20.8,
+        "fiber": 8.6,
+        "ironMg": 5.25,
+        "magnesiumMg": 325,
+        "phosphorusMg": 660,
+        "sodiumMg": 9,
+        "monounsaturatedFat": 18.5,
+        "polyunsaturatedFat": 23.1,
+        "fat": 51.5,
+        "water": 4.73,
+        "sugars": 2.62,
+        "calciumMg": 78,
+        "potassiumMg": 645,
+        "zincMg": 5,
+        "cholesterolMg": 0,
+        "vitaminEMg": 35.2,
+        "carbohydrates": 20,
+        "calories": 584,
+        "salt": 0.0225
+      },
+      "servings": [
+        {
+          "description": "1 cup",
+          "amount": 140,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup, with hulls, edible yield",
+          "amount": 46,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170563,
+      "description": "Seeds, sunflower seed kernels, dry roasted, without salt",
+      "source": "https://fdc.nal.usda.gov/food-details/170563/nutrients",
+      "names": {
+        "uz": "Kungaboqar urug‘i mag‘zi, qovurilgan, tuzsiz",
+        "ru": "Семечки подсолнечника очищенные, жареные без соли"
+      },
+      "category": "Yong‘oq va urug‘lar",
+      "nutrients": {
+        "fiber": 11.1,
+        "sugars": 2.73,
+        "vitaminDMcg": 0,
+        "vitaminEMg": 26.1,
+        "ironMg": 3.8,
+        "magnesiumMg": 129,
+        "phosphorusMg": 1160,
+        "sodiumMg": 3,
+        "protein": 19.3,
+        "cholesterolMg": 0,
+        "saturatedFat": 5.22,
+        "fat": 49.8,
+        "carbohydrates": 24.1,
+        "calories": 582,
+        "water": 1.2,
+        "calciumMg": 70,
+        "potassiumMg": 850,
+        "zincMg": 5.29,
+        "monounsaturatedFat": 9.5,
+        "polyunsaturatedFat": 32.9,
+        "salt": 0.0075
+      },
+      "servings": [
+        {
+          "description": "1 oz",
+          "amount": 28.35,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup",
+          "amount": 128,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170556,
+      "description": "Seeds, pumpkin and squash seed kernels, dried",
+      "source": "https://fdc.nal.usda.gov/food-details/170556/nutrients",
+      "names": {
+        "uz": "Qovoq urug‘i mag‘zi, quritilgan",
+        "ru": "Тыквенные семечки очищенные, сушёные"
+      },
+      "category": "Yong‘oq va urug‘lar",
+      "nutrients": {
+        "vitaminDMcg": 0,
+        "carbohydrates": 10.7,
+        "calories": 559,
+        "vitaminEMg": 2.18,
+        "cholesterolMg": 0,
+        "protein": 30.2,
+        "fiber": 6,
+        "ironMg": 8.82,
+        "magnesiumMg": 592,
+        "phosphorusMg": 1230,
+        "sodiumMg": 7,
+        "saturatedFat": 8.66,
+        "monounsaturatedFat": 16.2,
+        "polyunsaturatedFat": 21,
+        "sugars": 1.4,
+        "calciumMg": 46,
+        "potassiumMg": 809,
+        "zincMg": 7.81,
+        "water": 5.23,
+        "fat": 49,
+        "salt": 0.0175
+      },
+      "servings": [
+        {
+          "description": "1 cup",
+          "amount": 129,
+          "unit": "g"
+        },
+        {
+          "description": "1 oz",
+          "amount": 28.35,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170554,
+      "description": "Seeds, chia seeds, dried",
+      "source": "https://fdc.nal.usda.gov/food-details/170554/nutrients",
+      "names": {
+        "uz": "Chia urug‘i",
+        "ru": "Семена чиа"
+      },
+      "category": "Yong‘oq va urug‘lar",
+      "nutrients": {
+        "protein": 16.5,
+        "fiber": 34.4,
+        "ironMg": 7.72,
+        "magnesiumMg": 335,
+        "phosphorusMg": 860,
+        "sodiumMg": 16,
+        "saturatedFat": 3.33,
+        "fat": 30.7,
+        "carbohydrates": 42.1,
+        "calories": 486,
+        "water": 5.8,
+        "monounsaturatedFat": 2.31,
+        "polyunsaturatedFat": 23.7,
+        "potassiumMg": 407,
+        "zincMg": 4.58,
+        "vitaminEMg": 0.5,
+        "calciumMg": 631,
+        "cholesterolMg": 0,
+        "salt": 0.04
+      },
+      "servings": [
+        {
+          "description": "1 oz",
+          "amount": 28.35,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 169414,
+      "description": "Seeds, flaxseed",
+      "source": "https://fdc.nal.usda.gov/food-details/169414/nutrients",
+      "names": {
+        "uz": "Zig‘ir urug‘i",
+        "ru": "Семена льна"
+      },
+      "category": "Yong‘oq va urug‘lar",
+      "nutrients": {
+        "water": 6.96,
+        "calciumMg": 255,
+        "potassiumMg": 813,
+        "zincMg": 4.34,
+        "vitaminEMg": 0.31,
+        "fat": 42.2,
+        "fiber": 27.3,
+        "ironMg": 5.73,
+        "magnesiumMg": 392,
+        "phosphorusMg": 642,
+        "sodiumMg": 30,
+        "protein": 18.3,
+        "vitaminDMcg": 0,
+        "monounsaturatedFat": 7.53,
+        "polyunsaturatedFat": 28.7,
+        "sugars": 1.55,
+        "carbohydrates": 28.9,
+        "calories": 534,
+        "saturatedFat": 3.66,
+        "cholesterolMg": 0,
+        "salt": 0.075
+      },
+      "servings": [
+        {
+          "description": "1 tsp, ground",
+          "amount": 2.5,
+          "unit": "g"
+        },
+        {
+          "description": "1 tbsp, ground",
+          "amount": 7,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup, whole",
+          "amount": 168,
+          "unit": "g"
+        },
+        {
+          "description": "1 tbsp, whole",
+          "amount": 10.3,
+          "unit": "g"
+        },
+        {
+          "description": "1 tsp, whole",
+          "amount": 3.4,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170150,
+      "description": "Seeds, sesame seeds, whole, dried",
+      "source": "https://fdc.nal.usda.gov/food-details/170150/nutrients",
+      "names": {
+        "uz": "Kunjut, quritilgan",
+        "ru": "Кунжут сушёный"
+      },
+      "category": "Yong‘oq va urug‘lar",
+      "nutrients": {
+        "vitaminEMg": 0.25,
+        "sugars": 0.3,
+        "vitaminDMcg": 0,
+        "protein": 17.7,
+        "fiber": 11.8,
+        "ironMg": 14.6,
+        "magnesiumMg": 351,
+        "phosphorusMg": 629,
+        "sodiumMg": 11,
+        "cholesterolMg": 0,
+        "saturatedFat": 6.96,
+        "fat": 49.7,
+        "carbohydrates": 23.4,
+        "calories": 573,
+        "water": 4.69,
+        "calciumMg": 975,
+        "potassiumMg": 468,
+        "zincMg": 7.75,
+        "monounsaturatedFat": 18.8,
+        "polyunsaturatedFat": 21.8,
+        "salt": 0.0275
+      },
+      "servings": [
+        {
+          "description": "1 cup",
+          "amount": 144,
+          "unit": "g"
+        },
+        {
+          "description": "1 tbsp",
+          "amount": 9,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 171890,
+      "description": "Beverages, coffee, brewed, prepared with tap water",
+      "source": "https://fdc.nal.usda.gov/food-details/171890/nutrients",
+      "names": {
+        "uz": "Qora qahva, shakarsiz",
+        "ru": "Чёрный кофе без сахара"
+      },
+      "category": "Ichimliklar",
+      "nutrients": {
+        "sugars": 0,
+        "calories": 1,
+        "monounsaturatedFat": 0.015,
+        "polyunsaturatedFat": 0.001,
+        "protein": 0.12,
+        "saturatedFat": 0.002,
+        "vitaminEMg": 0.01,
+        "fat": 0.02,
+        "carbohydrates": 0,
+        "water": 99.4,
+        "calciumMg": 2,
+        "potassiumMg": 49,
+        "zincMg": 0.02,
+        "cholesterolMg": 0,
+        "fiber": 0,
+        "ironMg": 0.01,
+        "magnesiumMg": 3,
+        "phosphorusMg": 3,
+        "sodiumMg": 2,
+        "vitaminDMcg": 0,
+        "salt": 0.005
+      },
+      "servings": [
+        {
+          "description": "1 cup (8 fl oz)",
+          "amount": 237,
+          "unit": "g"
+        },
+        {
+          "description": "1 fl oz",
+          "amount": 29.6,
+          "unit": "g"
+        },
+        {
+          "description": "6 fl oz",
+          "amount": 178,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 171891,
+      "description": "Beverages, coffee, brewed, espresso, restaurant-prepared",
+      "source": "https://fdc.nal.usda.gov/food-details/171891/nutrients",
+      "names": {
+        "uz": "Espresso, shakarsiz",
+        "ru": "Эспрессо без сахара"
+      },
+      "category": "Ichimliklar",
+      "nutrients": {
+        "fiber": 0,
+        "ironMg": 0.13,
+        "magnesiumMg": 80,
+        "phosphorusMg": 7,
+        "sodiumMg": 14,
+        "saturatedFat": 0.092,
+        "cholesterolMg": 0,
+        "water": 97.8,
+        "fat": 0.18,
+        "calciumMg": 2,
+        "potassiumMg": 115,
+        "zincMg": 0.05,
+        "monounsaturatedFat": 0,
+        "polyunsaturatedFat": 0.092,
+        "protein": 0.12,
+        "sugars": 0,
+        "vitaminEMg": 0.01,
+        "carbohydrates": 1.67,
+        "calories": 9,
+        "vitaminDMcg": 0,
+        "salt": 0.035
+      },
+      "servings": [
+        {
+          "description": "1 fl oz",
+          "amount": 29.6,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 171889,
+      "description": "Beverages, coffee, brewed, prepared with tap water, decaffeinated",
+      "source": "https://fdc.nal.usda.gov/food-details/171889/nutrients",
+      "names": {
+        "uz": "Kofeinsiz qora qahva",
+        "ru": "Чёрный кофе без кофеина"
+      },
+      "category": "Ichimliklar",
+      "nutrients": {
+        "fiber": 0,
+        "cholesterolMg": 0,
+        "monounsaturatedFat": 0,
+        "polyunsaturatedFat": 0.002,
+        "sugars": 0,
+        "calciumMg": 2,
+        "potassiumMg": 54,
+        "zincMg": 0.02,
+        "fat": 0,
+        "carbohydrates": 0,
+        "calories": 0,
+        "water": 99.3,
+        "protein": 0.1,
+        "ironMg": 0.05,
+        "magnesiumMg": 5,
+        "phosphorusMg": 1,
+        "sodiumMg": 2,
+        "saturatedFat": 0.002,
+        "vitaminEMg": 0,
+        "vitaminDMcg": 0,
+        "salt": 0.005
+      },
+      "servings": [
+        {
+          "description": "6 fl oz",
+          "amount": 178,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup (8 fl oz)",
+          "amount": 237,
+          "unit": "g"
+        },
+        {
+          "description": "1 fl oz",
+          "amount": 29.6,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 174130,
+      "description": "Beverages, coffee, instant, regular, prepared with water",
+      "source": "https://fdc.nal.usda.gov/food-details/174130/nutrients",
+      "names": {
+        "uz": "Eriydigan qahva, suvda tayyorlangan",
+        "ru": "Растворимый кофе на воде"
+      },
+      "category": "Ichimliklar",
+      "nutrients": {
+        "fat": 0,
+        "carbohydrates": 0.34,
+        "calories": 2,
+        "water": 99.1,
+        "sugars": 0,
+        "vitaminEMg": 0,
+        "protein": 0.1,
+        "fiber": 0,
+        "calciumMg": 4,
+        "potassiumMg": 30,
+        "zincMg": 0.01,
+        "monounsaturatedFat": 0,
+        "polyunsaturatedFat": 0.002,
+        "saturatedFat": 0.002,
+        "cholesterolMg": 0,
+        "ironMg": 0.04,
+        "magnesiumMg": 4,
+        "phosphorusMg": 3,
+        "sodiumMg": 4,
+        "salt": 0.01
+      },
+      "servings": [
+        {
+          "description": "1 serving 6 fl oz",
+          "amount": 179,
+          "unit": "g"
+        },
+        {
+          "description": "1 fl oz",
+          "amount": 29.8,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 171880,
+      "description": "Beverages, coffee, ready to drink, milk based, sweetened",
+      "source": "https://fdc.nal.usda.gov/food-details/171880/nutrients",
+      "names": {
+        "uz": "Sutli qahva, shirin, tayyor ichimlik",
+        "ru": "Кофе с молоком, сладкий, готовый напиток"
+      },
+      "category": "Ichimliklar",
+      "nutrients": {
+        "fat": 1.38,
+        "carbohydrates": 12.6,
+        "calories": 71,
+        "water": 83.6,
+        "sugars": 10.7,
+        "calciumMg": 74,
+        "potassiumMg": 175,
+        "zincMg": 0.26,
+        "vitaminEMg": 0.01,
+        "monounsaturatedFat": 0.293,
+        "polyunsaturatedFat": 0.038,
+        "protein": 1.98,
+        "fiber": 0,
+        "ironMg": 0.04,
+        "magnesiumMg": 9,
+        "phosphorusMg": 59,
+        "sodiumMg": 26,
+        "vitaminDMcg": 0,
+        "cholesterolMg": 5,
+        "saturatedFat": 0,
+        "salt": 0.065
+      },
+      "servings": [
+        {
+          "description": "1 cup",
+          "amount": 262,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 173227,
+      "description": "Beverages, tea, black, brewed, prepared with tap water",
+      "source": "https://fdc.nal.usda.gov/food-details/173227/nutrients",
+      "names": {
+        "uz": "Qora choy, damlangan, shakarsiz",
+        "ru": "Чёрный чай заваренный без сахара"
+      },
+      "category": "Ichimliklar",
+      "nutrients": {
+        "vitaminEMg": 0,
+        "sugars": 0,
+        "fiber": 0,
+        "ironMg": 0.02,
+        "magnesiumMg": 3,
+        "phosphorusMg": 1,
+        "sodiumMg": 3,
+        "protein": 0,
+        "saturatedFat": 0.002,
+        "cholesterolMg": 0,
+        "fat": 0,
+        "carbohydrates": 0.3,
+        "calories": 1,
+        "water": 99.7,
+        "calciumMg": 0,
+        "potassiumMg": 37,
+        "zincMg": 0.02,
+        "monounsaturatedFat": 0.001,
+        "polyunsaturatedFat": 0.004,
+        "vitaminDMcg": 0,
+        "salt": 0.0075
+      },
+      "servings": [
+        {
+          "description": "1 fl oz",
+          "amount": 29.6,
+          "unit": "g"
+        },
+        {
+          "description": "6 fl oz",
+          "amount": 178,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup (8 fl oz)",
+          "amount": 237,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 171917,
+      "description": "Beverages, tea, green, brewed, regular",
+      "source": "https://fdc.nal.usda.gov/food-details/171917/nutrients",
+      "names": {
+        "uz": "Ko‘k choy, damlangan, shakarsiz",
+        "ru": "Зелёный чай заваренный без сахара"
+      },
+      "category": "Ichimliklar",
+      "nutrients": {
+        "fat": 0,
+        "carbohydrates": 0,
+        "calories": 1,
+        "water": 99.9,
+        "sugars": 0,
+        "calciumMg": 0,
+        "potassiumMg": 8,
+        "zincMg": 0.01,
+        "vitaminEMg": 0,
+        "monounsaturatedFat": 0,
+        "polyunsaturatedFat": 0,
+        "vitaminDMcg": 0,
+        "protein": 0.22,
+        "fiber": 0,
+        "ironMg": 0.02,
+        "magnesiumMg": 1,
+        "phosphorusMg": 0,
+        "sodiumMg": 1,
+        "cholesterolMg": 0,
+        "saturatedFat": 0,
+        "salt": 0.0025
+      },
+      "servings": [
+        {
+          "description": "1 cup",
+          "amount": 245,
+          "unit": "g"
+        },
+        {
+          "description": "1 fl oz",
+          "amount": 29.6,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 174156,
+      "description": "Beverages, tea, herb, brewed, chamomile",
+      "source": "https://fdc.nal.usda.gov/food-details/174156/nutrients",
+      "names": {
+        "uz": "Moychechak choyi, damlangan",
+        "ru": "Ромашковый чай заваренный"
+      },
+      "category": "Ichimliklar",
+      "nutrients": {
+        "sugars": 0,
+        "vitaminEMg": 0,
+        "cholesterolMg": 0,
+        "fiber": 0,
+        "ironMg": 0.08,
+        "magnesiumMg": 1,
+        "phosphorusMg": 0,
+        "sodiumMg": 1,
+        "protein": 0,
+        "calciumMg": 2,
+        "potassiumMg": 9,
+        "zincMg": 0.04,
+        "fat": 0,
+        "carbohydrates": 0.2,
+        "calories": 1,
+        "water": 99.7,
+        "saturatedFat": 0.002,
+        "monounsaturatedFat": 0.001,
+        "polyunsaturatedFat": 0.005,
+        "vitaminDMcg": 0,
+        "salt": 0.0025
+      },
+      "servings": [
+        {
+          "description": "1 fl oz",
+          "amount": 29.6,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup (8 fl oz)",
+          "amount": 237,
+          "unit": "g"
+        },
+        {
+          "description": "6 fl oz",
+          "amount": 178,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 174852,
+      "description": "Beverages, carbonated, cola, regular",
+      "source": "https://fdc.nal.usda.gov/food-details/174852/nutrients",
+      "names": {
+        "uz": "Kola, oddiy gazli ichimlik",
+        "ru": "Кола обычная"
+      },
+      "category": "Ichimliklar",
+      "nutrients": {
+        "monounsaturatedFat": 0,
+        "polyunsaturatedFat": 0,
+        "saturatedFat": 0,
+        "cholesterolMg": 0,
+        "water": 89.4,
+        "fat": 0.25,
+        "carbohydrates": 10.4,
+        "calories": 42,
+        "sugars": 9.94,
+        "calciumMg": 1,
+        "potassiumMg": 5,
+        "zincMg": 0.09,
+        "fiber": 0,
+        "phosphorusMg": 9,
+        "sodiumMg": 3,
+        "ironMg": 0.02,
+        "magnesiumMg": 0,
+        "protein": 0,
+        "vitaminDMcg": 0,
+        "vitaminEMg": 0,
+        "salt": 0.0075
+      },
+      "servings": [
+        {
+          "description": "1 drink, small (16 fl oz)",
+          "amount": 492,
+          "unit": "g"
+        },
+        {
+          "description": "1 drink, extra large (44 fl oz)",
+          "amount": 1353,
+          "unit": "g"
+        },
+        {
+          "description": "1 fl oz",
+          "amount": 30.7,
+          "unit": "g"
+        },
+        {
+          "description": "1 can or bottle (12 fl oz)",
+          "amount": 370,
+          "unit": "g"
+        },
+        {
+          "description": "1 drink, large (32 fl oz)",
+          "amount": 984,
+          "unit": "g"
+        },
+        {
+          "description": "1 drink, medium (22 fl oz)",
+          "amount": 676,
+          "unit": "g"
+        },
+        {
+          "description": "1 can or bottle (16 fl oz)",
+          "amount": 492,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 175099,
+      "description": "Beverages, carbonated, low calorie, cola or pepper-type, with aspartame, contains caffeine",
+      "source": "https://fdc.nal.usda.gov/food-details/175099/nutrients",
+      "names": {
+        "uz": "Kola, kam kaloriyali, aspartam bilan",
+        "ru": "Кола низкокалорийная с аспартамом"
+      },
+      "category": "Ichimliklar",
+      "nutrients": {
+        "sugars": 0,
+        "calciumMg": 3,
+        "potassiumMg": 8,
+        "zincMg": 0.01,
+        "carbohydrates": 0.29,
+        "calories": 2,
+        "protein": 0.11,
+        "ironMg": 0.11,
+        "magnesiumMg": 1,
+        "phosphorusMg": 9,
+        "sodiumMg": 8,
+        "fat": 0.03,
+        "water": 99.5,
+        "vitaminDMcg": 0,
+        "monounsaturatedFat": 0,
+        "polyunsaturatedFat": 0,
+        "vitaminEMg": 0,
+        "fiber": 0,
+        "saturatedFat": 0,
+        "cholesterolMg": 0,
+        "salt": 0.02
+      },
+      "servings": [
+        {
+          "description": "1 serving medium 21 fl oz",
+          "amount": 486,
+          "unit": "g"
+        },
+        {
+          "description": "1 serving small 16 fl oz",
+          "amount": 347,
+          "unit": "g"
+        },
+        {
+          "description": "1 can can 12 fl oz",
+          "amount": 355,
+          "unit": "g"
+        },
+        {
+          "description": "1 serving large 32 fl oz",
+          "amount": 722,
+          "unit": "g"
+        },
+        {
+          "description": "1 bottle bottle 16 fl oz",
+          "amount": 473,
+          "unit": "g"
+        },
+        {
+          "description": "1 serving child 12 fl oz",
+          "amount": 258,
+          "unit": "g"
+        },
+        {
+          "description": "1 fl oz",
+          "amount": 29.6,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 174854,
+      "description": "Beverages, carbonated, orange",
+      "source": "https://fdc.nal.usda.gov/food-details/174854/nutrients",
+      "names": {
+        "uz": "Apelsinli gazli ichimlik",
+        "ru": "Апельсиновый газированный напиток"
+      },
+      "category": "Ichimliklar",
+      "nutrients": {
+        "magnesiumMg": 1,
+        "phosphorusMg": 1,
+        "sodiumMg": 12,
+        "cholesterolMg": 0,
+        "saturatedFat": 0,
+        "protein": 0,
+        "fiber": 0,
+        "ironMg": 0.06,
+        "monounsaturatedFat": 0,
+        "polyunsaturatedFat": 0,
+        "water": 87.6,
+        "calciumMg": 5,
+        "potassiumMg": 2,
+        "zincMg": 0.1,
+        "fat": 0,
+        "carbohydrates": 12.3,
+        "calories": 48,
+        "salt": 0.03
+      },
+      "servings": [
+        {
+          "description": "1 fl oz",
+          "amount": 31,
+          "unit": "g"
+        },
+        {
+          "description": "1 can or bottle (12 fl oz)",
+          "amount": 372,
+          "unit": "g"
+        },
+        {
+          "description": "1 can or bottle (16 fl oz)",
+          "amount": 496,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 173933,
+      "description": "Apple juice, canned or bottled, unsweetened, without added ascorbic acid",
+      "source": "https://fdc.nal.usda.gov/food-details/173933/nutrients",
+      "names": {
+        "uz": "Olma sharbati, shakar qo‘shilmagan",
+        "ru": "Яблочный сок без добавленного сахара"
+      },
+      "category": "Ichimliklar",
+      "nutrients": {
+        "sugars": 9.62,
+        "calciumMg": 8,
+        "potassiumMg": 101,
+        "zincMg": 0.02,
+        "fat": 0.13,
+        "carbohydrates": 11.3,
+        "calories": 46,
+        "water": 88.2,
+        "monounsaturatedFat": 0.006,
+        "polyunsaturatedFat": 0.039,
+        "saturatedFat": 0.022,
+        "protein": 0.1,
+        "fiber": 0.2,
+        "ironMg": 0.12,
+        "magnesiumMg": 5,
+        "phosphorusMg": 7,
+        "sodiumMg": 4,
+        "vitaminEMg": 0.01,
+        "cholesterolMg": 0,
+        "vitaminDMcg": 0,
+        "salt": 0.01
+      },
+      "servings": [
+        {
+          "description": "1 cup",
+          "amount": 248,
+          "unit": "g"
+        },
+        {
+          "description": "1 drink box (8.45 fl oz)",
+          "amount": 262,
+          "unit": "g"
+        },
+        {
+          "description": "1 fl oz",
+          "amount": 31,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 169098,
+      "description": "Orange juice, raw (Includes foods for USDA's Food Distribution Program)",
+      "source": "https://fdc.nal.usda.gov/food-details/169098/nutrients",
+      "names": {
+        "uz": "Apelsin sharbati, yangi siqilgan",
+        "ru": "Апельсиновый сок свежевыжатый"
+      },
+      "category": "Ichimliklar",
+      "nutrients": {
+        "vitaminEMg": 0.04,
+        "sugars": 8.4,
+        "protein": 0.7,
+        "fiber": 0.2,
+        "ironMg": 0.2,
+        "magnesiumMg": 11,
+        "phosphorusMg": 17,
+        "sodiumMg": 1,
+        "saturatedFat": 0.024,
+        "cholesterolMg": 0,
+        "fat": 0.2,
+        "carbohydrates": 10.4,
+        "monounsaturatedFat": 0.036,
+        "polyunsaturatedFat": 0.04,
+        "calories": 45,
+        "water": 88.3,
+        "calciumMg": 11,
+        "potassiumMg": 200,
+        "zincMg": 0.05,
+        "vitaminDMcg": 0,
+        "salt": 0.0025
+      },
+      "servings": [
+        {
+          "description": "1 fl oz",
+          "amount": 31,
+          "unit": "g"
+        },
+        {
+          "description": "1 fruit yields",
+          "amount": 86,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup",
+          "amount": 248,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 175103,
+      "description": "Beverages, water, tap, municipal",
+      "source": "https://fdc.nal.usda.gov/food-details/175103/nutrients",
+      "names": {
+        "uz": "Ichimlik suv",
+        "ru": "Питьевая вода"
+      },
+      "category": "Ichimliklar",
+      "nutrients": {
+        "carbohydrates": 0,
+        "calciumMg": 3,
+        "potassiumMg": 1,
+        "zincMg": 0,
+        "ironMg": 0,
+        "magnesiumMg": 1,
+        "phosphorusMg": 0,
+        "sodiumMg": 3,
+        "fat": 0,
+        "monounsaturatedFat": 0,
+        "polyunsaturatedFat": 0,
+        "calories": 0,
+        "water": 99.9,
+        "protein": 0,
+        "cholesterolMg": 0,
+        "fiber": 0,
+        "saturatedFat": 0,
+        "vitaminEMg": 0,
+        "sugars": 0,
+        "vitaminDMcg": 0,
+        "salt": 0.0075
+      },
+      "servings": [
+        {
+          "description": "1 bottle 8 fl oz",
+          "amount": 237,
+          "unit": "g"
+        },
+        {
+          "description": "3 ice cube (3/4 fl oz)",
+          "amount": 64,
+          "unit": "g"
+        },
+        {
+          "description": "1 liter",
+          "amount": 1000,
+          "unit": "g"
+        },
+        {
+          "description": "1 fl oz",
+          "amount": 29.6,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 174842,
+      "description": "Beverages, carbonated, club soda",
+      "source": "https://fdc.nal.usda.gov/food-details/174842/nutrients",
+      "names": {
+        "uz": "Gazli suv, club soda",
+        "ru": "Газированная вода, содовая"
+      },
+      "category": "Ichimliklar",
+      "nutrients": {
+        "fiber": 0,
+        "monounsaturatedFat": 0,
+        "polyunsaturatedFat": 0,
+        "calciumMg": 5,
+        "potassiumMg": 2,
+        "zincMg": 0.1,
+        "fat": 0,
+        "carbohydrates": 0,
+        "cholesterolMg": 0,
+        "saturatedFat": 0,
+        "phosphorusMg": 0,
+        "sodiumMg": 21,
+        "calories": 0,
+        "water": 99.9,
+        "protein": 0,
+        "ironMg": 0.01,
+        "magnesiumMg": 1,
+        "vitaminEMg": 0,
+        "sugars": 0,
+        "vitaminDMcg": 0,
+        "salt": 0.0525
+      },
+      "servings": [
+        {
+          "description": "1 can or bottle (12 fl oz)",
+          "amount": 355,
+          "unit": "g"
+        },
+        {
+          "description": "1 fl oz",
+          "amount": 29.6,
+          "unit": "g"
+        },
+        {
+          "description": "1 can or bottle (16 fl oz)",
+          "amount": 474,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 169655,
+      "description": "Sugars, granulated",
+      "source": "https://fdc.nal.usda.gov/food-details/169655/nutrients",
+      "names": {
+        "uz": "Shakar, oq",
+        "ru": "Сахар белый"
+      },
+      "category": "Qo‘shimchalar",
+      "nutrients": {
+        "protein": 0,
+        "ironMg": 0.05,
+        "magnesiumMg": 0,
+        "phosphorusMg": 0,
+        "sodiumMg": 1,
+        "fat": 0,
+        "calories": 387,
+        "water": 0.02,
+        "calciumMg": 1,
+        "potassiumMg": 2,
+        "zincMg": 0.01,
+        "saturatedFat": 0,
+        "monounsaturatedFat": 0,
+        "polyunsaturatedFat": 0,
+        "sugars": 99.8,
+        "carbohydrates": 100,
+        "fiber": 0,
+        "cholesterolMg": 0,
+        "vitaminEMg": 0,
+        "vitaminDMcg": 0,
+        "salt": 0.0025
+      },
+      "servings": [
+        {
+          "description": "1 cup",
+          "amount": 200,
+          "unit": "g"
+        },
+        {
+          "description": "1 serving 1 cube",
+          "amount": 2.3,
+          "unit": "g"
+        },
+        {
+          "description": "1 tsp",
+          "amount": 4.2,
+          "unit": "g"
+        },
+        {
+          "description": "1 serving packet",
+          "amount": 2.8,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 168833,
+      "description": "Sugars, brown",
+      "source": "https://fdc.nal.usda.gov/food-details/168833/nutrients",
+      "names": {
+        "uz": "Shakar, jigarrang",
+        "ru": "Сахар коричневый"
+      },
+      "category": "Qo‘shimchalar",
+      "nutrients": {
+        "vitaminEMg": 0,
+        "vitaminDMcg": 0,
+        "fat": 0,
+        "carbohydrates": 98.1,
+        "calories": 380,
+        "water": 1.34,
+        "sugars": 97,
+        "calciumMg": 83,
+        "potassiumMg": 133,
+        "zincMg": 0.03,
+        "monounsaturatedFat": 0,
+        "polyunsaturatedFat": 0,
+        "cholesterolMg": 0,
+        "saturatedFat": 0,
+        "protein": 0.12,
+        "fiber": 0,
+        "ironMg": 0.71,
+        "magnesiumMg": 9,
+        "phosphorusMg": 4,
+        "sodiumMg": 28,
+        "salt": 0.07
+      },
+      "servings": [
+        {
+          "description": "1 cup packed",
+          "amount": 220,
+          "unit": "g"
+        },
+        {
+          "description": "1 tsp packed",
+          "amount": 4.6,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup unpacked",
+          "amount": 145,
+          "unit": "g"
+        },
+        {
+          "description": "1 tsp unpacked",
+          "amount": 3,
+          "unit": "g"
+        },
+        {
+          "description": "1 tsp brownulated",
+          "amount": 3.2,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 169640,
+      "description": "Honey",
+      "source": "https://fdc.nal.usda.gov/food-details/169640/nutrients",
+      "names": {
+        "uz": "Asal",
+        "ru": "Мёд"
+      },
+      "category": "Qo‘shimchalar",
+      "nutrients": {
+        "monounsaturatedFat": 0,
+        "polyunsaturatedFat": 0,
+        "saturatedFat": 0,
+        "vitaminEMg": 0,
+        "protein": 0.3,
+        "fiber": 0.2,
+        "ironMg": 0.42,
+        "magnesiumMg": 2,
+        "phosphorusMg": 4,
+        "sodiumMg": 4,
+        "cholesterolMg": 0,
+        "fat": 0,
+        "carbohydrates": 82.4,
+        "calories": 304,
+        "water": 17.1,
+        "calciumMg": 6,
+        "potassiumMg": 52,
+        "zincMg": 0.22,
+        "sugars": 82.1,
+        "vitaminDMcg": 0,
+        "salt": 0.01
+      },
+      "servings": [
+        {
+          "description": "1 cup",
+          "amount": 339,
+          "unit": "g"
+        },
+        {
+          "description": "1 tbsp",
+          "amount": 21,
+          "unit": "g"
+        },
+        {
+          "description": "1 packet (0.5 oz)",
+          "amount": 14,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 169641,
+      "description": "Jams and preserves",
+      "source": "https://fdc.nal.usda.gov/food-details/169641/nutrients",
+      "names": {
+        "uz": "Murabbo, jem",
+        "ru": "Варенье, джем"
+      },
+      "category": "Qo‘shimchalar",
+      "nutrients": {
+        "phosphorusMg": 19,
+        "cholesterolMg": 0,
+        "sodiumMg": 32,
+        "protein": 0.37,
+        "monounsaturatedFat": 0.038,
+        "water": 30.5,
+        "fat": 0.07,
+        "sugars": 48.5,
+        "polyunsaturatedFat": 0,
+        "calciumMg": 20,
+        "potassiumMg": 77,
+        "zincMg": 0.06,
+        "saturatedFat": 0.01,
+        "fiber": 1.1,
+        "ironMg": 0.49,
+        "magnesiumMg": 4,
+        "carbohydrates": 68.9,
+        "calories": 278,
+        "vitaminEMg": 0.12,
+        "vitaminDMcg": 0,
+        "salt": 0.08
+      },
+      "servings": [
+        {
+          "description": "1 tbsp",
+          "amount": 20,
+          "unit": "g"
+        },
+        {
+          "description": "1 packet (0.5 oz)",
+          "amount": 14,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170645,
+      "description": "Jams and preserves, apricot",
+      "source": "https://fdc.nal.usda.gov/food-details/170645/nutrients",
+      "names": {
+        "uz": "O‘rik murabbosi",
+        "ru": "Абрикосовый джем"
+      },
+      "category": "Qo‘shimchalar",
+      "nutrients": {
+        "vitaminEMg": 0.13,
+        "fiber": 0.3,
+        "cholesterolMg": 0,
+        "fat": 0.2,
+        "water": 34.5,
+        "calciumMg": 20,
+        "potassiumMg": 77,
+        "zincMg": 0.06,
+        "protein": 0.7,
+        "ironMg": 0.49,
+        "magnesiumMg": 4,
+        "sodiumMg": 40,
+        "saturatedFat": 0.01,
+        "vitaminDMcg": 0,
+        "sugars": 43.4,
+        "monounsaturatedFat": 0,
+        "polyunsaturatedFat": 0,
+        "carbohydrates": 64.4,
+        "calories": 242,
+        "phosphorusMg": 3,
+        "salt": 0.1
+      },
+      "servings": [
+        {
+          "description": "1 packet (0.5 oz)",
+          "amount": 14,
+          "unit": "g"
+        },
+        {
+          "description": "1 tbsp",
+          "amount": 20,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 171009,
+      "description": "Salad dressing, mayonnaise, regular",
+      "source": "https://fdc.nal.usda.gov/food-details/171009/nutrients",
+      "names": {
+        "uz": "Mayonez, oddiy",
+        "ru": "Майонез обычный"
+      },
+      "category": "Souslar",
+      "nutrients": {
+        "vitaminDMcg": 0.2,
+        "magnesiumMg": 1,
+        "cholesterolMg": 42,
+        "saturatedFat": 11.7,
+        "ironMg": 0.21,
+        "phosphorusMg": 21,
+        "sodiumMg": 635,
+        "protein": 0.96,
+        "monounsaturatedFat": 16.8,
+        "polyunsaturatedFat": 44.7,
+        "water": 21.6,
+        "fat": 74.8,
+        "carbohydrates": 0.57,
+        "calories": 680,
+        "calciumMg": 8,
+        "potassiumMg": 20,
+        "zincMg": 0.15,
+        "vitaminEMg": 3.28,
+        "fiber": 0,
+        "sugars": 0.57,
+        "salt": 1.5875
+      },
+      "servings": [
+        {
+          "description": "1 tbsp",
+          "amount": 13.8,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup",
+          "amount": 220,
+          "unit": "g"
+        },
+        {
+          "description": "1 packet",
+          "amount": 10,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 173594,
+      "description": "Salad dressing, mayonnaise, light",
+      "source": "https://fdc.nal.usda.gov/food-details/173594/nutrients",
+      "names": {
+        "uz": "Mayonez, yengil",
+        "ru": "Майонез лёгкий"
+      },
+      "category": "Souslar",
+      "nutrients": {
+        "vitaminDMcg": 0,
+        "fiber": 0,
+        "magnesiumMg": 2,
+        "fat": 22.2,
+        "carbohydrates": 9.23,
+        "water": 66.1,
+        "sugars": 3.56,
+        "calciumMg": 6,
+        "potassiumMg": 31,
+        "zincMg": 0.07,
+        "monounsaturatedFat": 5.01,
+        "polyunsaturatedFat": 13,
+        "vitaminEMg": 2.19,
+        "protein": 0.37,
+        "phosphorusMg": 15,
+        "ironMg": 0.14,
+        "cholesterolMg": 16,
+        "saturatedFat": 3.45,
+        "calories": 238,
+        "sodiumMg": 827,
+        "salt": 2.0675
+      },
+      "servings": [
+        {
+          "description": "1 tablespoon",
+          "amount": 15,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 168556,
+      "description": "Catsup",
+      "source": "https://fdc.nal.usda.gov/food-details/168556/nutrients",
+      "names": {
+        "uz": "Ketchup",
+        "ru": "Кетчуп"
+      },
+      "category": "Souslar",
+      "nutrients": {
+        "vitaminEMg": 1.46,
+        "sodiumMg": 907,
+        "cholesterolMg": 0,
+        "protein": 1.04,
+        "fiber": 0.3,
+        "ironMg": 0.35,
+        "magnesiumMg": 13,
+        "phosphorusMg": 26,
+        "saturatedFat": 0.014,
+        "water": 68.5,
+        "sugars": 21.3,
+        "calciumMg": 15,
+        "potassiumMg": 281,
+        "zincMg": 0.17,
+        "monounsaturatedFat": 0.015,
+        "polyunsaturatedFat": 0.041,
+        "fat": 0.1,
+        "carbohydrates": 27.4,
+        "calories": 101,
+        "vitaminDMcg": 0,
+        "salt": 2.2675
+      },
+      "servings": [
+        {
+          "description": "1 packet",
+          "amount": 9,
+          "unit": "g"
+        },
+        {
+          "description": "1 tbsp",
+          "amount": 17,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup",
+          "amount": 240,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 174523,
+      "description": "Sauce, barbecue",
+      "source": "https://fdc.nal.usda.gov/food-details/174523/nutrients",
+      "names": {
+        "uz": "Barbekyu sousi",
+        "ru": "Соус барбекю"
+      },
+      "category": "Souslar",
+      "nutrients": {
+        "cholesterolMg": 0,
+        "vitaminEMg": 0.8,
+        "sugars": 33.2,
+        "calciumMg": 33,
+        "potassiumMg": 232,
+        "zincMg": 0.17,
+        "monounsaturatedFat": 0.082,
+        "polyunsaturatedFat": 0.101,
+        "fat": 0.63,
+        "carbohydrates": 40.8,
+        "calories": 172,
+        "water": 54.7,
+        "fiber": 0.9,
+        "ironMg": 0.64,
+        "magnesiumMg": 13,
+        "phosphorusMg": 20,
+        "sodiumMg": 1030,
+        "protein": 0.82,
+        "saturatedFat": 0.045,
+        "vitaminDMcg": 0,
+        "salt": 2.575
+      },
+      "servings": [
+        {
+          "description": "1 tbsp",
+          "amount": 17,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup",
+          "amount": 279,
+          "unit": "g"
+        },
+        {
+          "description": "0.5 cup",
+          "amount": 143,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 174277,
+      "description": "Soy sauce made from soy and wheat (shoyu)",
+      "source": "https://fdc.nal.usda.gov/food-details/174277/nutrients",
+      "names": {
+        "uz": "Soya sousi, shoyu",
+        "ru": "Соевый соус, сёю"
+      },
+      "category": "Souslar",
+      "nutrients": {
+        "vitaminEMg": 0,
+        "fat": 0.57,
+        "carbohydrates": 4.93,
+        "sugars": 0.4,
+        "calciumMg": 33,
+        "potassiumMg": 435,
+        "zincMg": 0.87,
+        "water": 71.2,
+        "monounsaturatedFat": 0.088,
+        "polyunsaturatedFat": 0.263,
+        "protein": 8.14,
+        "ironMg": 1.45,
+        "magnesiumMg": 74,
+        "phosphorusMg": 166,
+        "sodiumMg": 5490,
+        "saturatedFat": 0.073,
+        "calories": 53,
+        "vitaminDMcg": 0,
+        "cholesterolMg": 0,
+        "fiber": 0.8,
+        "salt": 13.725
+      },
+      "servings": [
+        {
+          "description": "1 individual packet",
+          "amount": 8.9,
+          "unit": "g"
+        },
+        {
+          "description": "1 tbsp",
+          "amount": 16,
+          "unit": "g"
+        },
+        {
+          "description": "1 tsp",
+          "amount": 5.3,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup",
+          "amount": 255,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 173592,
+      "description": "Salad dressing, ranch dressing, regular",
+      "source": "https://fdc.nal.usda.gov/food-details/173592/nutrients",
+      "names": {
+        "uz": "Ranch sousi",
+        "ru": "Соус ранч"
+      },
+      "category": "Souslar",
+      "nutrients": {
+        "magnesiumMg": 5,
+        "ironMg": 0.3,
+        "fiber": 0,
+        "cholesterolMg": 26,
+        "protein": 1.32,
+        "calciumMg": 28,
+        "potassiumMg": 64,
+        "zincMg": 0.17,
+        "vitaminEMg": 2.22,
+        "monounsaturatedFat": 9.2,
+        "polyunsaturatedFat": 25.8,
+        "water": 45.7,
+        "vitaminDMcg": 0.1,
+        "phosphorusMg": 186,
+        "sugars": 4.69,
+        "fat": 44.5,
+        "carbohydrates": 5.9,
+        "calories": 430,
+        "saturatedFat": 6.96,
+        "sodiumMg": 901,
+        "salt": 2.2525
+      },
+      "servings": [
+        {
+          "description": "1 serving",
+          "amount": 30,
+          "unit": "g"
+        },
+        {
+          "description": "1 tablespoon",
+          "amount": 15,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 174527,
+      "description": "Sauce, ready-to-serve, pepper or hot",
+      "source": "https://fdc.nal.usda.gov/food-details/174527/nutrients",
+      "names": {
+        "uz": "Achchiq qalampir sousi",
+        "ru": "Острый перечный соус"
+      },
+      "category": "Souslar",
+      "nutrients": {
+        "fiber": 0.3,
+        "sugars": 1.26,
+        "vitaminEMg": 0.12,
+        "protein": 0.51,
+        "ironMg": 0.48,
+        "magnesiumMg": 5,
+        "phosphorusMg": 11,
+        "sodiumMg": 2640,
+        "cholesterolMg": 0,
+        "saturatedFat": 0.052,
+        "fat": 0.37,
+        "carbohydrates": 1.75,
+        "calories": 11,
+        "water": 90,
+        "calciumMg": 8,
+        "potassiumMg": 144,
+        "monounsaturatedFat": 0.03,
+        "polyunsaturatedFat": 0.196,
+        "zincMg": 0.11,
+        "salt": 6.6
+      },
+      "servings": [
+        {
+          "description": "0.25 tsp",
+          "amount": 1.2,
+          "unit": "g"
+        },
+        {
+          "description": "1 tsp",
+          "amount": 4.7,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170693,
+      "description": "Fast foods, hamburger; single, regular patty; plain",
+      "source": "https://fdc.nal.usda.gov/food-details/170693/nutrients",
+      "names": {
+        "uz": "Gamburger, oddiy, bitta kotletli",
+        "ru": "Гамбургер обычный с одной котлетой"
+      },
+      "category": "Fastfud",
+      "nutrients": {
+        "fat": 12,
+        "carbohydrates": 31.5,
+        "calories": 297,
+        "water": 38.4,
+        "sugars": 4.88,
+        "calciumMg": 62,
+        "potassiumMg": 197,
+        "zincMg": 2.52,
+        "vitaminEMg": 0.38,
+        "monounsaturatedFat": 4.84,
+        "polyunsaturatedFat": 1.68,
+        "protein": 16.5,
+        "fiber": 1.7,
+        "ironMg": 3.06,
+        "magnesiumMg": 27,
+        "phosphorusMg": 134,
+        "sodiumMg": 331,
+        "vitaminDMcg": 0.1,
+        "cholesterolMg": 33,
+        "saturatedFat": 4.49,
+        "salt": 0.8275
+      },
+      "servings": [
+        {
+          "description": "1 sandwich",
+          "amount": 78,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170690,
+      "description": "Fast foods, cheeseburger; single, regular patty; plain",
+      "source": "https://fdc.nal.usda.gov/food-details/170690/nutrients",
+      "names": {
+        "uz": "Chizburger, oddiy, bitta kotletli",
+        "ru": "Чизбургер обычный с одной котлетой"
+      },
+      "category": "Fastfud",
+      "nutrients": {
+        "protein": 16.5,
+        "fiber": 2,
+        "ironMg": 2.71,
+        "magnesiumMg": 26,
+        "phosphorusMg": 161,
+        "sodiumMg": 515,
+        "vitaminDMcg": 0.1,
+        "cholesterolMg": 43,
+        "saturatedFat": 6.47,
+        "fat": 14.7,
+        "carbohydrates": 28,
+        "calories": 308,
+        "water": 38.6,
+        "sugars": 4.88,
+        "calciumMg": 119,
+        "potassiumMg": 196,
+        "zincMg": 2.49,
+        "vitaminEMg": 0.52,
+        "monounsaturatedFat": 5.41,
+        "polyunsaturatedFat": 1.66,
+        "salt": 1.2875
+      },
+      "servings": [
+        {
+          "description": "1 sandwich",
+          "amount": 91,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170295,
+      "description": "Fast foods, chicken fillet sandwich, plain with pickles",
+      "source": "https://fdc.nal.usda.gov/food-details/170295/nutrients",
+      "names": {
+        "uz": "Tovuqli sendvich, file va bodringli",
+        "ru": "Сэндвич с куриным филе и огурцом"
+      },
+      "category": "Fastfud",
+      "nutrients": {
+        "protein": 16.3,
+        "fiber": 1.4,
+        "ironMg": 1.77,
+        "magnesiumMg": 24,
+        "phosphorusMg": 185,
+        "sodiumMg": 753,
+        "vitaminDMcg": 0.1,
+        "cholesterolMg": 35,
+        "saturatedFat": 2.12,
+        "fat": 11.2,
+        "carbohydrates": 20.9,
+        "calories": 250,
+        "water": 48.9,
+        "sugars": 3.64,
+        "calciumMg": 58,
+        "potassiumMg": 245,
+        "zincMg": 0.61,
+        "vitaminEMg": 2.41,
+        "monounsaturatedFat": 4.48,
+        "polyunsaturatedFat": 3.18,
+        "salt": 1.8825
+      },
+      "servings": [
+        {
+          "description": "1 sandwich",
+          "amount": 187,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170698,
+      "description": "Fast foods, potato, french fried in vegetable oil",
+      "source": "https://fdc.nal.usda.gov/food-details/170698/nutrients",
+      "names": {
+        "uz": "Kartoshka fri, o‘simlik yog‘ida",
+        "ru": "Картофель фри на растительном масле"
+      },
+      "category": "Fastfud",
+      "nutrients": {
+        "cholesterolMg": 0,
+        "saturatedFat": 2.34,
+        "protein": 3.43,
+        "fiber": 3.8,
+        "ironMg": 0.81,
+        "magnesiumMg": 35,
+        "phosphorusMg": 125,
+        "sodiumMg": 210,
+        "vitaminEMg": 1.67,
+        "calciumMg": 18,
+        "potassiumMg": 579,
+        "zincMg": 0.5,
+        "fat": 14.7,
+        "carbohydrates": 41.4,
+        "calories": 312,
+        "water": 38.6,
+        "sugars": 0.3,
+        "monounsaturatedFat": 5.97,
+        "polyunsaturatedFat": 5.4,
+        "vitaminDMcg": 0,
+        "salt": 0.525
+      },
+      "servings": [
+        {
+          "description": "1 serving small",
+          "amount": 71,
+          "unit": "g"
+        },
+        {
+          "description": "1 serving medium",
+          "amount": 117,
+          "unit": "g"
+        },
+        {
+          "description": "1 serving large",
+          "amount": 154,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170718,
+      "description": "Fast foods, chicken, breaded and fried, boneless pieces, plain",
+      "source": "https://fdc.nal.usda.gov/food-details/170718/nutrients",
+      "names": {
+        "uz": "Tovuq bo‘laklari, panirovkada qovurilgan",
+        "ru": "Кусочки курицы в панировке, жареные"
+      },
+      "category": "Fastfud",
+      "nutrients": {
+        "vitaminDMcg": 0.2,
+        "fiber": 0.9,
+        "ironMg": 0.83,
+        "cholesterolMg": 55,
+        "vitaminEMg": 1.12,
+        "monounsaturatedFat": 7.74,
+        "polyunsaturatedFat": 6.51,
+        "sugars": 0.08,
+        "calciumMg": 11,
+        "potassiumMg": 251,
+        "zincMg": 0.59,
+        "fat": 20.4,
+        "carbohydrates": 14.9,
+        "calories": 307,
+        "water": 46.5,
+        "magnesiumMg": 24,
+        "phosphorusMg": 272,
+        "sodiumMg": 594,
+        "protein": 15.9,
+        "saturatedFat": 3.57,
+        "salt": 1.485
+      },
+      "servings": [
+        {
+          "description": "10 pieces",
+          "amount": 160,
+          "unit": "g"
+        },
+        {
+          "description": "6 pieces",
+          "amount": 96,
+          "unit": "g"
+        },
+        {
+          "description": "4 pieces",
+          "amount": 64,
+          "unit": "g"
+        },
+        {
+          "description": "20 pieces",
+          "amount": 320,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170317,
+      "description": "Pizza, cheese topping, regular crust, frozen, cooked",
+      "source": "https://fdc.nal.usda.gov/food-details/170317/nutrients",
+      "names": {
+        "uz": "Pishloqli pizza, oddiy xamir, muzlatilgandan pishirilgan",
+        "ru": "Пицца сырная, обычное тесто, из замороженной"
+      },
+      "category": "Fastfud",
+      "nutrients": {
+        "fat": 12.3,
+        "water": 46.3,
+        "calciumMg": 179,
+        "potassiumMg": 152,
+        "zincMg": 1.32,
+        "protein": 10.4,
+        "cholesterolMg": 14,
+        "fiber": 2.2,
+        "ironMg": 2.27,
+        "magnesiumMg": 23,
+        "phosphorusMg": 179,
+        "sodiumMg": 447,
+        "sugars": 3.57,
+        "vitaminEMg": 1.01,
+        "monounsaturatedFat": 4.25,
+        "polyunsaturatedFat": 1.9,
+        "carbohydrates": 29,
+        "calories": 268,
+        "saturatedFat": 4.27,
+        "vitaminDMcg": 0,
+        "salt": 1.1175
+      },
+      "servings": [
+        {
+          "description": "1 serving 9 servings per 24 oz package",
+          "amount": 81,
+          "unit": "g"
+        },
+        {
+          "description": "1 serving 3 servings per 15.1 oz package",
+          "amount": 151,
+          "unit": "g"
+        },
+        {
+          "description": "1 package 15.1 oz pizza",
+          "amount": 452,
+          "unit": "g"
+        },
+        {
+          "description": "1 package 24 oz pizza",
+          "amount": 727,
+          "unit": "g"
+        },
+        {
+          "description": "1 package 9.8 oz pizza",
+          "amount": 293,
+          "unit": "g"
+        },
+        {
+          "description": "1 serving 2 servings per 9.8 oz package",
+          "amount": 146,
+          "unit": "g"
+        },
+        {
+          "description": "1 serving 1 serving per 8 oz box",
+          "amount": 199,
+          "unit": "g"
+        },
+        {
+          "description": "1 package 8 oz pizza",
+          "amount": 199,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170373,
+      "description": "Pizza, cheese topping, thin crust, frozen, cooked",
+      "source": "https://fdc.nal.usda.gov/food-details/170373/nutrients",
+      "names": {
+        "uz": "Pishloqli pizza, yupqa xamir, muzlatilgandan pishirilgan",
+        "ru": "Пицца сырная, тонкое тесто, из замороженной"
+      },
+      "category": "Fastfud",
+      "nutrients": {
+        "vitaminEMg": 0.74,
+        "fiber": 3,
+        "vitaminDMcg": 0,
+        "cholesterolMg": 21,
+        "sodiumMg": 471,
+        "monounsaturatedFat": 3.03,
+        "polyunsaturatedFat": 1.7,
+        "sugars": 3.71,
+        "calciumMg": 228,
+        "potassiumMg": 201,
+        "zincMg": 1.49,
+        "water": 46,
+        "fat": 11.1,
+        "carbohydrates": 28.8,
+        "calories": 263,
+        "saturatedFat": 5.7,
+        "ironMg": 2.14,
+        "magnesiumMg": 24,
+        "phosphorusMg": 215,
+        "protein": 11.9,
+        "salt": 1.1775
+      },
+      "servings": [
+        {
+          "description": "1 slice",
+          "amount": 69,
+          "unit": "g"
+        },
+        {
+          "description": "1 pie",
+          "amount": 556,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 172096,
+      "description": "Pizza, pepperoni topping, regular crust, frozen, cooked",
+      "source": "https://fdc.nal.usda.gov/food-details/172096/nutrients",
+      "names": {
+        "uz": "Pepperoni pizza, muzlatilgandan pishirilgan",
+        "ru": "Пицца пепперони, из замороженной"
+      },
+      "category": "Fastfud",
+      "nutrients": {
+        "vitaminEMg": 1.35,
+        "fat": 13.1,
+        "carbohydrates": 24.7,
+        "calories": 274,
+        "water": 45.4,
+        "sugars": 3.39,
+        "calciumMg": 168,
+        "potassiumMg": 239,
+        "zincMg": 1.52,
+        "monounsaturatedFat": 4.1,
+        "polyunsaturatedFat": 2.7,
+        "protein": 14.4,
+        "vitaminDMcg": 0,
+        "cholesterolMg": 27,
+        "saturatedFat": 4.83,
+        "fiber": 2,
+        "ironMg": 2.43,
+        "magnesiumMg": 27,
+        "phosphorusMg": 196,
+        "sodiumMg": 590,
+        "salt": 1.475
+      },
+      "servings": [
+        {
+          "description": "1 pizza 12\" diameter",
+          "amount": 532,
+          "unit": "g"
+        },
+        {
+          "description": "0.25 pizza 12\" diameter",
+          "amount": 127,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170715,
+      "description": "Pizza, meat and vegetable topping, regular crust, frozen, cooked",
+      "source": "https://fdc.nal.usda.gov/food-details/170715/nutrients",
+      "names": {
+        "uz": "Go‘sht va sabzavotli pizza, muzlatilgandan pishirilgan",
+        "ru": "Пицца мясная с овощами, из замороженной"
+      },
+      "category": "Fastfud",
+      "nutrients": {
+        "fat": 14.4,
+        "water": 46.7,
+        "calciumMg": 152,
+        "potassiumMg": 209,
+        "zincMg": 1.71,
+        "cholesterolMg": 16,
+        "protein": 11.3,
+        "fiber": 2.2,
+        "ironMg": 1.36,
+        "magnesiumMg": 25,
+        "phosphorusMg": 181,
+        "sodiumMg": 555,
+        "vitaminDMcg": 0,
+        "saturatedFat": 5.08,
+        "carbohydrates": 25.1,
+        "calories": 276,
+        "monounsaturatedFat": 5.89,
+        "polyunsaturatedFat": 2.58,
+        "vitaminEMg": 1.13,
+        "sugars": 4.85,
+        "salt": 1.3875
+      },
+      "servings": [
+        {
+          "description": "1 serving 5 servings per 22.85 oz package",
+          "amount": 129,
+          "unit": "g"
+        },
+        {
+          "description": "1 serving 5 servings per 24.2 oz package",
+          "amount": 143,
+          "unit": "g"
+        },
+        {
+          "description": "1 package 24.2 oz pizza",
+          "amount": 713,
+          "unit": "g"
+        },
+        {
+          "description": "1 package 10.9 oz pizza",
+          "amount": 354,
+          "unit": "g"
+        },
+        {
+          "description": "1 serving 2 servings per 10.9 oz package",
+          "amount": 177,
+          "unit": "g"
+        },
+        {
+          "description": "1 package 22.85 oz pizza",
+          "amount": 644,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 172816,
+      "description": "Bread, pita, white, unenriched",
+      "source": "https://fdc.nal.usda.gov/food-details/172816/nutrients",
+      "names": {
+        "uz": "Pita noni, oq",
+        "ru": "Пита белая"
+      },
+      "category": "Nonlar",
+      "nutrients": {
+        "fat": 1.2,
+        "carbohydrates": 55.7,
+        "calories": 275,
+        "water": 32.1,
+        "calciumMg": 86,
+        "potassiumMg": 120,
+        "zincMg": 0.84,
+        "monounsaturatedFat": 0.105,
+        "polyunsaturatedFat": 0.535,
+        "protein": 9.1,
+        "magnesiumMg": 26,
+        "phosphorusMg": 97,
+        "sodiumMg": 536,
+        "cholesterolMg": 0,
+        "saturatedFat": 0.166,
+        "fiber": 2.2,
+        "ironMg": 1.4,
+        "salt": 1.34
+      },
+      "servings": [
+        {
+          "description": "1 pita, large (6-1/2\" dia)",
+          "amount": 60,
+          "unit": "g"
+        },
+        {
+          "description": "1 oz",
+          "amount": 28.35,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 174924,
+      "description": "Bread, white, commercially prepared (includes soft bread crumbs)",
+      "source": "https://fdc.nal.usda.gov/food-details/174924/nutrients",
+      "names": {
+        "uz": "Oq non, sanoat usulida tayyorlangan",
+        "ru": "Белый хлеб промышленный"
+      },
+      "category": "Nonlar",
+      "nutrients": {
+        "vitaminEMg": 0.22,
+        "monounsaturatedFat": 0.599,
+        "polyunsaturatedFat": 1.6,
+        "saturatedFat": 0.698,
+        "fiber": 2.7,
+        "fat": 3.33,
+        "carbohydrates": 49.4,
+        "calories": 266,
+        "water": 36.4,
+        "sugars": 5.67,
+        "calciumMg": 144,
+        "potassiumMg": 126,
+        "zincMg": 0.74,
+        "protein": 8.85,
+        "ironMg": 3.61,
+        "magnesiumMg": 23,
+        "phosphorusMg": 98,
+        "sodiumMg": 490,
+        "vitaminDMcg": 0,
+        "cholesterolMg": 0,
+        "salt": 1.225
+      },
+      "servings": [
+        {
+          "description": "1 slice",
+          "amount": 29,
+          "unit": "g"
+        },
+        {
+          "description": "1 slice crust not eaten",
+          "amount": 12,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup, cubes",
+          "amount": 35,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup, crumbs",
+          "amount": 45,
+          "unit": "g"
+        },
+        {
+          "description": "1 slice, thin",
+          "amount": 20,
+          "unit": "g"
+        },
+        {
+          "description": "1 slice, very thin",
+          "amount": 15,
+          "unit": "g"
+        },
+        {
+          "description": "1 slice",
+          "amount": 25,
+          "unit": "g"
+        },
+        {
+          "description": "1 slice, large",
+          "amount": 30,
+          "unit": "g"
+        },
+        {
+          "description": "1 slice thin, crust not eaten",
+          "amount": 9,
+          "unit": "g"
+        },
+        {
+          "description": "1 oz",
+          "amount": 28.35,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 172796,
+      "description": "Rolls, hamburger or hotdog, plain",
+      "source": "https://fdc.nal.usda.gov/food-details/172796/nutrients",
+      "names": {
+        "uz": "Burger yoki hot-dog bulochkasi",
+        "ru": "Булочка для бургера или хот-дога"
+      },
+      "category": "Nonlar",
+      "nutrients": {
+        "cholesterolMg": 0,
+        "saturatedFat": 0.842,
+        "fiber": 1.8,
+        "magnesiumMg": 23,
+        "phosphorusMg": 101,
+        "sodiumMg": 494,
+        "protein": 9.77,
+        "monounsaturatedFat": 0.748,
+        "polyunsaturatedFat": 1.78,
+        "sugars": 7.28,
+        "calciumMg": 144,
+        "potassiumMg": 122,
+        "zincMg": 0.73,
+        "vitaminEMg": 0.27,
+        "water": 34.3,
+        "fat": 3.91,
+        "carbohydrates": 50.1,
+        "calories": 279,
+        "ironMg": 3.43,
+        "vitaminDMcg": 0,
+        "salt": 1.235
+      },
+      "servings": [
+        {
+          "description": "1 oz",
+          "amount": 28.35,
+          "unit": "g"
+        },
+        {
+          "description": "1 roll 1 serving",
+          "amount": 44,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 174614,
+      "description": "Frankfurter, beef, heated",
+      "source": "https://fdc.nal.usda.gov/food-details/174614/nutrients",
+      "names": {
+        "uz": "Mol go‘shtli sosiska, isitilgan",
+        "ru": "Сосиска говяжья, разогретая"
+      },
+      "category": "Fastfud",
+      "nutrients": {
+        "sugars": 1.27,
+        "calciumMg": 11,
+        "potassiumMg": 252,
+        "zincMg": 2.17,
+        "fat": 29.4,
+        "carbohydrates": 2.66,
+        "calories": 322,
+        "water": 53.5,
+        "monounsaturatedFat": 12.7,
+        "polyunsaturatedFat": 0.808,
+        "cholesterolMg": 58,
+        "saturatedFat": 11.6,
+        "protein": 11.7,
+        "ironMg": 1.22,
+        "magnesiumMg": 9,
+        "phosphorusMg": 139,
+        "sodiumMg": 852,
+        "vitaminEMg": 0.2,
+        "fiber": 0,
+        "vitaminDMcg": 1,
+        "salt": 2.13
+      },
+      "servings": [
+        {
+          "description": "1 package",
+          "amount": 451,
+          "unit": "g"
+        },
+        {
+          "description": "1 frankfurter",
+          "amount": 48,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 167587,
+      "description": "Candies, milk chocolate",
+      "source": "https://fdc.nal.usda.gov/food-details/167587/nutrients",
+      "names": {
+        "uz": "Sutli shokolad",
+        "ru": "Молочный шоколад"
+      },
+      "category": "Shirinliklar",
+      "nutrients": {
+        "saturatedFat": 18.5,
+        "water": 1.5,
+        "monounsaturatedFat": 7.19,
+        "polyunsaturatedFat": 1.38,
+        "fat": 29.7,
+        "calciumMg": 189,
+        "potassiumMg": 372,
+        "fiber": 3.4,
+        "ironMg": 2.35,
+        "magnesiumMg": 63,
+        "phosphorusMg": 208,
+        "sodiumMg": 79,
+        "protein": 7.65,
+        "cholesterolMg": 23,
+        "sugars": 51.5,
+        "vitaminDMcg": 0,
+        "vitaminEMg": 0.51,
+        "zincMg": 2.3,
+        "carbohydrates": 59.4,
+        "calories": 535,
+        "salt": 0.1975
+      },
+      "servings": [
+        {
+          "description": "1 bar, miniature",
+          "amount": 7,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup chips",
+          "amount": 168,
+          "unit": "g"
+        },
+        {
+          "description": "1 bar (1.55 oz)",
+          "amount": 44,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170271,
+      "description": "Chocolate, dark, 45- 59% cacao solids",
+      "source": "https://fdc.nal.usda.gov/food-details/170271/nutrients",
+      "names": {
+        "uz": "Qora shokolad, kakao 45–59%",
+        "ru": "Тёмный шоколад, какао 45–59%"
+      },
+      "category": "Shirinliklar",
+      "nutrients": {
+        "cholesterolMg": 8,
+        "vitaminEMg": 0.54,
+        "fat": 31.3,
+        "carbohydrates": 61.2,
+        "calories": 546,
+        "monounsaturatedFat": 9.54,
+        "polyunsaturatedFat": 1.09,
+        "water": 0.97,
+        "sugars": 47.9,
+        "calciumMg": 56,
+        "potassiumMg": 559,
+        "zincMg": 2.01,
+        "saturatedFat": 18.5,
+        "fiber": 7,
+        "ironMg": 8.02,
+        "magnesiumMg": 146,
+        "phosphorusMg": 206,
+        "sodiumMg": 24,
+        "protein": 4.88,
+        "salt": 0.06
+      },
+      "servings": [
+        {
+          "description": "1 bar",
+          "amount": 162,
+          "unit": "g"
+        },
+        {
+          "description": "1 oz",
+          "amount": 28.35,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170272,
+      "description": "Chocolate, dark, 60-69% cacao solids",
+      "source": "https://fdc.nal.usda.gov/food-details/170272/nutrients",
+      "names": {
+        "uz": "Qora shokolad, kakao 60–69%",
+        "ru": "Тёмный шоколад, какао 60–69%"
+      },
+      "category": "Shirinliklar",
+      "nutrients": {
+        "fat": 38.3,
+        "carbohydrates": 52.4,
+        "calories": 579,
+        "vitaminEMg": 0.59,
+        "cholesterolMg": 6,
+        "protein": 6.12,
+        "fiber": 8,
+        "ironMg": 6.32,
+        "magnesiumMg": 176,
+        "phosphorusMg": 260,
+        "sodiumMg": 10,
+        "saturatedFat": 22,
+        "water": 1.25,
+        "sugars": 36.7,
+        "calciumMg": 62,
+        "potassiumMg": 567,
+        "zincMg": 2.65,
+        "monounsaturatedFat": 11.5,
+        "polyunsaturatedFat": 1.22,
+        "salt": 0.025
+      },
+      "servings": [
+        {
+          "description": "1 oz",
+          "amount": 28.35,
+          "unit": "g"
+        },
+        {
+          "description": "1 bar",
+          "amount": 112,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 170273,
+      "description": "Chocolate, dark, 70-85% cacao solids",
+      "source": "https://fdc.nal.usda.gov/food-details/170273/nutrients",
+      "names": {
+        "uz": "Qora shokolad, kakao 70–85%",
+        "ru": "Тёмный шоколад, какао 70–85%"
+      },
+      "category": "Shirinliklar",
+      "nutrients": {
+        "cholesterolMg": 3,
+        "fat": 42.6,
+        "carbohydrates": 45.9,
+        "calories": 598,
+        "vitaminEMg": 0.59,
+        "monounsaturatedFat": 12.8,
+        "polyunsaturatedFat": 1.26,
+        "water": 1.37,
+        "sugars": 24,
+        "calciumMg": 73,
+        "potassiumMg": 715,
+        "zincMg": 3.31,
+        "protein": 7.79,
+        "saturatedFat": 24.5,
+        "fiber": 10.9,
+        "ironMg": 11.9,
+        "magnesiumMg": 228,
+        "phosphorusMg": 308,
+        "sodiumMg": 20,
+        "salt": 0.05
+      },
+      "servings": [
+        {
+          "description": "1 oz",
+          "amount": 28.35,
+          "unit": "g"
+        },
+        {
+          "description": "1 bar",
+          "amount": 101,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 174967,
+      "description": "Cookies, shortbread, commercially prepared, plain",
+      "source": "https://fdc.nal.usda.gov/food-details/174967/nutrients",
+      "names": {
+        "uz": "Qumoq pechenye, oddiy",
+        "ru": "Песочное печенье"
+      },
+      "category": "Shirinliklar",
+      "nutrients": {
+        "polyunsaturatedFat": 8.33,
+        "fat": 26.2,
+        "carbohydrates": 63.8,
+        "calories": 514,
+        "water": 3.6,
+        "sugars": 21.6,
+        "calciumMg": 13,
+        "potassiumMg": 88,
+        "zincMg": 0.49,
+        "vitaminEMg": 2.44,
+        "monounsaturatedFat": 6.71,
+        "protein": 5.37,
+        "fiber": 1.3,
+        "ironMg": 2.98,
+        "magnesiumMg": 14,
+        "phosphorusMg": 66,
+        "sodiumMg": 353,
+        "vitaminDMcg": 0,
+        "cholesterolMg": 0,
+        "saturatedFat": 8.1,
+        "salt": 0.8825
+      },
+      "servings": [
+        {
+          "description": "1 cookie",
+          "amount": 11.8,
+          "unit": "g"
+        },
+        {
+          "description": "1 oz",
+          "amount": 28.35,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 172808,
+      "description": "Cookies, chocolate chip, prepared from recipe, made with butter",
+      "source": "https://fdc.nal.usda.gov/food-details/172808/nutrients",
+      "names": {
+        "uz": "Shokoladli pechenye, sariyog‘ bilan retseptdan",
+        "ru": "Печенье с шоколадом, по рецепту со сливочным маслом"
+      },
+      "category": "Shirinliklar",
+      "nutrients": {
+        "cholesterolMg": 70,
+        "saturatedFat": 14.1,
+        "protein": 5.7,
+        "ironMg": 2.48,
+        "magnesiumMg": 55,
+        "phosphorusMg": 100,
+        "sodiumMg": 341,
+        "monounsaturatedFat": 8.24,
+        "polyunsaturatedFat": 4.54,
+        "fat": 28.4,
+        "carbohydrates": 58.2,
+        "calories": 488,
+        "water": 5.7,
+        "calciumMg": 38,
+        "potassiumMg": 221,
+        "zincMg": 0.94,
+        "salt": 0.8525
+      },
+      "servings": [
+        {
+          "description": "1 cookie, medium (2-1/4\" dia)",
+          "amount": 16,
+          "unit": "g"
+        },
+        {
+          "description": "1 oz",
+          "amount": 28.35,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 174963,
+      "description": "Cookies, oatmeal, with raisins",
+      "source": "https://fdc.nal.usda.gov/food-details/174963/nutrients",
+      "names": {
+        "uz": "Suli pechenyesi, mayizli",
+        "ru": "Овсяное печенье с изюмом"
+      },
+      "category": "Shirinliklar",
+      "nutrients": {
+        "fat": 15.8,
+        "carbohydrates": 69,
+        "calories": 441,
+        "water": 7.98,
+        "sugars": 33.1,
+        "calciumMg": 28,
+        "potassiumMg": 230,
+        "zincMg": 0.65,
+        "monounsaturatedFat": 4.28,
+        "polyunsaturatedFat": 6.09,
+        "protein": 5.86,
+        "fiber": 3.3,
+        "ironMg": 2.3,
+        "magnesiumMg": 34,
+        "phosphorusMg": 114,
+        "sodiumMg": 322,
+        "saturatedFat": 5.44,
+        "salt": 0.805
+      },
+      "servings": [
+        {
+          "description": "1 oz",
+          "amount": 28.35,
+          "unit": "g"
+        },
+        {
+          "description": "1 cookie",
+          "amount": 24,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 174934,
+      "description": "Cake, chocolate, commercially prepared with chocolate frosting, in-store bakery",
+      "source": "https://fdc.nal.usda.gov/food-details/174934/nutrients",
+      "names": {
+        "uz": "Shokoladli tort, shokoladli qoplamali",
+        "ru": "Шоколадный торт с шоколадной глазурью"
+      },
+      "category": "Shirinliklar",
+      "nutrients": {
+        "vitaminDMcg": 0,
+        "monounsaturatedFat": 7.34,
+        "polyunsaturatedFat": 4.62,
+        "sugars": 40,
+        "calciumMg": 30,
+        "potassiumMg": 270,
+        "zincMg": 0.58,
+        "fat": 20,
+        "carbohydrates": 52.8,
+        "calories": 389,
+        "water": 22,
+        "saturatedFat": 5.92,
+        "protein": 3.48,
+        "ironMg": 3.04,
+        "magnesiumMg": 31,
+        "phosphorusMg": 137,
+        "sodiumMg": 348,
+        "vitaminEMg": 4.33,
+        "cholesterolMg": 22,
+        "fiber": 2.2,
+        "salt": 0.87
+      },
+      "servings": [
+        {
+          "description": "1 piece (1/12 of a cake)",
+          "amount": 138,
+          "unit": "g"
+        },
+        {
+          "description": "1 piece (1/8 of 18 oz cake)",
+          "amount": 64,
+          "unit": "g"
+        },
+        {
+          "description": "1 cake",
+          "amount": 1660,
+          "unit": "g"
+        },
+        {
+          "description": "1 oz",
+          "amount": 28.35,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 172704,
+      "description": "Cake, pound, commercially prepared, butter (includes fresh and frozen)",
+      "source": "https://fdc.nal.usda.gov/food-details/172704/nutrients",
+      "names": {
+        "uz": "Sariyog‘li keks",
+        "ru": "Масляный кекс"
+      },
+      "category": "Shirinliklar",
+      "nutrients": {
+        "fat": 14,
+        "carbohydrates": 53.6,
+        "calories": 353,
+        "water": 25.9,
+        "sugars": 33.4,
+        "calciumMg": 47,
+        "potassiumMg": 149,
+        "zincMg": 0.43,
+        "vitaminEMg": 0.65,
+        "monounsaturatedFat": 3.02,
+        "polyunsaturatedFat": 3.42,
+        "protein": 5,
+        "fiber": 0.6,
+        "ironMg": 1.48,
+        "magnesiumMg": 8,
+        "phosphorusMg": 140,
+        "sodiumMg": 377,
+        "vitaminDMcg": 0.8,
+        "cholesterolMg": 66,
+        "saturatedFat": 4.81,
+        "salt": 0.9425
+      },
+      "servings": [
+        {
+          "description": "0.16 loaf 1/6 of the loaf",
+          "amount": 61,
+          "unit": "g"
+        },
+        {
+          "description": "1 piece individually wrapped cake",
+          "amount": 49,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 167575,
+      "description": "Ice creams, vanilla",
+      "source": "https://fdc.nal.usda.gov/food-details/167575/nutrients",
+      "names": {
+        "uz": "Vanilli muzqaymoq",
+        "ru": "Ванильное мороженое"
+      },
+      "category": "Shirinliklar",
+      "nutrients": {
+        "fiber": 0.7,
+        "carbohydrates": 23.6,
+        "monounsaturatedFat": 2.97,
+        "polyunsaturatedFat": 0.452,
+        "sugars": 21.2,
+        "vitaminEMg": 0.3,
+        "vitaminDMcg": 0.2,
+        "calories": 207,
+        "fat": 11,
+        "water": 61,
+        "calciumMg": 128,
+        "potassiumMg": 199,
+        "zincMg": 0.69,
+        "protein": 3.5,
+        "ironMg": 0.09,
+        "magnesiumMg": 14,
+        "phosphorusMg": 105,
+        "sodiumMg": 80,
+        "cholesterolMg": 44,
+        "saturatedFat": 6.79,
+        "salt": 0.2
+      },
+      "servings": [
+        {
+          "description": "1 serving 1/2 cup",
+          "amount": 66,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 168809,
+      "description": "Ice creams, chocolate",
+      "source": "https://fdc.nal.usda.gov/food-details/168809/nutrients",
+      "names": {
+        "uz": "Shokoladli muzqaymoq",
+        "ru": "Шоколадное мороженое"
+      },
+      "category": "Shirinliklar",
+      "nutrients": {
+        "fiber": 1.2,
+        "vitaminEMg": 0.3,
+        "vitaminDMcg": 0.2,
+        "sugars": 25.4,
+        "cholesterolMg": 34,
+        "saturatedFat": 6.8,
+        "protein": 3.8,
+        "ironMg": 0.93,
+        "magnesiumMg": 29,
+        "phosphorusMg": 107,
+        "sodiumMg": 76,
+        "fat": 11,
+        "carbohydrates": 28.2,
+        "calories": 216,
+        "water": 55.7,
+        "calciumMg": 109,
+        "potassiumMg": 249,
+        "zincMg": 0.58,
+        "monounsaturatedFat": 3.21,
+        "polyunsaturatedFat": 0.41,
+        "salt": 0.19
+      },
+      "servings": [
+        {
+          "description": "1 individual (3.5 fl oz)",
+          "amount": 58,
+          "unit": "g"
+        },
+        {
+          "description": "0.5 cup (4 fl oz)",
+          "amount": 66,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 168810,
+      "description": "Ice creams, strawberry",
+      "source": "https://fdc.nal.usda.gov/food-details/168810/nutrients",
+      "names": {
+        "uz": "Qulupnayli muzqaymoq",
+        "ru": "Клубничное мороженое"
+      },
+      "category": "Shirinliklar",
+      "nutrients": {
+        "saturatedFat": 5.19,
+        "fat": 8.4,
+        "cholesterolMg": 29,
+        "phosphorusMg": 100,
+        "fiber": 0.9,
+        "protein": 3.2,
+        "calciumMg": 120,
+        "potassiumMg": 188,
+        "zincMg": 0.34,
+        "carbohydrates": 27.6,
+        "calories": 192,
+        "water": 60,
+        "sodiumMg": 60,
+        "ironMg": 0.21,
+        "magnesiumMg": 14,
+        "salt": 0.15
+      },
+      "servings": [
+        {
+          "description": "1 individual (3.5 fl oz)",
+          "amount": 58,
+          "unit": "g"
+        },
+        {
+          "description": "0.5 cup (4 fl oz)",
+          "amount": 66,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 900001,
+      "description": "Chicken wrap — example recipe with pita",
+      "source": "https://fdc.nal.usda.gov/",
+      "names": {
+        "uz": "Tovuqli lavash — pita bilan namunaviy retsept",
+        "ru": "Лаваш с курицей — пример рецепта с питой"
+      },
+      "category": "Fastfud",
+      "nutrients": {
+        "protein": 13.95857142857143,
+        "fat": 7.005,
+        "carbohydrates": 17.029285714285713,
+        "calories": 190.78571428571428,
+        "water": 61.13571428571429,
+        "fiber": 0.8714285714285714,
+        "calciumMg": 34.214285714285715,
+        "ironMg": 0.8650000000000001,
+        "magnesiumMg": 21.28571428571429,
+        "phosphorusMg": 117.5,
+        "potassiumMg": 182,
+        "sodiumMg": 225.92857142857142,
+        "zincMg": 0.6607142857142857,
+        "cholesterolMg": 33.35714285714286,
+        "saturatedFat": 1.2531428571428571,
+        "monounsaturatedFat": 1.678,
+        "polyunsaturatedFat": 3.6371428571428575,
+        "salt": 0.5648214285714286
+      },
+      "servings": [
+        {
+          "description": "1 porsiya / порция / serving",
+          "amount": 280,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 900002,
+      "description": "Beef doner — example recipe",
+      "source": "https://fdc.nal.usda.gov/",
+      "names": {
+        "uz": "Mol go‘shtli doner — namunaviy retsept",
+        "ru": "Донер с говядиной — пример рецепта"
+      },
+      "category": "Fastfud",
+      "nutrients": {
+        "protein": 13.030000000000001,
+        "fat": 10.015714285714285,
+        "carbohydrates": 17.029285714285713,
+        "calories": 214,
+        "water": 58.74285714285714,
+        "fiber": 0.8714285714285714,
+        "calciumMg": 34.57142857142858,
+        "ironMg": 1.5935714285714284,
+        "magnesiumMg": 20.571428571428573,
+        "phosphorusMg": 125.35714285714286,
+        "potassiumMg": 245.2142857142857,
+        "sodiumMg": 230.57142857142858,
+        "zincMg": 2.746428571428572,
+        "cholesterolMg": 34.785714285714285,
+        "saturatedFat": 2.5745714285714287,
+        "monounsaturatedFat": 3.0315714285714286,
+        "polyunsaturatedFat": 3.515,
+        "salt": 0.5764285714285714
+      },
+      "servings": [
+        {
+          "description": "1 porsiya / порция / serving",
+          "amount": 280,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 900003,
+      "description": "Hot dog — example recipe",
+      "source": "https://fdc.nal.usda.gov/",
+      "names": {
+        "uz": "Hot-dog — namunaviy retsept",
+        "ru": "Хот-дог — пример рецепта"
+      },
+      "category": "Fastfud",
+      "nutrients": {
+        "protein": 9.057931034482758,
+        "fat": 18.95241379310345,
+        "carbohydrates": 24.70551724137931,
+        "calories": 306.03448275862064,
+        "water": 44.90689655172413,
+        "fiber": 0.7758620689655172,
+        "calciumMg": 66.24137931034483,
+        "ironMg": 1.9748275862068967,
+        "magnesiumMg": 14.655172413793103,
+        "phosphorusMg": 103.44827586206897,
+        "potassiumMg": 185.20689655172416,
+        "sodiumMg": 694.5862068965516,
+        "zincMg": 1.2279310344827585,
+        "vitaminEMg": 0.5717241379310345,
+        "vitaminDMcg": 0.4275862068965517,
+        "cholesterolMg": 26.896551724137932,
+        "saturatedFat": 5.956758620689655,
+        "monounsaturatedFat": 6.724862068965518,
+        "polyunsaturatedFat": 4.157896551724138,
+        "sugars": 5.780689655172414,
+        "salt": 1.736465517241379
+      },
+      "servings": [
+        {
+          "description": "1 porsiya / порция / serving",
+          "amount": 145,
+          "unit": "g"
+        }
+      ]
+    }
+  ]
+}

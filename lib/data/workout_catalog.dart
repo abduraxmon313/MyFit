@@ -1,0 +1,186 @@
+import 'package:flutter/material.dart';
+
+import '../models/workout.dart';
+
+const List<Workout> kWorkoutCatalog = [
+  Workout(
+    name: 'Yurish',
+    category: WorkoutCategory.cardio,
+    met: 3.5,
+    icon: Icons.directions_walk_rounded,
+  ),
+  Workout(
+    name: 'Tez yurish',
+    category: WorkoutCategory.cardio,
+    met: 5,
+    icon: Icons.directions_walk_rounded,
+  ),
+  Workout(
+    name: 'Yugurish',
+    category: WorkoutCategory.cardio,
+    met: 8.3,
+    icon: Icons.directions_run_rounded,
+  ),
+  Workout(
+    name: 'Velosiped',
+    category: WorkoutCategory.cardio,
+    met: 7.5,
+    icon: Icons.directions_bike_rounded,
+  ),
+  Workout(
+    name: 'Arqon sakrash',
+    category: WorkoutCategory.cardio,
+    met: 11.8,
+    icon: Icons.sports_gymnastics_rounded,
+  ),
+  Workout(
+    name: 'Suzish',
+    category: WorkoutCategory.cardio,
+    met: 8,
+    icon: Icons.pool_rounded,
+  ),
+  Workout(
+    name: 'Elliptik trenajyor',
+    category: WorkoutCategory.cardio,
+    met: 5,
+    icon: Icons.monitor_heart_rounded,
+  ),
+  Workout(
+    name: 'Eshkak eshish',
+    category: WorkoutCategory.cardio,
+    met: 7,
+    icon: Icons.rowing_rounded,
+  ),
+  Workout(
+    name: 'Og‘ir atletika',
+    category: WorkoutCategory.strength,
+    met: 6,
+    icon: Icons.fitness_center_rounded,
+  ),
+  Workout(
+    name: 'Ko‘krak mashqi',
+    category: WorkoutCategory.strength,
+    met: 5,
+    icon: Icons.fitness_center_rounded,
+  ),
+  Workout(
+    name: 'Orqa mashqi',
+    category: WorkoutCategory.strength,
+    met: 5,
+    icon: Icons.fitness_center_rounded,
+  ),
+  Workout(
+    name: 'Oyoq mashqi',
+    category: WorkoutCategory.strength,
+    met: 6,
+    icon: Icons.fitness_center_rounded,
+  ),
+  Workout(
+    name: 'Yelka mashqi',
+    category: WorkoutCategory.strength,
+    met: 5,
+    icon: Icons.fitness_center_rounded,
+  ),
+  Workout(
+    name: 'Qo‘l mashqi',
+    category: WorkoutCategory.strength,
+    met: 5,
+    icon: Icons.fitness_center_rounded,
+  ),
+  Workout(
+    name: 'O‘tirib-turish',
+    category: WorkoutCategory.bodyweight,
+    met: 5.5,
+    icon: Icons.accessibility_new_rounded,
+  ),
+  Workout(
+    name: 'Otjimaniya',
+    category: WorkoutCategory.bodyweight,
+    met: 5,
+    icon: Icons.accessibility_new_rounded,
+  ),
+  Workout(
+    name: 'Turnik',
+    category: WorkoutCategory.bodyweight,
+    met: 8,
+    icon: Icons.sports_gymnastics_rounded,
+  ),
+  Workout(
+    name: 'Planka',
+    category: WorkoutCategory.bodyweight,
+    met: 4,
+    icon: Icons.timer_rounded,
+  ),
+  Workout(
+    name: 'Burpi',
+    category: WorkoutCategory.bodyweight,
+    met: 10,
+    icon: Icons.bolt_rounded,
+  ),
+  Workout(
+    name: 'Press mashqi',
+    category: WorkoutCategory.bodyweight,
+    met: 4,
+    icon: Icons.accessibility_new_rounded,
+  ),
+  Workout(
+    name: 'Yoga',
+    category: WorkoutCategory.flexibility,
+    met: 2.5,
+    icon: Icons.self_improvement_rounded,
+  ),
+  Workout(
+    name: 'Cho‘zilish',
+    category: WorkoutCategory.flexibility,
+    met: 2.3,
+    icon: Icons.self_improvement_rounded,
+  ),
+  Workout(
+    name: 'Pilates',
+    category: WorkoutCategory.flexibility,
+    met: 3,
+    icon: Icons.self_improvement_rounded,
+  ),
+  Workout(
+    name: 'Futbol',
+    category: WorkoutCategory.sport,
+    met: 8,
+    icon: Icons.sports_soccer_rounded,
+  ),
+  Workout(
+    name: 'Basketbol',
+    category: WorkoutCategory.sport,
+    met: 8,
+    icon: Icons.sports_basketball_rounded,
+  ),
+  Workout(
+    name: 'Voleybol',
+    category: WorkoutCategory.sport,
+    met: 4,
+    icon: Icons.sports_volleyball_rounded,
+  ),
+  Workout(
+    name: 'Tennis',
+    category: WorkoutCategory.sport,
+    met: 7.3,
+    icon: Icons.sports_tennis_rounded,
+  ),
+  Workout(
+    name: 'Boks',
+    category: WorkoutCategory.sport,
+    met: 9,
+    icon: Icons.sports_mma_rounded,
+  ),
+  Workout(
+    name: 'Kurash',
+    category: WorkoutCategory.sport,
+    met: 6,
+    icon: Icons.sports_martial_arts_rounded,
+  ),
+  Workout(
+    name: 'Raqs',
+    category: WorkoutCategory.sport,
+    met: 6.5,
+    icon: Icons.music_note_rounded,
+  ),
+];
