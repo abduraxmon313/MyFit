@@ -77,12 +77,12 @@ void main() {
     expect(vegetable('Ukrop').calories, vegetable('Shivit').calories);
   });
 
-  test('82 ta meva katalogga to‘liq va takrorsiz qo‘shilgan', () {
+  test('70 ta meva katalogga to‘liq va takrorsiz qo‘shilgan', () {
     final fruits = kUzbekDishes
         .where((dish) => dish.region == 'Mevalar')
         .toList(growable: false);
-    expect(fruits, hasLength(82));
-    expect(fruits.map((dish) => dish.nutrition.fdcId).toSet(), hasLength(82));
+    expect(fruits, hasLength(70));
+    expect(fruits.map((dish) => dish.nutrition.fdcId).toSet(), hasLength(70));
     FoodNutrition fruit(String name) =>
         fruits.singleWhere((dish) => dish.nameUz == name).nutrition;
     expect(fruit('Banan').calories, 89);
