@@ -37,7 +37,11 @@ class UzbekDish {
     _ => nameUz,
   };
 
-  String localizedRegion(String languageCode) {
+  String localizedRegion(String languageCode) =>
+      localizeRegion(region, languageCode);
+
+  /// Kategoriya/hudud nomini tanlangan tilga o'giradi.
+  static String localizeRegion(String region, String languageCode) {
     if (languageCode == 'uz') return region;
     const ru = {
       'Sut mahsulotlari': 'Молочные продукты',
@@ -53,6 +57,12 @@ class UzbekDish {
       'Nonlar': 'Хлеб',
       'Shirinliklar': 'Сладости',
       'O‘rmon mevalari': 'Лесные ягоды',
+      'Mevalar': 'Фрукты',
+      'Sabzavotlar': 'Овощи',
+      'Mol qismlari': 'Части говядины',
+      'Guruchlar': 'Рис',
+      'Gerkules va suli': 'Овсянка',
+      'Zaytun yog‘i': 'Оливковое масло',
       'Samarqand': 'Самарканд',
       'Toshkent': 'Ташкент',
       'Andijon': 'Андижан',
@@ -88,6 +98,12 @@ class UzbekDish {
       'Nonlar': 'Bread',
       'Shirinliklar': 'Sweets',
       'O‘rmon mevalari': 'Forest berries',
+      'Mevalar': 'Fruits',
+      'Sabzavotlar': 'Vegetables',
+      'Mol qismlari': 'Beef cuts',
+      'Guruchlar': 'Rice',
+      'Gerkules va suli': 'Oats',
+      'Zaytun yog‘i': 'Olive oil',
       'Samarqand': 'Samarkand',
       'Toshkent': 'Tashkent',
       'Andijon': 'Andijan',
@@ -4207,7 +4223,10 @@ final List<FoodNutrition> kUzbekFoods = kUzbekDishes
     .map((dish) => dish.nutrition.forGrams(100, localName: dish.nameUz))
     .toList(growable: false);
 
-List<FoodNutrition> searchUzbekFoods(String rawQuery, {String languageCode = 'uz'}) {
+List<FoodNutrition> searchUzbekFoods(
+  String rawQuery, {
+  String languageCode = 'uz',
+}) {
   final query = _normalize(rawQuery);
   if (query.length < 2) return const [];
   return kUzbekDishes
@@ -4220,13 +4239,21 @@ List<FoodNutrition> searchUzbekFoods(String rawQuery, {String languageCode = 'uz
             query.split(' ').every(names.contains) ||
             regionWords.contains(query);
       })
-      .map((dish) => dish.nutrition.forGrams(100, localName: dish.localizedName(languageCode)))
+      .map(
+        (dish) => dish.nutrition.forGrams(
+          100,
+          localName: dish.localizedName(languageCode),
+        ),
+      )
       .toList(growable: false);
 }
 
 /// Barcha mahal bir xil yagona milliy taomlar bazasidan foydalanadi.
 List<UzbekDish> uzbekDishesForMeal(String meal) =>
     List<UzbekDish>.unmodifiable(kUzbekDishes);
+
+/// Qidiruv uchun matnni bir xil ko'rinishga keltiradi (apostroflar, kirill harflar).
+String normalizeFoodText(String value) => _normalize(value);
 
 String _normalize(String value) {
   return value
@@ -4236,6 +4263,8 @@ String _normalize(String value) {
       .replaceAll('ʼ', "'")
       .replaceAll('‘', "'")
       .replaceAll('’', "'")
+      .replaceAll('`', "'")
+      .replaceAll('´', "'")
       .replaceAll('ў', "o'")
       .replaceAll('қ', 'q')
       .replaceAll('ғ', "g'")
