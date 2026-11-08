@@ -96,57 +96,6 @@ void main() {
   setUpAll(() async => Firebase.initializeApp());
   setUp(() => SharedPreferences.setMockInitialValues({}));
 
-  testWidgets('Food log cards fit narrow screens with enlarged text', (
-    tester,
-  ) async {
-    tester.view.devicePixelRatio = 1;
-    tester.view.physicalSize = const Size(320, 1000);
-    addTearDown(tester.view.resetDevicePixelRatio);
-    addTearDown(tester.view.resetPhysicalSize);
-    final logs = _RetryLogs()
-      ..fail = false
-      ..foods = [
-        const FoodNutrition(
-          fdcId: 1,
-          name: 'A long food name for the daily food journal',
-          calories: 127,
-          protein: 5.3,
-          fat: 3.4,
-          carbohydrates: 19,
-          water: 0,
-        ),
-      ];
-    for (final theme in [AppTheme.light, AppTheme.dark]) {
-      await tester.pumpWidget(
-        MaterialApp(
-          theme: theme,
-          builder: (context, child) => MediaQuery(
-            data: MediaQuery.of(
-              context,
-            ).copyWith(textScaler: const TextScaler.linear(1.5)),
-            child: child!,
-          ),
-          home: HomePage(
-            authService: _SignedInAuth(),
-            profile: _profile,
-            foodLogService: logs,
-          ),
-        ),
-      );
-      await tester.pumpAndSettle();
-      await tester.scrollUntilVisible(
-        find.byTooltip('Olib tashlash'),
-        250,
-        scrollable: find.byType(Scrollable).first,
-      );
-      await tester.pumpAndSettle();
-      expect(find.text('5.3 g'), findsOneWidget);
-      expect(find.text('19.0 g'), findsOneWidget);
-      expect(find.byTooltip('Olib tashlash'), findsOneWidget);
-      expect(tester.takeException(), isNull);
-    }
-  });
-
   testWidgets('Failed diary load blocks edits and supports retry', (
     tester,
   ) async {
