@@ -77,18 +77,34 @@ void main() {
     expect(vegetable('Ukrop').calories, vegetable('Shivit').calories);
   });
 
-  test('70 ta meva katalogga to‘liq va takrorsiz qo‘shilgan', () {
+  test('68 ta meva katalogga to‘liq va takrorsiz qo‘shilgan', () {
     final fruits = kUzbekDishes
         .where((dish) => dish.region == 'Mevalar')
         .toList(growable: false);
-    expect(fruits, hasLength(70));
-    expect(fruits.map((dish) => dish.nutrition.fdcId).toSet(), hasLength(70));
+    expect(fruits, hasLength(68));
+    expect(fruits.map((dish) => dish.nutrition.fdcId).toSet(), hasLength(68));
     FoodNutrition fruit(String name) =>
         fruits.singleWhere((dish) => dish.nameUz == name).nutrition;
     expect(fruit('Banan').calories, 89);
     expect(fruit('Tarvuz').water, closeTo(91.45, .01));
     expect(fruit('Kokos').fat, closeTo(33.49, .01));
-    expect(fruit('Finik (xurmo mevasi)').carbohydrates, closeTo(75.03, .01));
+  });
+
+  test('27 ta quruq meva USDA qiymatlari bilan takrorsiz qo‘shilgan', () {
+    final dried = kUzbekDishes
+        .where((dish) => dish.region == 'Quruq mevalar')
+        .toList(growable: false);
+    expect(dried, hasLength(27));
+    expect(dried.map((dish) => dish.nutrition.fdcId).toSet(), hasLength(27));
+    FoodNutrition item(String name) =>
+        dried.singleWhere((dish) => dish.nameUz == name).nutrition;
+    expect(item('Kuraga (o‘rik qoqi)').calories, 241);
+    expect(item('Oltin mayiz (sabza)').carbohydrates, closeTo(79.5, .6));
+    expect(item('Finik (Medjool)').protein, closeTo(1.81, .01));
+    expect(
+      dried.every((dish) => dish.nutrition.dataSource!.startsWith('USDA')),
+      isTrue,
+    );
   });
 
   test('Sports Research D3 K2 bir softgel qiymatlari aynan mos', () {
