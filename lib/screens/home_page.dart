@@ -380,8 +380,9 @@ class _HomePageState extends State<HomePage> {
                                     _navy,
                                     surface: false,
                                   ),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: -.2,
                                 ),
                               ),
                               const SizedBox(height: 12),
@@ -490,8 +491,9 @@ class _HomePageState extends State<HomePage> {
                                     _navy,
                                     surface: false,
                                   ),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: -.2,
                                 ),
                               ),
                               const SizedBox(height: 8),
@@ -591,18 +593,18 @@ class _HomeHeader extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(10, 10, 8, 10),
       decoration: BoxDecoration(
-        color: context.appColor(Color(0xFFF3FAF6), surface: true),
-        borderRadius: BorderRadius.circular(16),
+        color: context.appColor(Colors.white, surface: true),
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: context.appColor(Color(0xFFDCEFE4), surface: true),
+          color: context.appColor(Color(0xFFE4E9EE), surface: true),
         ),
         boxShadow: Theme.of(context).brightness == Brightness.dark
             ? const []
             : const [
                 BoxShadow(
-                  color: Color(0x0F0B6544),
-                  blurRadius: 22,
-                  offset: Offset(0, 8),
+                  color: Color(0x0A0F1B2D),
+                  blurRadius: 18,
+                  offset: Offset(0, 6),
                 ),
               ],
       ),
@@ -739,7 +741,7 @@ class _HomeHeader extends StatelessWidget {
                       .withValues(alpha: .82),
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(
-                    color: context.appColor(Color(0xFFDCECE3), surface: true),
+                    color: context.appColor(Color(0xFFE4E9EE), surface: true),
                   ),
                 ),
                 child: Icon(
@@ -816,6 +818,19 @@ class _BodyStatusCardState extends State<_BodyStatusCard> {
 
   @override
   Widget build(BuildContext context) {
+    if (Theme.of(context).brightness == Brightness.dark) {
+      return _buildCard(context, onLightPage: false);
+    }
+    // Yorug' sahifada gologramma to'q brend kartada ko'rsatiladi.
+    return Theme(
+      data: AppTheme.dark,
+      child: Builder(
+        builder: (context) => _buildCard(context, onLightPage: true),
+      ),
+    );
+  }
+
+  Widget _buildCard(BuildContext context, {required bool onLightPage}) {
     final profile = widget.profile;
     final bmi = _bmi;
     final bodyFactor = ((bmi - 16) / 20).clamp(0.0, 1.0);
@@ -833,22 +848,26 @@ class _BodyStatusCardState extends State<_BodyStatusCard> {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: dark
-              ? context.appPanelColors
-              : const [Color(0xFFFFFFFF), Color(0xFFF1F9F6), Color(0xFFE5F2ED)],
-          stops: [0, .54, 1],
+          colors: onLightPage
+              ? const [Color(0xFF123A3C), Color(0xFF0C2A30), Color(0xFF081C24)]
+              : context.appPanelColors,
+          stops: const [0, .55, 1],
         ),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: scheme.outlineVariant),
-        boxShadow: Theme.of(context).brightness == Brightness.dark
-            ? const []
-            : const [
+        borderRadius: BorderRadius.circular(onLightPage ? 24 : 16),
+        border: Border.all(
+          color: onLightPage
+              ? const Color(0xFF1E4A4A)
+              : scheme.outlineVariant,
+        ),
+        boxShadow: onLightPage
+            ? const [
                 BoxShadow(
-                  color: Color(0x10116D4B),
-                  blurRadius: 24,
-                  offset: Offset(0, 10),
+                  color: Color(0x2E0B2A2E),
+                  blurRadius: 32,
+                  offset: Offset(0, 14),
                 ),
-              ],
+              ]
+            : const [],
       ),
       child: Stack(
         children: [
@@ -1430,12 +1449,19 @@ class _BodySilhouettePainter extends CustomPainter {
 }
 
 class _ActionCard extends StatelessWidget {
+  // Yorug' rejim uchun bir xil to'yinganlikdagi uyg'un palitra.
   Color get _accent => switch (asset.split('/').last) {
-    'barcode_scan.png' => const Color(0xFF187D87),
-    'food_search.png' => const Color(0xFF526CBA),
-    'calculator.png' => const Color(0xFF9A6B28),
-    _ => const Color(0xFF13765E),
+    'food_scan.png' => const Color(0xFF0F9D72),
+    'barcode_scan.png' => const Color(0xFF0E8AA6),
+    'food_search.png' => const Color(0xFF4F5FD8),
+    'calculator.png' => const Color(0xFFE08A1E),
+    _ => const Color(0xFFE5536B),
   };
+
+  static const _cardBorder = Color(0xFFE4E9EE);
+  static const _title = Color(0xFF0F1B2D);
+  static const _arrowBg = Color(0xFFF1F4F8);
+  static const _arrowFg = Color(0xFF64748B);
 
   const _ActionCard({
     required this.asset,
@@ -1471,33 +1497,25 @@ class _ActionCard extends StatelessWidget {
         child: Ink(
           padding: EdgeInsets.all(horizontal ? 14 : 16),
           decoration: BoxDecoration(
-            color: dark ? scheme.surfaceContainerLowest : null,
-            gradient: dark
-                ? null
-                : LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      context.appColor(Colors.white, surface: true),
-                      Color.alphaBlend(
-                        _accent.withValues(alpha: .065),
-                        Colors.white,
-                      ),
-                    ],
-                  ),
+            color: dark ? scheme.surfaceContainerLowest : Colors.white,
             borderRadius: radius,
             border: Border.all(
               color: dark
                   ? scheme.outlineVariant.withValues(alpha: .65)
-                  : _accent.withValues(alpha: .14),
+                  : _cardBorder,
             ),
             boxShadow: dark
                 ? const []
-                : [
+                : const [
                     BoxShadow(
-                      color: _accent.withValues(alpha: .035),
-                      blurRadius: 16,
-                      offset: const Offset(0, 6),
+                      color: Color(0x0A0F1B2D),
+                      blurRadius: 18,
+                      offset: Offset(0, 6),
+                    ),
+                    BoxShadow(
+                      color: Color(0x050F1B2D),
+                      blurRadius: 2,
+                      offset: Offset(0, 1),
                     ),
                   ],
           ),
@@ -1510,15 +1528,38 @@ class _ActionCard extends StatelessWidget {
   }
 
   Widget _image(BuildContext context, {required double size}) {
+    final dark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       width: size,
       height: size,
       padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.dark
+        color: dark
             ? Theme.of(context).colorScheme.primary.withValues(alpha: .10)
-            : _accent.withValues(alpha: .09),
+            : null,
+        gradient: dark
+            ? null
+            : LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color.alphaBlend(
+                    Colors.white.withValues(alpha: .18),
+                    _accent,
+                  ),
+                  _accent,
+                ],
+              ),
         borderRadius: BorderRadius.circular(size * .28),
+        boxShadow: dark
+            ? null
+            : [
+                BoxShadow(
+                  color: _accent.withValues(alpha: .28),
+                  blurRadius: 12,
+                  offset: const Offset(0, 5),
+                ),
+              ],
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(size * .24),
@@ -1530,27 +1571,24 @@ class _ActionCard extends StatelessWidget {
             'calculator.png' => Icons.calculate_outlined,
             _ => Icons.fitness_center_outlined,
           },
-          size: size * .42,
-          color: Theme.of(context).brightness == Brightness.dark
-              ? Theme.of(context).colorScheme.primary
-              : _accent,
+          size: size * .44,
+          color: dark ? Theme.of(context).colorScheme.primary : Colors.white,
         ),
       ),
     );
   }
 
   Widget _arrow(BuildContext context) {
-    final color = Theme.of(context).brightness == Brightness.dark
-        ? Theme.of(context).colorScheme.primary
-        : _accent;
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    final color = dark ? Theme.of(context).colorScheme.primary : _arrowFg;
     return Container(
-      width: 31,
-      height: 31,
+      width: 30,
+      height: 30,
       decoration: BoxDecoration(
-        color: color.withValues(alpha: .08),
+        color: dark ? color.withValues(alpha: .08) : _arrowBg,
         shape: BoxShape.circle,
       ),
-      child: Icon(Icons.arrow_outward_rounded, color: color, size: 17),
+      child: Icon(Icons.arrow_outward_rounded, color: color, size: 16),
     );
   }
 
@@ -1572,7 +1610,7 @@ class _ActionCard extends StatelessWidget {
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
-            color: context.appColor(_HomeColors.navy, surface: false),
+            color: context.appColor(_title, surface: false),
             fontSize: 15,
             height: 1.15,
             fontWeight: FontWeight.w700,
@@ -1594,7 +1632,7 @@ class _ActionCard extends StatelessWidget {
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              color: context.appColor(_HomeColors.navy, surface: false),
+              color: context.appColor(_title, surface: false),
               fontSize: 17,
               height: 1.15,
               fontWeight: FontWeight.w700,
@@ -2183,8 +2221,4 @@ class _FoodVisual {
     }
     return _mainDish;
   }
-}
-
-abstract final class _HomeColors {
-  static const navy = Color(0xFF10223C);
 }

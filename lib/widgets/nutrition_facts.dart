@@ -23,16 +23,8 @@ class NutritionFacts extends StatelessWidget {
     String core(String key, double value) => food.missingNutrients.contains(key)
         ? '—'
         : key == 'calories'
-        ? number(value, 0)
+        ? '${number(value, 0)} ${context.tr('kcal')}'
         : grams(value);
-    String optional(
-      String key,
-      double value, {
-      bool mg = false,
-      int digits = 2,
-    }) => value > 0 || food.knownNutrients.contains(key)
-        ? '${number(value, mg ? 0 : digits)} ${context.tr(mg ? 'mg' : 'g')}'
-        : '—';
     final dark = Theme.of(context).brightness == Brightness.dark;
     final accent = dark ? const Color(0xFFB3C7D9) : const Color(0xFF263D52);
     Widget row(
@@ -99,21 +91,6 @@ class NutritionFacts extends StatelessWidget {
         ],
       ),
     );
-    Widget panel(List<Widget> children) => Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      decoration: BoxDecoration(
-        color: colors.surfaceContainerLowest,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: dark ? colors.outlineVariant : const Color(0xFFE1E7ED),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: children,
-      ),
-    );
     Widget summary(String label, String value) => Expanded(
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 8),
@@ -143,53 +120,9 @@ class NutritionFacts extends StatelessWidget {
         ),
       ),
     );
-    final divider = Divider(
-      height: 1,
-      thickness: 1,
-      color: colors.outlineVariant.withValues(alpha: .55),
-    );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Row(
-          children: [
-            summary('Kaloriya', core('calories', food.calories)),
-            summary('Yog‘', core('fat', food.fat)),
-          ],
-        ),
-        Row(
-          children: [
-            summary('Uglevod', core('carbohydrates', food.carbohydrates)),
-            summary('Oqsil', core('protein', food.protein)),
-          ],
-        ),
-        const SizedBox(height: 24),
-        Row(
-          children: [
-            Container(
-              width: 38,
-              height: 38,
-              decoration: BoxDecoration(
-                color: accent.withValues(alpha: .09),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(Icons.analytics_outlined, color: accent, size: 21),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                context.tr('Oziq qiymati'),
-                style: TextStyle(
-                  color: colors.onSurface,
-                  fontSize: 22,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: -.5,
-                ),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 18),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
           decoration: BoxDecoration(
@@ -203,124 +136,19 @@ class NutritionFacts extends StatelessWidget {
             icon: Icons.scale_outlined,
           ),
         ),
-        const SizedBox(height: 12),
-        Container(
-          padding: const EdgeInsets.all(18),
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Color(0xFF263D52), Color(0xFF17293B)],
-            ),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  const Icon(
-                    Icons.local_fire_department_outlined,
-                    color: Color(0xFFCCDCE9),
-                    size: 20,
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      context.tr('Energiya qiymati'),
-                      style: const TextStyle(
-                        color: Color(0xFFDAE4ED),
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 14),
-              Text(
-                food.missingNutrients.contains('calories')
-                    ? '—'
-                    : '${number(food.calories * 4.184, 0)} ${context.tr('kJ')}\n${number(food.calories, 0)} ${context.tr('kcal')}',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 25,
-                  height: 1.35,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: -.4,
-                  fontFeatures: [FontFeature.tabularFigures()],
-                ),
-              ),
-            ],
-          ),
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            summary('Kaloriya', core('calories', food.calories)),
+            summary('Oqsil', core('protein', food.protein)),
+          ],
         ),
-        const SizedBox(height: 18),
-        panel([
-          row(
-            'Yog‘',
-            core('fat', food.fat),
-            bold: true,
-            icon: Icons.water_drop_outlined,
-          ),
-          divider,
-          row(
-            'To‘yingan yog‘lar',
-            optional('saturatedFat', food.saturatedFat, digits: 3),
-            indent: true,
-          ),
-          row(
-            'Bir to‘yinmagan yog‘lar',
-            food.monounsaturatedFat == null
-                ? '—'
-                : grams(food.monounsaturatedFat!, 3),
-            indent: true,
-          ),
-          row(
-            'Ko‘p to‘yinmagan yog‘lar',
-            food.polyunsaturatedFat == null
-                ? '—'
-                : grams(food.polyunsaturatedFat!, 3),
-            indent: true,
-          ),
-        ]),
-        panel([
-          row(
-            'Uglevod',
-            core('carbohydrates', food.carbohydrates),
-            bold: true,
-            icon: Icons.grain_rounded,
-          ),
-          divider,
-          row('Shakar', optional('sugars', food.sugars), indent: true),
-          row('Kletchatka', optional('fiber', food.fiber), indent: true),
-        ]),
-        panel([
-          row(
-            'Oqsil',
-            core('protein', food.protein),
-            bold: true,
-            icon: Icons.fitness_center_outlined,
-          ),
-        ]),
-        panel([
-          row(
-            'Natriy',
-            optional('sodiumMg', food.sodiumMg, mg: true),
-            icon: Icons.scatter_plot_outlined,
-          ),
-          divider,
-          row(
-            'Xolesterin',
-            optional('cholesterolMg', food.cholesterolMg, mg: true),
-            icon: Icons.monitor_heart_outlined,
-          ),
-          divider,
-          row(
-            'Kaliy',
-            optional('potassiumMg', food.potassiumMg, mg: true),
-            icon: Icons.bolt_outlined,
-          ),
-        ]),
+        Row(
+          children: [
+            summary('Uglevod', core('carbohydrates', food.carbohydrates)),
+            summary('Yog‘', core('fat', food.fat)),
+          ],
+        ),
       ],
     );
   }
