@@ -5,6 +5,7 @@ part 'oat_catalog.dart';
 part 'olive_oil_catalog.dart';
 part 'everyday_catalog.dart';
 part 'forest_berry_catalog.dart';
+part 'dried_fruit_catalog.dart';
 
 /// Standard retsept bo‘yicha hisoblangan o‘zbek milliy taomlari katalogi.
 ///
@@ -57,6 +58,7 @@ class UzbekDish {
       'Nonlar': 'Хлеб',
       'Shirinliklar': 'Сладости',
       'O‘rmon mevalari': 'Лесные ягоды',
+      'Quruq mevalar': 'Сухофрукты',
       'Mevalar': 'Фрукты',
       'Sabzavotlar': 'Овощи',
       'Mol qismlari': 'Части говядины',
@@ -98,6 +100,7 @@ class UzbekDish {
       'Nonlar': 'Bread',
       'Shirinliklar': 'Sweets',
       'O‘rmon mevalari': 'Forest berries',
+      'Quruq mevalar': 'Dried fruits',
       'Mevalar': 'Fruits',
       'Sabzavotlar': 'Vegetables',
       'Mol qismlari': 'Beef cuts',
@@ -481,19 +484,6 @@ final List<UzbekDish> _fruitDishes = [
   ),
   _fruit(-2070, 'Aserola', 'Ацерола', 'Acerola', 32, .4, .3, 7.69, 1.1, 91.41),
   _fruit(
-    -2071,
-    'Goji mevasi (quritilgan)',
-    'Ягоды годжи (сушёные)',
-    'Goji berries, dried',
-    349,
-    14.26,
-    .39,
-    77.06,
-    13,
-    7.5,
-    form: 'quritilgan',
-  ),
-  _fruit(
     -2072,
     'Fisalis',
     'Физалис',
@@ -592,18 +582,6 @@ final List<UzbekDish> _fruitDishes = [
     1.6,
     75.3,
     form: 'konservalangan',
-  ),
-  _fruit(
-    -2082,
-    'Finik (xurmo mevasi)',
-    'Финик',
-    'Medjool date',
-    277,
-    1.81,
-    .15,
-    75.03,
-    6.7,
-    21.32,
   ),
 ];
 
@@ -1866,6 +1844,7 @@ final List<UzbekDish> kUzbekDishes = [
   ..._oliveOilDishes,
   ..._fruitDishes,
   ..._forestBerryDishes,
+  ..._driedFruitDishes,
   ..._vegetableDishes,
   ..._beefPartDishes,
   UzbekDish(

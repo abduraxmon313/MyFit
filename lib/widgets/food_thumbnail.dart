@@ -23,6 +23,7 @@ const _mainDish = 'assets/food_categories/main_dish.png';
 const kSearchCategories = <FoodCategory>[
   FoodCategory('Mevalar', _produce),
   FoodCategory('O‘rmon mevalari', _produce),
+  FoodCategory('Quruq mevalar', _produce),
   FoodCategory('Sabzavotlar', _produce),
   FoodCategory('Sut mahsulotlari', _dairy),
   FoodCategory('Pishloqlar', _dairy),

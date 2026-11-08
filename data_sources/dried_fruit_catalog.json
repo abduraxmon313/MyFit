@@ -1,0 +1,1186 @@
+{
+  "source": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_json_2018-04.zip",
+  "sha256": "70d4235ae3a2bdf48a7b9eaa1286a83fa67b6f3270436c9ce8b008213f500129",
+  "foods": [
+    {
+      "fdcId": 173941,
+      "description": "Apricots, dried, sulfured, uncooked",
+      "scientificName": null,
+      "source": "https://fdc.nal.usda.gov/food-details/173941/nutrients",
+      "names": {
+        "uz": "Kuraga (o‘rik qoqi)",
+        "ru": "Курага",
+        "en": "Dried apricots"
+      },
+      "category": "Quruq mevalar",
+      "nutrients": {
+        "carbohydrates": 62.6,
+        "calories": 241,
+        "monounsaturatedFat": 0.074,
+        "polyunsaturatedFat": 0.074,
+        "saturatedFat": 0.017,
+        "vitaminEMg": 4.33,
+        "sugars": 53.4,
+        "calciumMg": 55,
+        "potassiumMg": 1160,
+        "zincMg": 0.39,
+        "water": 30.9,
+        "fat": 0.51,
+        "protein": 3.39,
+        "fiber": 7.3,
+        "ironMg": 2.66,
+        "magnesiumMg": 32,
+        "phosphorusMg": 71,
+        "sodiumMg": 10,
+        "cholesterolMg": 0,
+        "vitaminDMcg": 0,
+        "salt": 0.025
+      },
+      "vitaminCMg": 1,
+      "servings": [
+        {
+          "description": "1 cup, halves",
+          "amount": 130,
+          "unit": "g"
+        },
+        {
+          "description": "1 half",
+          "amount": 3.5,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 171702,
+      "description": "Apricots, dehydrated (low-moisture), sulfured, uncooked",
+      "scientificName": null,
+      "source": "https://fdc.nal.usda.gov/food-details/171702/nutrients",
+      "names": {
+        "uz": "Kuraga, past namlikli",
+        "ru": "Курага обезвоженная",
+        "en": "Apricots, low-moisture"
+      },
+      "category": "Quruq mevalar",
+      "nutrients": {
+        "fat": 0.62,
+        "carbohydrates": 82.9,
+        "calories": 320,
+        "water": 7.5,
+        "calciumMg": 61,
+        "potassiumMg": 1850,
+        "zincMg": 1,
+        "monounsaturatedFat": 0.268,
+        "polyunsaturatedFat": 0.121,
+        "cholesterolMg": 0,
+        "saturatedFat": 0.043,
+        "protein": 4.9,
+        "ironMg": 6.31,
+        "magnesiumMg": 63,
+        "phosphorusMg": 157,
+        "sodiumMg": 13,
+        "vitaminDMcg": 0,
+        "salt": 0.0325
+      },
+      "vitaminCMg": 9.5,
+      "servings": [
+        {
+          "description": "1 cup",
+          "amount": 119,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 168164,
+      "description": "Raisins, golden, seedless",
+      "scientificName": "Vitis vinifera",
+      "source": "https://fdc.nal.usda.gov/food-details/168164/nutrients",
+      "names": {
+        "uz": "Oltin mayiz (sabza)",
+        "ru": "Изюм золотистый",
+        "en": "Golden raisins"
+      },
+      "category": "Quruq mevalar",
+      "nutrients": {
+        "vitaminEMg": 0.12,
+        "fat": 0.2,
+        "carbohydrates": 80,
+        "calories": 301,
+        "water": 14.9,
+        "zincMg": 0.37,
+        "sugars": 65.7,
+        "calciumMg": 64,
+        "monounsaturatedFat": 0.014,
+        "polyunsaturatedFat": 0.057,
+        "protein": 3.28,
+        "fiber": 3.3,
+        "ironMg": 0.98,
+        "vitaminDMcg": 0,
+        "phosphorusMg": 101,
+        "sodiumMg": 24,
+        "cholesterolMg": 0,
+        "saturatedFat": 0.065,
+        "potassiumMg": 746,
+        "magnesiumMg": 35,
+        "salt": 0.06
+      },
+      "vitaminCMg": 3.2,
+      "servings": [
+        {
+          "description": "1 cup (not packed)",
+          "amount": 145,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup, packed",
+          "amount": 165,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 168165,
+      "description": "Raisins, dark, seedless (Includes foods for USDA's Food Distribution Program)",
+      "scientificName": "Vitis vinifera",
+      "source": "https://fdc.nal.usda.gov/food-details/168165/nutrients",
+      "names": {
+        "uz": "Qora mayiz, danaksiz",
+        "ru": "Изюм тёмный без косточек",
+        "en": "Dark raisins, seedless"
+      },
+      "category": "Quruq mevalar",
+      "nutrients": {
+        "cholesterolMg": 0,
+        "saturatedFat": 0.094,
+        "vitaminDMcg": 0,
+        "fiber": 4.5,
+        "ironMg": 1.79,
+        "magnesiumMg": 36,
+        "phosphorusMg": 98,
+        "sodiumMg": 26,
+        "protein": 3.3,
+        "monounsaturatedFat": 0.024,
+        "polyunsaturatedFat": 0.053,
+        "potassiumMg": 744,
+        "zincMg": 0.36,
+        "fat": 0.25,
+        "carbohydrates": 79.3,
+        "water": 15.5,
+        "sugars": 65.2,
+        "calciumMg": 62,
+        "calories": 299,
+        "vitaminEMg": 0.12,
+        "salt": 0.065
+      },
+      "vitaminCMg": 2.3,
+      "servings": [
+        {
+          "description": "1 oz (60 raisins)",
+          "amount": 28.35,
+          "unit": "g"
+        },
+        {
+          "description": "1 miniature box (.5 oz)",
+          "amount": 14,
+          "unit": "g"
+        },
+        {
+          "description": "1 small box (1.5 oz)",
+          "amount": 43,
+          "unit": "g"
+        },
+        {
+          "description": "50 raisins",
+          "amount": 26,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup (not packed)",
+          "amount": 145,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup, packed",
+          "amount": 165,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 168166,
+      "description": "Raisins, seeded",
+      "scientificName": "Vitis vinifera",
+      "source": "https://fdc.nal.usda.gov/food-details/168166/nutrients",
+      "names": {
+        "uz": "Danakli mayiz",
+        "ru": "Изюм с косточками",
+        "en": "Raisins, seeded"
+      },
+      "category": "Quruq mevalar",
+      "nutrients": {
+        "protein": 2.52,
+        "saturatedFat": 0.178,
+        "cholesterolMg": 0,
+        "fiber": 6.8,
+        "ironMg": 2.59,
+        "magnesiumMg": 30,
+        "phosphorusMg": 75,
+        "sodiumMg": 28,
+        "fat": 0.54,
+        "carbohydrates": 78.5,
+        "calories": 296,
+        "water": 16.6,
+        "calciumMg": 28,
+        "potassiumMg": 825,
+        "zincMg": 0.18,
+        "monounsaturatedFat": 0.022,
+        "polyunsaturatedFat": 0.159,
+        "vitaminDMcg": 0,
+        "salt": 0.07
+      },
+      "vitaminCMg": 5.4,
+      "servings": [
+        {
+          "description": "1 cup, packed",
+          "amount": 165,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup (not packed)",
+          "amount": 145,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 171724,
+      "description": "Currants, zante, dried",
+      "scientificName": "Vitis vinifera",
+      "source": "https://fdc.nal.usda.gov/food-details/171724/nutrients",
+      "names": {
+        "uz": "Mayda qora mayiz (korinka)",
+        "ru": "Коринка",
+        "en": "Zante currants"
+      },
+      "category": "Quruq mevalar",
+      "nutrients": {
+        "protein": 3.43,
+        "fiber": 4.4,
+        "ironMg": 1.88,
+        "magnesiumMg": 36,
+        "phosphorusMg": 99,
+        "sodiumMg": 43,
+        "vitaminDMcg": 0,
+        "cholesterolMg": 0,
+        "saturatedFat": 0.085,
+        "sugars": 62.3,
+        "calciumMg": 88,
+        "potassiumMg": 777,
+        "zincMg": 0.37,
+        "fat": 0.22,
+        "carbohydrates": 77,
+        "calories": 290,
+        "water": 17.6,
+        "monounsaturatedFat": 0.021,
+        "polyunsaturatedFat": 0.047,
+        "vitaminEMg": 0.11,
+        "salt": 0.1075
+      },
+      "vitaminCMg": 4.7,
+      "servings": [
+        {
+          "description": "1 cup",
+          "amount": 144,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 168162,
+      "description": "Plums, dried (prunes), uncooked",
+      "scientificName": null,
+      "source": "https://fdc.nal.usda.gov/food-details/168162/nutrients",
+      "names": {
+        "uz": "Chernosliv (olxo‘ri qoqi)",
+        "ru": "Чернослив",
+        "en": "Prunes"
+      },
+      "category": "Quruq mevalar",
+      "nutrients": {
+        "cholesterolMg": 0,
+        "carbohydrates": 63.9,
+        "calories": 240,
+        "monounsaturatedFat": 0.053,
+        "polyunsaturatedFat": 0.062,
+        "saturatedFat": 0.088,
+        "fiber": 7.1,
+        "ironMg": 0.93,
+        "magnesiumMg": 41,
+        "phosphorusMg": 69,
+        "sodiumMg": 2,
+        "protein": 2.18,
+        "water": 30.9,
+        "sugars": 38.1,
+        "calciumMg": 43,
+        "potassiumMg": 732,
+        "zincMg": 0.44,
+        "fat": 0.38,
+        "vitaminEMg": 0.43,
+        "vitaminDMcg": 0,
+        "salt": 0.005
+      },
+      "vitaminCMg": 0.6,
+      "servings": [
+        {
+          "description": "1 cup, pitted",
+          "amount": 174,
+          "unit": "g"
+        },
+        {
+          "description": "1 prune, pitted",
+          "amount": 9.5,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 168160,
+      "description": "Prunes, dehydrated (low-moisture), uncooked",
+      "scientificName": null,
+      "source": "https://fdc.nal.usda.gov/food-details/168160/nutrients",
+      "names": {
+        "uz": "Chernosliv, past namlikli",
+        "ru": "Чернослив обезвоженный",
+        "en": "Prunes, low-moisture"
+      },
+      "category": "Quruq mevalar",
+      "nutrients": {
+        "protein": 3.7,
+        "ironMg": 3.52,
+        "magnesiumMg": 64,
+        "phosphorusMg": 112,
+        "sodiumMg": 5,
+        "cholesterolMg": 0,
+        "saturatedFat": 0.059,
+        "fat": 0.73,
+        "carbohydrates": 89.1,
+        "calories": 339,
+        "water": 4,
+        "calciumMg": 72,
+        "potassiumMg": 1060,
+        "zincMg": 0.75,
+        "monounsaturatedFat": 0.483,
+        "polyunsaturatedFat": 0.159,
+        "vitaminDMcg": 0,
+        "salt": 0.0125
+      },
+      "vitaminCMg": 0,
+      "servings": [
+        {
+          "description": "1 cup",
+          "amount": 132,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 168191,
+      "description": "Dates, medjool",
+      "scientificName": "Phoenix dactylifera",
+      "source": "https://fdc.nal.usda.gov/food-details/168191/nutrients",
+      "names": {
+        "uz": "Finik (Medjool)",
+        "ru": "Финик Меджул",
+        "en": "Medjool dates"
+      },
+      "category": "Quruq mevalar",
+      "nutrients": {
+        "fat": 0.15,
+        "water": 21.3,
+        "sugars": 66.5,
+        "calciumMg": 64,
+        "potassiumMg": 696,
+        "zincMg": 0.44,
+        "protein": 1.81,
+        "fiber": 6.7,
+        "ironMg": 0.9,
+        "magnesiumMg": 54,
+        "phosphorusMg": 62,
+        "sodiumMg": 1,
+        "carbohydrates": 75,
+        "calories": 277,
+        "vitaminDMcg": 0,
+        "salt": 0.0025
+      },
+      "vitaminCMg": 0,
+      "servings": [
+        {
+          "description": "1 date, pitted",
+          "amount": 24,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 171726,
+      "description": "Dates, deglet noor",
+      "scientificName": "Phoenix dactylifera",
+      "source": "https://fdc.nal.usda.gov/food-details/171726/nutrients",
+      "names": {
+        "uz": "Finik (Deglet Noor)",
+        "ru": "Финик Деглет Нур",
+        "en": "Deglet Noor dates"
+      },
+      "category": "Quruq mevalar",
+      "nutrients": {
+        "monounsaturatedFat": 0.036,
+        "polyunsaturatedFat": 0.019,
+        "carbohydrates": 75,
+        "calories": 282,
+        "saturatedFat": 0.032,
+        "cholesterolMg": 0,
+        "fat": 0.39,
+        "water": 20.5,
+        "sugars": 63.4,
+        "calciumMg": 39,
+        "potassiumMg": 656,
+        "zincMg": 0.29,
+        "vitaminEMg": 0.05,
+        "protein": 2.45,
+        "fiber": 8,
+        "ironMg": 1.02,
+        "magnesiumMg": 43,
+        "phosphorusMg": 62,
+        "sodiumMg": 2,
+        "vitaminDMcg": 0,
+        "salt": 0.005
+      },
+      "vitaminCMg": 0.4,
+      "servings": [
+        {
+          "description": "1 cup, chopped",
+          "amount": 147,
+          "unit": "g"
+        },
+        {
+          "description": "1 date, pitted",
+          "amount": 7.1,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 174665,
+      "description": "Figs, dried, uncooked",
+      "scientificName": null,
+      "source": "https://fdc.nal.usda.gov/food-details/174665/nutrients",
+      "names": {
+        "uz": "Anjir qoqi",
+        "ru": "Инжир сушёный",
+        "en": "Dried figs"
+      },
+      "category": "Quruq mevalar",
+      "nutrients": {
+        "saturatedFat": 0.144,
+        "carbohydrates": 63.9,
+        "calories": 249,
+        "monounsaturatedFat": 0.159,
+        "polyunsaturatedFat": 0.345,
+        "cholesterolMg": 0,
+        "vitaminDMcg": 0,
+        "protein": 3.3,
+        "fiber": 9.8,
+        "ironMg": 2.03,
+        "magnesiumMg": 68,
+        "phosphorusMg": 67,
+        "sodiumMg": 10,
+        "fat": 0.93,
+        "water": 30,
+        "sugars": 47.9,
+        "calciumMg": 162,
+        "potassiumMg": 680,
+        "zincMg": 0.55,
+        "vitaminEMg": 0.35,
+        "salt": 0.025
+      },
+      "vitaminCMg": 1.2,
+      "servings": [
+        {
+          "description": "1 cup",
+          "amount": 149,
+          "unit": "g"
+        },
+        {
+          "description": "1 fig",
+          "amount": 8.4,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 171691,
+      "description": "Apples, dried, sulfured, uncooked",
+      "scientificName": null,
+      "source": "https://fdc.nal.usda.gov/food-details/171691/nutrients",
+      "names": {
+        "uz": "Olma qoqi",
+        "ru": "Яблоки сушёные",
+        "en": "Dried apples"
+      },
+      "category": "Quruq mevalar",
+      "nutrients": {
+        "cholesterolMg": 0,
+        "saturatedFat": 0.052,
+        "fiber": 8.7,
+        "ironMg": 1.4,
+        "magnesiumMg": 16,
+        "phosphorusMg": 38,
+        "sodiumMg": 87,
+        "protein": 0.93,
+        "monounsaturatedFat": 0.013,
+        "polyunsaturatedFat": 0.093,
+        "calciumMg": 14,
+        "potassiumMg": 450,
+        "zincMg": 0.2,
+        "fat": 0.32,
+        "carbohydrates": 65.9,
+        "calories": 243,
+        "water": 31.8,
+        "sugars": 57.2,
+        "vitaminEMg": 0.53,
+        "vitaminDMcg": 0,
+        "salt": 0.2175
+      },
+      "vitaminCMg": 3.9,
+      "servings": [
+        {
+          "description": "1 cup",
+          "amount": 86,
+          "unit": "g"
+        },
+        {
+          "description": "1 ring",
+          "amount": 6.4,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 173931,
+      "description": "Apples, dehydrated (low moisture), sulfured, uncooked",
+      "scientificName": null,
+      "source": "https://fdc.nal.usda.gov/food-details/173931/nutrients",
+      "names": {
+        "uz": "Olma qoqi, past namlikli",
+        "ru": "Яблоки обезвоженные",
+        "en": "Apples, low-moisture"
+      },
+      "category": "Quruq mevalar",
+      "nutrients": {
+        "cholesterolMg": 0,
+        "saturatedFat": 0.095,
+        "protein": 1.32,
+        "fiber": 12.4,
+        "ironMg": 2,
+        "magnesiumMg": 22,
+        "phosphorusMg": 55,
+        "sodiumMg": 124,
+        "calciumMg": 19,
+        "potassiumMg": 640,
+        "zincMg": 0.29,
+        "monounsaturatedFat": 0.024,
+        "polyunsaturatedFat": 0.171,
+        "fat": 0.58,
+        "carbohydrates": 93.5,
+        "calories": 346,
+        "water": 3,
+        "vitaminDMcg": 0,
+        "vitaminEMg": 0.75,
+        "sugars": 81.1,
+        "salt": 0.31
+      },
+      "vitaminCMg": 2.2,
+      "servings": [
+        {
+          "description": "1 cup",
+          "amount": 60,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 169121,
+      "description": "Pears, dried, sulfured, uncooked",
+      "scientificName": null,
+      "source": "https://fdc.nal.usda.gov/food-details/169121/nutrients",
+      "names": {
+        "uz": "Nok qoqi",
+        "ru": "Груша сушёная",
+        "en": "Dried pears"
+      },
+      "category": "Quruq mevalar",
+      "nutrients": {
+        "sugars": 62.2,
+        "vitaminEMg": 0.06,
+        "protein": 1.87,
+        "fiber": 7.5,
+        "ironMg": 2.1,
+        "magnesiumMg": 33,
+        "phosphorusMg": 59,
+        "sodiumMg": 6,
+        "cholesterolMg": 0,
+        "saturatedFat": 0.035,
+        "fat": 0.63,
+        "carbohydrates": 69.7,
+        "calories": 262,
+        "water": 26.7,
+        "calciumMg": 34,
+        "potassiumMg": 533,
+        "zincMg": 0.39,
+        "monounsaturatedFat": 0.132,
+        "polyunsaturatedFat": 0.148,
+        "vitaminDMcg": 0,
+        "salt": 0.015
+      },
+      "vitaminCMg": 7,
+      "servings": [
+        {
+          "description": "10 halves",
+          "amount": 175,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup, halves",
+          "amount": 180,
+          "unit": "g"
+        },
+        {
+          "description": "1 half",
+          "amount": 18,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 169934,
+      "description": "Peaches, dried, sulfured, uncooked",
+      "scientificName": null,
+      "source": "https://fdc.nal.usda.gov/food-details/169934/nutrients",
+      "names": {
+        "uz": "Shaftoli qoqi",
+        "ru": "Персик сушёный",
+        "en": "Dried peaches"
+      },
+      "category": "Quruq mevalar",
+      "nutrients": {
+        "vitaminEMg": 0.19,
+        "fat": 0.76,
+        "carbohydrates": 61.3,
+        "calories": 239,
+        "water": 31.8,
+        "calciumMg": 28,
+        "potassiumMg": 996,
+        "zincMg": 0.57,
+        "monounsaturatedFat": 0.278,
+        "polyunsaturatedFat": 0.367,
+        "protein": 3.61,
+        "fiber": 8.2,
+        "ironMg": 4.06,
+        "magnesiumMg": 42,
+        "phosphorusMg": 119,
+        "sodiumMg": 7,
+        "cholesterolMg": 0,
+        "saturatedFat": 0.082,
+        "vitaminDMcg": 0,
+        "sugars": 41.7,
+        "salt": 0.0175
+      },
+      "vitaminCMg": 4.8,
+      "servings": [
+        {
+          "description": "1 cup, halves",
+          "amount": 160,
+          "unit": "g"
+        },
+        {
+          "description": "1 half",
+          "amount": 13,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 169932,
+      "description": "Peaches, dehydrated (low-moisture), sulfured, uncooked",
+      "scientificName": null,
+      "source": "https://fdc.nal.usda.gov/food-details/169932/nutrients",
+      "names": {
+        "uz": "Shaftoli qoqi, past namlikli",
+        "ru": "Персик обезвоженный",
+        "en": "Peaches, low-moisture"
+      },
+      "category": "Quruq mevalar",
+      "nutrients": {
+        "fat": 1.03,
+        "carbohydrates": 83.2,
+        "calories": 325,
+        "water": 7.5,
+        "calciumMg": 38,
+        "potassiumMg": 1350,
+        "zincMg": 0.78,
+        "monounsaturatedFat": 0.377,
+        "polyunsaturatedFat": 0.498,
+        "protein": 4.89,
+        "ironMg": 5.51,
+        "magnesiumMg": 57,
+        "phosphorusMg": 162,
+        "sodiumMg": 10,
+        "cholesterolMg": 0,
+        "saturatedFat": 0.111,
+        "vitaminDMcg": 0,
+        "salt": 0.025
+      },
+      "vitaminCMg": 10.6,
+      "servings": [
+        {
+          "description": "1 cup",
+          "amount": 116,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 169942,
+      "description": "Persimmons, japanese, dried",
+      "scientificName": null,
+      "source": "https://fdc.nal.usda.gov/food-details/169942/nutrients",
+      "names": {
+        "uz": "Xurmo qoqi",
+        "ru": "Хурма сушёная",
+        "en": "Dried persimmon"
+      },
+      "category": "Quruq mevalar",
+      "nutrients": {
+        "fat": 0.59,
+        "carbohydrates": 73.4,
+        "calories": 274,
+        "water": 23,
+        "calciumMg": 25,
+        "potassiumMg": 802,
+        "zincMg": 0.42,
+        "protein": 1.38,
+        "fiber": 14.5,
+        "ironMg": 0.74,
+        "magnesiumMg": 31,
+        "phosphorusMg": 81,
+        "sodiumMg": 2,
+        "cholesterolMg": 0,
+        "vitaminDMcg": 0,
+        "salt": 0.005
+      },
+      "vitaminCMg": 0,
+      "servings": [
+        {
+          "description": "1 fruit without refuse",
+          "amount": 34,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 168152,
+      "description": "Jujube, Chinese, fresh, dried",
+      "scientificName": null,
+      "source": "https://fdc.nal.usda.gov/food-details/168152/nutrients",
+      "names": {
+        "uz": "Jiyda qoqi (unabi)",
+        "ru": "Унаби сушёный",
+        "en": "Dried jujube"
+      },
+      "category": "Quruq mevalar",
+      "nutrients": {
+        "protein": 4.72,
+        "fiber": 6,
+        "ironMg": 5.09,
+        "phosphorusMg": 68,
+        "sodiumMg": 5,
+        "fat": 0.5,
+        "carbohydrates": 72.5,
+        "calories": 281,
+        "water": 20.2,
+        "calciumMg": 63,
+        "potassiumMg": 217,
+        "zincMg": 0.39,
+        "cholesterolMg": 0,
+        "salt": 0.0125
+      },
+      "vitaminCMg": 218,
+      "servings": []
+    },
+    {
+      "fdcId": 171708,
+      "description": "Cherries, tart, dried, sweetened (Includes foods for USDA's Food Distribution Program)",
+      "scientificName": null,
+      "source": "https://fdc.nal.usda.gov/food-details/171708/nutrients",
+      "names": {
+        "uz": "Olcha qoqi, shakarli",
+        "ru": "Вишня сушёная, сладкая",
+        "en": "Dried tart cherries, sweetened"
+      },
+      "category": "Quruq mevalar",
+      "nutrients": {
+        "monounsaturatedFat": 0.177,
+        "polyunsaturatedFat": 0.194,
+        "fat": 0.73,
+        "carbohydrates": 80.4,
+        "calories": 333,
+        "water": 16.6,
+        "sugars": 67.2,
+        "calciumMg": 38,
+        "potassiumMg": 376,
+        "zincMg": 0.25,
+        "vitaminEMg": 0.17,
+        "protein": 1.25,
+        "fiber": 2.5,
+        "ironMg": 0.68,
+        "magnesiumMg": 22,
+        "phosphorusMg": 36,
+        "sodiumMg": 13,
+        "vitaminDMcg": 0,
+        "cholesterolMg": 0,
+        "saturatedFat": 0.146,
+        "salt": 0.0325
+      },
+      "vitaminCMg": 19.3,
+      "servings": [
+        {
+          "description": "0.25 cup",
+          "amount": 40,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 171723,
+      "description": "Cranberries, dried, sweetened (Includes foods for USDA's Food Distribution Program)",
+      "scientificName": null,
+      "source": "https://fdc.nal.usda.gov/food-details/171723/nutrients",
+      "names": {
+        "uz": "Klyukva qoqi, shakarli",
+        "ru": "Клюква сушёная, сладкая",
+        "en": "Dried cranberries, sweetened"
+      },
+      "category": "Quruq mevalar",
+      "nutrients": {
+        "calories": 308,
+        "phosphorusMg": 8,
+        "sodiumMg": 5,
+        "fiber": 5.3,
+        "ironMg": 0.39,
+        "magnesiumMg": 4,
+        "protein": 0.17,
+        "cholesterolMg": 0,
+        "saturatedFat": 0.088,
+        "monounsaturatedFat": 0.298,
+        "polyunsaturatedFat": 0.182,
+        "fat": 1.09,
+        "carbohydrates": 82.8,
+        "water": 15.8,
+        "sugars": 72.6,
+        "calciumMg": 9,
+        "potassiumMg": 49,
+        "zincMg": 0.1,
+        "vitaminEMg": 2.1,
+        "vitaminDMcg": 0,
+        "salt": 0.0125
+      },
+      "vitaminCMg": 0.2,
+      "servings": [
+        {
+          "description": "0.25 cup",
+          "amount": 40,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 168158,
+      "description": "Blueberries, dried, sweetened",
+      "scientificName": null,
+      "source": "https://fdc.nal.usda.gov/food-details/168158/nutrients",
+      "names": {
+        "uz": "Ko‘k meva qoqi, shakarli",
+        "ru": "Голубика сушёная, сладкая",
+        "en": "Dried blueberries, sweetened"
+      },
+      "category": "Quruq mevalar",
+      "nutrients": {
+        "saturatedFat": 0.2,
+        "magnesiumMg": 18,
+        "phosphorusMg": 36,
+        "sodiumMg": 3,
+        "vitaminDMcg": 0,
+        "cholesterolMg": 0,
+        "calories": 317,
+        "calciumMg": 19,
+        "potassiumMg": 214,
+        "zincMg": 0.49,
+        "vitaminEMg": 2.35,
+        "monounsaturatedFat": 0.405,
+        "polyunsaturatedFat": 1.3,
+        "protein": 2.5,
+        "fiber": 7.5,
+        "ironMg": 0.9,
+        "sugars": 67.5,
+        "water": 14.8,
+        "fat": 2.5,
+        "carbohydrates": 80,
+        "salt": 0.0075
+      },
+      "vitaminCMg": 23.8,
+      "servings": [
+        {
+          "description": "0.25 cup",
+          "amount": 40,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 173032,
+      "description": "Goji berries, dried",
+      "scientificName": "Lycium barbarum L.",
+      "source": "https://fdc.nal.usda.gov/food-details/173032/nutrients",
+      "names": {
+        "uz": "Goji (quritilgan)",
+        "ru": "Годжи сушёные",
+        "en": "Dried goji berries"
+      },
+      "category": "Quruq mevalar",
+      "nutrients": {
+        "protein": 14.3,
+        "fiber": 13,
+        "ironMg": 6.8,
+        "sodiumMg": 298,
+        "cholesterolMg": 0,
+        "saturatedFat": 0,
+        "fat": 0.39,
+        "carbohydrates": 77.1,
+        "calories": 349,
+        "water": 7.5,
+        "sugars": 45.6,
+        "calciumMg": 190,
+        "salt": 0.745
+      },
+      "vitaminCMg": 48.4,
+      "servings": [
+        {
+          "description": "5 tbsp",
+          "amount": 28,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 169091,
+      "description": "Mango, dried, sweetened",
+      "scientificName": null,
+      "source": "https://fdc.nal.usda.gov/food-details/169091/nutrients",
+      "names": {
+        "uz": "Mango qoqi, shakarli",
+        "ru": "Манго сушёное, сладкое",
+        "en": "Dried mango, sweetened"
+      },
+      "category": "Quruq mevalar",
+      "nutrients": {
+        "protein": 2.45,
+        "fiber": 2.4,
+        "ironMg": 0.23,
+        "magnesiumMg": 20,
+        "phosphorusMg": 50,
+        "sodiumMg": 162,
+        "vitaminDMcg": 0,
+        "cholesterolMg": 0,
+        "saturatedFat": 0.287,
+        "fat": 1.18,
+        "carbohydrates": 78.6,
+        "calories": 319,
+        "water": 16.6,
+        "sugars": 66.3,
+        "calciumMg": 0,
+        "potassiumMg": 279,
+        "zincMg": 0.3,
+        "vitaminEMg": 4.02,
+        "monounsaturatedFat": 0.439,
+        "polyunsaturatedFat": 0.222,
+        "salt": 0.405
+      },
+      "vitaminCMg": 42.3,
+      "servings": []
+    },
+    {
+      "fdcId": 173945,
+      "description": "Bananas, dehydrated, or banana powder",
+      "scientificName": null,
+      "source": "https://fdc.nal.usda.gov/food-details/173945/nutrients",
+      "names": {
+        "uz": "Banan qoqi",
+        "ru": "Банан сушёный",
+        "en": "Dehydrated bananas"
+      },
+      "category": "Quruq mevalar",
+      "nutrients": {
+        "protein": 3.89,
+        "ironMg": 1.15,
+        "magnesiumMg": 108,
+        "phosphorusMg": 74,
+        "sodiumMg": 3,
+        "cholesterolMg": 0,
+        "saturatedFat": 0.698,
+        "monounsaturatedFat": 0.153,
+        "polyunsaturatedFat": 0.337,
+        "fat": 1.81,
+        "carbohydrates": 88.3,
+        "calories": 346,
+        "water": 3,
+        "calciumMg": 22,
+        "potassiumMg": 1490,
+        "zincMg": 0.61,
+        "vitaminDMcg": 0,
+        "vitaminEMg": 0.39,
+        "sugars": 47.3,
+        "fiber": 9.9,
+        "salt": 0.0075
+      },
+      "vitaminCMg": 7,
+      "servings": [
+        {
+          "description": "1 tbsp",
+          "amount": 6.2,
+          "unit": "g"
+        },
+        {
+          "description": "1 cup",
+          "amount": 100,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 169087,
+      "description": "Litchis, dried",
+      "scientificName": null,
+      "source": "https://fdc.nal.usda.gov/food-details/169087/nutrients",
+      "names": {
+        "uz": "Lichi qoqi",
+        "ru": "Личи сушёный",
+        "en": "Dried lychee"
+      },
+      "category": "Quruq mevalar",
+      "nutrients": {
+        "monounsaturatedFat": 0.328,
+        "polyunsaturatedFat": 0.361,
+        "saturatedFat": 0.27,
+        "sugars": 66.1,
+        "vitaminEMg": 0.31,
+        "calories": 277,
+        "protein": 3.8,
+        "fiber": 4.6,
+        "ironMg": 1.7,
+        "magnesiumMg": 42,
+        "phosphorusMg": 181,
+        "sodiumMg": 3,
+        "cholesterolMg": 0,
+        "fat": 1.2,
+        "carbohydrates": 70.7,
+        "water": 22.3,
+        "calciumMg": 33,
+        "potassiumMg": 1110,
+        "zincMg": 0.28,
+        "vitaminDMcg": 0,
+        "salt": 0.0075
+      },
+      "vitaminCMg": 183,
+      "servings": [
+        {
+          "description": "1 fruit",
+          "amount": 2.5,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 169907,
+      "description": "Longans, dried",
+      "scientificName": null,
+      "source": "https://fdc.nal.usda.gov/food-details/169907/nutrients",
+      "names": {
+        "uz": "Longan qoqi",
+        "ru": "Лонган сушёный",
+        "en": "Dried longan"
+      },
+      "category": "Quruq mevalar",
+      "nutrients": {
+        "fat": 0.4,
+        "carbohydrates": 74,
+        "calories": 286,
+        "water": 17.6,
+        "calciumMg": 45,
+        "potassiumMg": 658,
+        "zincMg": 0.22,
+        "cholesterolMg": 0,
+        "ironMg": 5.4,
+        "magnesiumMg": 46,
+        "phosphorusMg": 196,
+        "sodiumMg": 48,
+        "protein": 4.9,
+        "salt": 0.12
+      },
+      "vitaminCMg": 28,
+      "servings": [
+        {
+          "description": "1 fruit",
+          "amount": 1.7,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "fdcId": 167781,
+      "description": "Candied fruit",
+      "scientificName": null,
+      "source": "https://fdc.nal.usda.gov/food-details/167781/nutrients",
+      "names": {
+        "uz": "Sukat (qandlangan meva)",
+        "ru": "Цукаты",
+        "en": "Candied fruit"
+      },
+      "category": "Quruq mevalar",
+      "nutrients": {
+        "cholesterolMg": 0,
+        "sodiumMg": 98,
+        "monounsaturatedFat": 0.008,
+        "vitaminEMg": 0.04,
+        "fiber": 1.6,
+        "ironMg": 0.17,
+        "magnesiumMg": 4,
+        "phosphorusMg": 5,
+        "protein": 0.34,
+        "saturatedFat": 0.01,
+        "fat": 0.07,
+        "carbohydrates": 82.7,
+        "calories": 322,
+        "polyunsaturatedFat": 0.02,
+        "sugars": 80.7,
+        "calciumMg": 18,
+        "potassiumMg": 56,
+        "zincMg": 0.05,
+        "water": 16.7,
+        "vitaminDMcg": 0,
+        "salt": 0.245
+      },
+      "vitaminCMg": 0,
+      "servings": []
+    }
+  ]
+}
