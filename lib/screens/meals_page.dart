@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../l10n/app_localizations.dart';
 import '../models/food_nutrition.dart';
+import '../widgets/food_thumbnail.dart';
 
 enum MealType { breakfast, lunch, dinner, fifthSnack, snack }
 
@@ -656,182 +657,157 @@ class _ExpandableMealTimelineItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SizedBox(
-            width: 34,
-            child: Column(
-              children: [
-                Container(
-                  width: 13,
-                  height: 13,
-                  decoration: BoxDecoration(
-                    color: meal.accent(context),
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: context.appColor(Colors.white, surface: false),
-                      width: 3,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: meal.accent(context).withValues(alpha: .28),
-                        blurRadius: 8,
-                      ),
-                    ],
+    final colors = Theme.of(context).colorScheme;
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    final accent = meal.accent(context);
+    final border = dark ? colors.outlineVariant : const Color(0xFFE4E9EE);
+    final radius = BorderRadius.circular(20);
+    final languageCode = Localizations.localeOf(context).languageCode;
+    return Padding(
+      padding: EdgeInsets.only(bottom: isLast ? 0 : 12),
+      child: Container(
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+          color: colors.surfaceContainerLowest,
+          borderRadius: radius,
+          border: Border.all(color: border),
+          boxShadow: dark
+              ? const []
+              : const [
+                  BoxShadow(
+                    color: Color(0x0A0F1B2D),
+                    blurRadius: 18,
+                    offset: Offset(0, 6),
                   ),
-                ),
-                if (!isLast)
-                  Expanded(
-                    child: Container(
-                      width: 2,
-                      margin: const EdgeInsets.symmetric(vertical: 3),
-                      color: meal.accent(context).withValues(alpha: .18),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 13),
-              child: Material(
-                color: Theme.of(context).colorScheme.surfaceContainerLowest,
-                borderRadius: BorderRadius.circular(16),
-                clipBehavior: Clip.antiAlias,
-                child: _MealPhotoSurface(
-                  meal: meal,
-                  child: Theme(
-                    data: Theme.of(context).copyWith(
-                      dividerColor: Colors.transparent,
-                      splashColor: meal.accent(context).withValues(alpha: .06),
-                    ),
-                    child: ExpansionTile(
-                      key: ValueKey('${meal.name}:${foods.length}'),
-                      initiallyExpanded: foods.isNotEmpty,
-                      onExpansionChanged: (expanded) {
-                        if (expanded && foods.isEmpty) onAdd();
-                      },
-                      tilePadding: const EdgeInsets.fromLTRB(14, 18, 10, 18),
-                      childrenPadding: EdgeInsets.zero,
-                      backgroundColor: Colors.transparent,
-                      collapsedBackgroundColor: Colors.transparent,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                        side: BorderSide(
-                          color: meal.accent(context).withValues(alpha: .24),
-                        ),
-                      ),
-                      collapsedShape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                        side: BorderSide(
-                          color: meal.accent(context).withValues(alpha: .1),
-                        ),
-                      ),
-                      leading: Container(
-                        width: 48,
-                        height: 48,
-                        decoration: BoxDecoration(
-                          color: context.appColor(
-                            meal.background,
-                            surface: true,
-                          ),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Icon(
-                          meal.icon,
-                          color: meal.accent(context),
-                          size: 25,
-                        ),
-                      ),
-                      title: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
+                ],
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: Column(
+            children: [
+              InkWell(
+                onTap: onAdd,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+                  child: Row(
+                    children: [
+                      _MealPhoto(meal: meal),
+                      const SizedBox(width: 14),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
                               meal.localizedTitle(context),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                color: context.appColor(
-                                  Color(0xFF10223C),
-                                  surface: false,
-                                ),
+                                color: colors.onSurface,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700,
+                                letterSpacing: -.2,
                               ),
                             ),
-                          ),
-                          if (foods.isNotEmpty)
-                            Text(
-                              '${totalCalories.round()}',
-                              style: TextStyle(
-                                color: context.appColor(
-                                  Color(0xFF10223C),
-                                  surface: false,
+                            const SizedBox(height: 4),
+                            Row(
+                              children: [
+                                Icon(
+                                  foods.isEmpty
+                                      ? Icons.schedule_rounded
+                                      : Icons.check_circle_rounded,
+                                  size: 13,
+                                  color: foods.isEmpty
+                                      ? colors.onSurfaceVariant
+                                      : accent,
                                 ),
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
-                              ),
+                                const SizedBox(width: 4),
+                                Flexible(
+                                  child: Text(
+                                    foods.isEmpty
+                                        ? meal.localizedTime(context)
+                                        : '${foods.length} ${context.tr('mahsulot')} · ${totalCalories.round()} ${context.tr('kcal')}',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: colors.onSurfaceVariant,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                        ],
+                          ],
+                        ),
                       ),
-                      subtitle: Padding(
-                        padding: const EdgeInsets.only(top: 4),
-                        child: Text(
-                          foods.isEmpty
-                              ? meal.localizedTime(context)
-                              : '${foods.length} ${context.tr('mahsulot')} · ${context.tr('kcal')}',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: foods.isEmpty
-                                ? context.appColor(
-                                    Color(0xFF7A8392),
-                                    surface: false,
-                                  )
-                                : meal.accent(context),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w700,
+                      const SizedBox(width: 10),
+                      Semantics(
+                        button: true,
+                        label: context.tr('Ovqat qo‘shish'),
+                        child: Container(
+                          width: 38,
+                          height: 38,
+                          decoration: BoxDecoration(
+                            color: accent,
+                            shape: BoxShape.circle,
+                            boxShadow: dark
+                                ? null
+                                : [
+                                    BoxShadow(
+                                      color: accent.withValues(alpha: .3),
+                                      blurRadius: 10,
+                                      offset: const Offset(0, 4),
+                                    ),
+                                  ],
+                          ),
+                          child: Icon(
+                            Icons.add_rounded,
+                            color: dark ? colors.surface : Colors.white,
+                            size: 22,
                           ),
                         ),
                       ),
-                      trailing: _MealAddButton(
-                        color: meal.accent(context),
-                        onTap: onAdd,
-                      ),
-                      children: [
-                        if (foods.isEmpty)
-                          _EmptyMealContent(meal: meal, onAdd: onAdd)
-                        else
-                          _MealExpandedContent(
-                            meal: meal,
-                            foods: foods,
-                            onAdd: onAdd,
-                            onRemove: onRemove,
-                          ),
-                      ],
-                    ),
+                    ],
                   ),
                 ),
               ),
-            ),
+              if (foods.isNotEmpty) ...[
+                Divider(height: 1, thickness: 1, color: border),
+                for (var index = 0; index < foods.length; index++) ...[
+                  if (index > 0)
+                    Divider(
+                      height: 1,
+                      thickness: 1,
+                      indent: 66,
+                      color: border.withValues(alpha: .7),
+                    ),
+                  _MealFoodRow(
+                    food: foods[index],
+                    languageCode: languageCode,
+                    onRemove: onRemove == null
+                        ? null
+                        : () => onRemove!(foods[index]),
+                  ),
+                ],
+              ],
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
 }
 
-class _MealPhotoSurface extends StatelessWidget {
-  const _MealPhotoSurface({required this.meal, required this.child});
+/// `meal_photography.png` beshta vertikal suratdan iborat; har bir mahal o'z
+/// suratining markaziy kvadrat qismini ko'rsatadi.
+class _MealPhoto extends StatelessWidget {
+  const _MealPhoto({required this.meal});
 
   final MealType meal;
-  final Widget child;
+  static const _size = 56.0;
 
   @override
   Widget build(BuildContext context) {
-    final surface = Theme.of(context).colorScheme.surfaceContainerLowest;
     final index = switch (meal) {
       MealType.breakfast => 0,
       MealType.lunch => 1,
@@ -839,200 +815,25 @@ class _MealPhotoSurface extends StatelessWidget {
       MealType.fifthSnack => 3,
       MealType.snack => 4,
     };
-    return Stack(
-      children: [
-        Positioned(
-          top: 0,
-          right: 0,
-          width: 144,
-          height: 112,
-          child: IgnorePointer(
-            child: ExcludeSemantics(
-              child: ShaderMask(
-                blendMode: BlendMode.dstIn,
-                shaderCallback: (bounds) => const LinearGradient(
-                  colors: [Colors.transparent, Colors.black],
-                  stops: [0, .6],
-                ).createShader(bounds),
-                child: ClipRect(
-                  child: OverflowBox(
-                    minWidth: 720,
-                    maxWidth: 720,
-                    alignment: Alignment(-1 + index * .5, 0),
-                    child: Image.asset(
-                      'assets/images/meal_photography.png',
-                      width: 720,
-                      height: 112,
-                      fit: BoxFit.cover,
-                      cacheWidth: 1440,
-                    ),
-                  ),
-                ),
-              ),
+    return ExcludeSemantics(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: SizedBox.square(
+          dimension: _size,
+          child: OverflowBox(
+            minWidth: _size * 5,
+            maxWidth: _size * 5,
+            minHeight: _size * 5 * 724 / 2172,
+            maxHeight: _size * 5 * 724 / 2172,
+            alignment: Alignment(-1 + index * .5, .1),
+            child: Image.asset(
+              'assets/images/meal_photography.png',
+              fit: BoxFit.cover,
+              cacheWidth: 900,
+              filterQuality: FilterQuality.medium,
             ),
           ),
         ),
-        Positioned.fill(
-          child: IgnorePointer(
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    surface,
-                    surface.withValues(alpha: .96),
-                    surface.withValues(alpha: .38),
-                  ],
-                  stops: const [0, .45, 1],
-                ),
-              ),
-            ),
-          ),
-        ),
-        child,
-      ],
-    );
-  }
-}
-
-class _MealAddButton extends StatelessWidget {
-  const _MealAddButton({required this.color, required this.onTap});
-
-  final Color color;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: color.withValues(alpha: .1),
-      borderRadius: BorderRadius.circular(12),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: SizedBox(
-          width: 34,
-          height: 34,
-          child: Icon(Icons.add_rounded, color: color, size: 23),
-        ),
-      ),
-    );
-  }
-}
-
-class _EmptyMealContent extends StatelessWidget {
-  const _EmptyMealContent({required this.meal, required this.onAdd});
-
-  final MealType meal;
-  final VoidCallback onAdd;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onAdd,
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(15),
-        color: context
-            .appColor(meal.background, surface: true)
-            .withValues(alpha: .5),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.add_circle_outline_rounded,
-              color: meal.accent(context),
-              size: 18,
-            ),
-            const SizedBox(width: 7),
-            Text(
-              context.tr('Ovqat qo‘shish'),
-              style: TextStyle(
-                color: meal.accent(context),
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _MealExpandedContent extends StatelessWidget {
-  const _MealExpandedContent({
-    required this.meal,
-    required this.foods,
-    required this.onAdd,
-    required this.onRemove,
-  });
-
-  final MealType meal;
-  final List<FoodNutrition> foods;
-  final VoidCallback onAdd;
-  final ValueChanged<FoodNutrition>? onRemove;
-
-  @override
-  Widget build(BuildContext context) {
-    final languageCode = Localizations.localeOf(context).languageCode;
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: context
-            .appColor(meal.background, surface: true)
-            .withValues(alpha: .52),
-        border: Border(
-          top: BorderSide(color: meal.accent(context).withValues(alpha: .12)),
-        ),
-      ),
-      child: Column(
-        children: [
-          for (var index = 0; index < foods.length; index++) ...[
-            _MealFoodRow(
-              food: foods[index],
-              languageCode: languageCode,
-              color: meal.accent(context),
-              onRemove: onRemove == null ? null : () => onRemove!(foods[index]),
-            ),
-            if (index != foods.length - 1)
-              Divider(
-                height: 1,
-                indent: 54,
-                endIndent: 14,
-                color: meal.accent(context).withValues(alpha: .1),
-              ),
-          ],
-          Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: onAdd,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.add_circle_outline_rounded,
-                      color: meal.accent(context),
-                      size: 18,
-                    ),
-                    const SizedBox(width: 7),
-                    Text(
-                      context.tr('Ovqat qo‘shish'),
-                      style: TextStyle(
-                        color: meal.accent(context),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -1042,34 +843,23 @@ class _MealFoodRow extends StatelessWidget {
   const _MealFoodRow({
     required this.food,
     required this.languageCode,
-    required this.color,
     required this.onRemove,
   });
 
   final FoodNutrition food;
   final String languageCode;
-  final Color color;
   final VoidCallback? onRemove;
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     final wholeGrams = food.grams == food.grams.roundToDouble();
     return Padding(
-      padding: const EdgeInsets.fromLTRB(14, 12, 7, 12),
+      padding: EdgeInsets.fromLTRB(14, 10, onRemove == null ? 16 : 4, 10),
       child: Row(
         children: [
-          Container(
-            width: 34,
-            height: 34,
-            decoration: BoxDecoration(
-              color: context
-                  .appColor(Colors.white, surface: true)
-                  .withValues(alpha: .82),
-              borderRadius: BorderRadius.circular(11),
-            ),
-            child: Icon(Icons.restaurant_rounded, color: color, size: 18),
-          ),
-          const SizedBox(width: 10),
+          FoodThumbnail(asset: foodThumbnailAsset(food), size: 40),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1079,18 +869,17 @@ class _MealFoodRow extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    color: context.appColor(Color(0xFF10223C), surface: false),
-                    fontSize: 13,
+                    color: colors.onSurface,
+                    fontSize: 14,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(height: 3),
+                const SizedBox(height: 2),
                 Text(
                   '${food.grams.toStringAsFixed(wholeGrams ? 0 : 1)} ${context.tr(food.basisUnit)}',
                   style: TextStyle(
-                    color: color,
-                    fontSize: 11,
-                    fontWeight: FontWeight.w700,
+                    color: colors.onSurfaceVariant,
+                    fontSize: 12,
                   ),
                 ),
               ],
@@ -1100,9 +889,10 @@ class _MealFoodRow extends StatelessWidget {
           Text(
             '${food.calories.round()} ${context.tr('kcal')}',
             style: TextStyle(
-              color: context.appColor(Color(0xFF10223C), surface: false),
-              fontSize: 12,
+              color: colors.onSurface,
+              fontSize: 13,
               fontWeight: FontWeight.w700,
+              fontFeatures: const [FontFeature.tabularFigures()],
             ),
           ),
           if (onRemove != null)
@@ -1110,9 +900,9 @@ class _MealFoodRow extends StatelessWidget {
               onPressed: onRemove,
               visualDensity: VisualDensity.compact,
               tooltip: MaterialLocalizations.of(context).deleteButtonTooltip,
-              icon: const Icon(
+              icon: Icon(
                 Icons.close_rounded,
-                color: Color(0xFF9AA59F),
+                color: colors.onSurfaceVariant,
                 size: 18,
               ),
             ),

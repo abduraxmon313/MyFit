@@ -1029,7 +1029,7 @@ void main() {
 
     expect(find.text('Tovuq shashlik'), findsOneWidget);
     expect(find.text('180 kcal'), findsOneWidget);
-    expect(find.text('1 mahsulot · kcal'), findsOneWidget);
+    expect(find.text('1 mahsulot · 180 kcal'), findsOneWidget);
   });
 
   testWidgets('Profil sahifasi shaxsiy ma’lumotlarni ko‘rsatadi', (
