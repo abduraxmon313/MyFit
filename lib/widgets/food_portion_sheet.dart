@@ -128,7 +128,9 @@ class _FoodPortionSheetState extends State<FoodPortionSheet> {
   @override
   void initState() {
     super.initState();
-    _sizes = widget.food.basisUnit == 'g' && widget.food.servings.isEmpty ? foodPieceSizes(widget.food) : null;
+    _sizes = widget.food.basisUnit == 'g' && widget.food.servings.isEmpty
+        ? foodPieceSizes(widget.food)
+        : null;
     _pieces = _pieceGrams != null;
     _amount = TextEditingController(text: _pieces ? '1' : '100');
   }
@@ -142,7 +144,8 @@ class _FoodPortionSheetState extends State<FoodPortionSheet> {
   double? get _grams {
     final value = double.tryParse(_amount.text.replaceAll(',', '.'));
     if (value == null || !value.isFinite || value <= 0) return null;
-    final grams = value * (_sourceServing?.amount ?? (_pieces ? _pieceGrams! : 1));
+    final grams =
+        value * (_sourceServing?.amount ?? (_pieces ? _pieceGrams! : 1));
     return grams.isFinite && grams >= 1 && grams <= 5000 ? grams : null;
   }
 
@@ -189,13 +192,32 @@ class _FoodPortionSheetState extends State<FoodPortionSheet> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              widget.title,
-              style: TextStyle(
-                color: colors.onSurface,
-                fontSize: 24,
-                fontWeight: FontWeight.w600,
-              ),
+            Row(
+              children: [
+                // Adashib ochilganda ovqat qo'shmasdan orqaga qaytish.
+                IconButton(
+                  key: const Key('portion-back'),
+                  tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+                  onPressed: () => Navigator.maybePop(context),
+                  style: IconButton.styleFrom(
+                    backgroundColor: colors.surfaceContainerHigh,
+                    foregroundColor: colors.onSurface,
+                    fixedSize: const Size(44, 44),
+                  ),
+                  icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 18),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    widget.title,
+                    style: TextStyle(
+                      color: colors.onSurface,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 4),
             Text(
@@ -208,18 +230,33 @@ class _FoodPortionSheetState extends State<FoodPortionSheet> {
                 key: const Key('source-portion-unit'),
                 initialValue: -1,
                 isExpanded: true,
-                decoration: InputDecoration(labelText: context.tr('O‘lchov birligi')),
+                decoration: InputDecoration(
+                  labelText: context.tr('O‘lchov birligi'),
+                ),
                 items: [
-                  DropdownMenuItem(value: -1, child: Text(context.tr(widget.food.basisUnit))),
+                  DropdownMenuItem(
+                    value: -1,
+                    child: Text(context.tr(widget.food.basisUnit)),
+                  ),
                   for (var i = 0; i < widget.food.servings.length; i++)
-                    DropdownMenuItem(value: i, child: Text('${widget.food.servings[i].description} (${_format(widget.food.servings[i].amount)} ${context.tr(widget.food.basisUnit)})', overflow: TextOverflow.ellipsis)),
+                    DropdownMenuItem(
+                      value: i,
+                      child: Text(
+                        '${widget.food.servings[i].description} (${_format(widget.food.servings[i].amount)} ${context.tr(widget.food.basisUnit)})',
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                 ],
                 onChanged: (index) {
                   if (index == null) return;
                   final previousAmount = _grams;
                   setState(() {
-                    _sourceServing = index < 0 ? null : widget.food.servings[index];
-                    _amount.text = _format((previousAmount ?? 100) / (_sourceServing?.amount ?? 1));
+                    _sourceServing = index < 0
+                        ? null
+                        : widget.food.servings[index];
+                    _amount.text = _format(
+                      (previousAmount ?? 100) / (_sourceServing?.amount ?? 1),
+                    );
                     _showError = false;
                   });
                 },
@@ -283,9 +320,13 @@ class _FoodPortionSheetState extends State<FoodPortionSheet> {
               ],
               decoration: InputDecoration(
                 labelText: context.tr('Miqdori'),
-                suffixText: _sourceServing != null ? '×' : context.tr(_pieces ? 'dona' : widget.food.basisUnit),
+                suffixText: _sourceServing != null
+                    ? '×'
+                    : context.tr(_pieces ? 'dona' : widget.food.basisUnit),
                 errorText: _showError
-                    ? context.tr('1–5000 {unit} oralig‘ida miqdor kiriting.', {'unit': context.tr(widget.food.basisUnit)})
+                    ? context.tr('1–5000 {unit} oralig‘ida miqdor kiriting.', {
+                        'unit': context.tr(widget.food.basisUnit),
+                      })
                     : null,
               ),
             ),

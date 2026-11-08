@@ -59,18 +59,12 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    for (final text in [
-      'Пищевая ценность',
-      '5,54 г',
-      '4,37 г',
-      '1,364 г',
-      '1,676 г',
-      '0,6 г',
-      '62 мг',
-      '186 мг',
-      '0 г',
-    ]) {
-      expect(find.text(text), findsWidgets);
+    for (final text in ['5,54 г', '4,37 г', '0,34 г']) {
+      expect(find.text(text), findsOneWidget);
+    }
+    // Faqat kaloriya, oqsil, uglevod va yog' ko'rsatiladi.
+    for (final text in ['1,364 г', '62 мг', '186 мг']) {
+      expect(find.text(text), findsNothing);
     }
     expect(tester.takeException(), isNull);
   });
@@ -88,7 +82,11 @@ void main() {
         ),
       ),
     );
-    expect(find.text('—'), findsNWidgets(8));
+    // Qo'shimcha moddalar (natriy, kletchatka va h.k.) endi ko'rsatilmaydi.
+    for (final label in ['Natriy', 'Kletchatka', 'Shakar', 'Kaliy']) {
+      expect(find.text(label), findsNothing);
+    }
+    expect(find.text('Oqsil'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 }

@@ -52,17 +52,32 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
     if (page == null || _isSearching) return;
     setState(() => _isSearching = true);
     try {
-      final result = await _foodDataService.searchAdditionalPage(query, languageCode: Localizations.localeOf(context).languageCode, page: page);
+      final result = await _foodDataService.searchAdditionalPage(
+        query,
+        languageCode: Localizations.localeOf(context).languageCode,
+        page: page,
+      );
       if (!mounted || query != _query.trim()) return;
-      final ids = {..._globalFoods.map((f) => '${f.dataSource}:${f.fdcId}'), ..._dishes.map((d) => '${d.nutrition.dataSource}:${d.nutrition.fdcId}')};
+      final ids = {
+        ..._globalFoods.map((f) => '${f.dataSource}:${f.fdcId}'),
+        ..._dishes.map((d) => '${d.nutrition.dataSource}:${d.nutrition.fdcId}'),
+      };
       setState(() {
-        _globalFoods = [..._globalFoods, ...result.foods.where((f) => ids.add('${f.dataSource}:${f.fdcId}'))];
+        _globalFoods = [
+          ..._globalFoods,
+          ...result.foods.where((f) => ids.add('${f.dataSource}:${f.fdcId}')),
+        ];
         _nextPage = result.nextPage;
         _isSearching = false;
       });
     } catch (_) {
       if (!mounted || query != _query.trim()) return;
-      setState(() { _isSearching = false; _searchError = context.tr('Mahsulotlarni yuklab bo‘lmadi. Qayta urinib ko‘ring.'); });
+      setState(() {
+        _isSearching = false;
+        _searchError = context.tr(
+          'Mahsulotlarni yuklab bo‘lmadi. Qayta urinib ko‘ring.',
+        );
+      });
     }
   }
 
@@ -117,7 +132,9 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
       final localIds = _dishes.map((dish) => dish.nutrition.fdcId).toSet();
       final uniqueNames = <String>{};
       setState(() {
-        _nextPage = foods.any((food) => food.dataSource == 'FatSecret') ? 1 : null;
+        _nextPage = foods.any((food) => food.dataSource == 'FatSecret')
+            ? 1
+            : null;
         _globalFoods = foods
             .where((food) => !localIds.contains(food.fdcId))
             // USDA ayrim bir xil yozuvlarni turli datasetlardan qaytaradi.
@@ -181,7 +198,9 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
       food,
       food.displayNameFor(languageCode),
       storedName: food.localName,
-      subtitle: context.tr('Oziq qiymati 100 {unit} uchun', {'unit': context.tr(food.basisUnit)}),
+      subtitle: context.tr('Oziq qiymati 100 {unit} uchun', {
+        'unit': context.tr(food.basisUnit),
+      }),
     );
   }
 
@@ -218,10 +237,21 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
     return Scaffold(
       backgroundColor: context.appColor(Color(0xFFF5FAF7), surface: true),
       appBar: AppBar(
-        actions: [IconButton(tooltip: context.tr('Yorliqdan mahsulot qo‘shish'), icon: const Icon(Icons.add), onPressed: () async {
-          final food = await Navigator.push<FoodNutrition>(context, MaterialPageRoute(builder: (_) => const CustomFoodPage()));
-          if (food != null && mounted) { await _chooseGlobal(food); }
-        })],
+        actions: [
+          IconButton(
+            tooltip: context.tr('Yorliqdan mahsulot qo‘shish'),
+            icon: const Icon(Icons.add),
+            onPressed: () async {
+              final food = await Navigator.push<FoodNutrition>(
+                context,
+                MaterialPageRoute(builder: (_) => const CustomFoodPage()),
+              );
+              if (food != null && mounted) {
+                await _chooseGlobal(food);
+              }
+            },
+          ),
+        ],
         backgroundColor: context.appColor(Color(0xFFF5FAF7), surface: true),
         title: Text(
           widget.meal.localizedTitle(context),
@@ -318,7 +348,10 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
                         _FoodResultCard(
                           food: food,
                           title: food.displayNameFor(languageCode),
-                          subtitle: context.tr('Oziq qiymati 100 {unit} uchun', {'unit': context.tr(food.basisUnit)}),
+                          subtitle: context.tr(
+                            'Oziq qiymati 100 {unit} uchun',
+                            {'unit': context.tr(food.basisUnit)},
+                          ),
                           icon: Icons.eco_rounded,
                           onTap: () => _chooseGlobal(food),
                         ),
@@ -332,7 +365,10 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
                           ),
                         ),
                       if (!_isSearching && _nextPage != null)
-                        TextButton(onPressed: _loadMore, child: Text(context.tr('Yana ko‘rsatish'))),
+                        TextButton(
+                          onPressed: _loadMore,
+                          child: Text(context.tr('Yana ko‘rsatish')),
+                        ),
                       if (_searchError != null && totalResults > 0)
                         Padding(
                           padding: const EdgeInsets.all(12),
@@ -410,43 +446,13 @@ class _FoodResultCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 3),
                     Text(
-                      food.productType == null
-                          ? subtitle
-                          : '$subtitle · ${food.productType}',
+                      subtitle,
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.onSurfaceVariant,
                         fontSize: 12,
                       ),
                     ),
                     const SizedBox(height: 7),
-                    if (showsDetailedCompositionInPicker(food) &&
-                        food.ingredients != null) ...[
-                      Text(
-                        '${context.tr('Tarkibi')}: ${food.ingredients}',
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                          fontSize: 11,
-                          height: 1.25,
-                        ),
-                      ),
-                      const SizedBox(height: 7),
-                    ],
-                    if (showsDetailedCompositionInPicker(food) &&
-                        food.labelDetails != null) ...[
-                      Text(
-                        food.labelDetails!,
-                        maxLines: 4,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                          fontSize: 11,
-                          height: 1.25,
-                        ),
-                      ),
-                      const SizedBox(height: 7),
-                    ],
                     if (food.missingNutrients.isNotEmpty)
                       Text(
                         context.tr(
@@ -473,53 +479,6 @@ class _FoodResultCard extends StatelessWidget {
                           _Value(
                             '${context.tr('Yog‘')} ${food.fat.toStringAsFixed(1)} ${context.tr('g')}',
                           ),
-                          _Value(
-                            '${context.tr('Kletchatka')} ${food.fiber.toStringAsFixed(1)} ${context.tr('g')}',
-                          ),
-                          if (food.sodiumMg > 0)
-                            _Value(
-                              '${context.tr('Natriy')} ${food.sodiumMg.round()} mg',
-                            ),
-                          if (food.potassiumMg > 0)
-                            _Value(
-                              '${context.tr('Kaliy')} ${food.potassiumMg.round()} mg',
-                            ),
-                          if (food.ironMg > 0)
-                            _Value(
-                              '${context.tr('Temir')} ${food.ironMg.toStringAsFixed(1)} mg',
-                            ),
-                          if (food.calciumMg > 0)
-                            _Value(
-                              '${context.tr('Kalsiy')} ${food.calciumMg.round()} mg',
-                            ),
-                          if (food.cholesterolMg > 0)
-                            _Value(
-                              '${context.tr('Xolesterin')} ${food.cholesterolMg.round()} mg',
-                            ),
-                          if (food.phosphorusMg > 0)
-                            _Value(
-                              '${context.tr('Fosfor')} ${food.phosphorusMg.round()} mg',
-                            ),
-                          if (food.magnesiumMg > 0)
-                            _Value(
-                              '${context.tr('Magniy')} ${food.magnesiumMg.round()} mg',
-                            ),
-                          if (food.vitaminEMg > 0)
-                            _Value(
-                              '${context.tr('Vitamin E')} ${food.vitaminEMg.round()} mg',
-                            ),
-                          if (food.zincMg > 0)
-                            _Value(
-                              '${context.tr('Rux')} ${food.zincMg.round()} mg',
-                            ),
-                          if (food.vitaminDMcg > 0)
-                            _Value(
-                              '${context.tr('Vitamin D')} ${food.vitaminDMcg.round()} mcg',
-                            ),
-                          if (food.vitaminK2Mcg > 0)
-                            _Value(
-                              '${context.tr('Vitamin K2')} ${food.vitaminK2Mcg.round()} mcg',
-                            ),
                         ],
                       ),
                   ],

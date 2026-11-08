@@ -24,7 +24,7 @@ abstract final class AppTheme {
         ColorScheme.fromSeed(
           seedColor: const Color(0xFF36C9A0),
           brightness: brightness,
-          surface: dark ? const Color(0xFF0C1014) : const Color(0xFFF7FAF8),
+          surface: dark ? const Color(0xFF0C1014) : const Color(0xFFF5F7FA),
         ).copyWith(
           primary: dark ? const Color(0xFF62D6B2) : const Color(0xFF13765E),
           onPrimary: dark ? const Color(0xFF07251B) : Colors.white,
@@ -170,7 +170,7 @@ abstract final class AppTheme {
       ),
       scaffoldBackgroundColor: dark
           ? const Color(0xFF0C1014)
-          : const Color(0xFFF7FAF8),
+          : const Color(0xFFF5F7FA),
       appBarTheme: AppBarTheme(
         backgroundColor: scheme.surface,
         foregroundColor: scheme.onSurface,
