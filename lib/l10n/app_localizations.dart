@@ -442,6 +442,10 @@ class AppLocalizations {
       'O‘zbek milliy taomlari': 'Узбекские национальные блюда',
       'Taom topilmadi': 'Блюдо не найдено',
       'Qidiruv natijalari': 'Результаты поиска',
+      'Kategoriyalar': 'Категории',
+      'Toifani yopish': 'Закрыть категорию',
+      'Hamma natijalar shu toifadan': 'Все продукты этой категории',
+      'Internet bazasi': 'Онлайн-база',
       'Taom nomini yozib qidiring': 'Введите название блюда',
       'Masalan: osh, manti, somsa yoki Samarqand':
           'Например: плов, манты, самса или Самарканд',
@@ -844,6 +848,10 @@ class AppLocalizations {
       'O‘zbek milliy taomlari': 'Uzbek national dishes',
       'Taom topilmadi': 'No dishes found',
       'Qidiruv natijalari': 'Search results',
+      'Kategoriyalar': 'Categories',
+      'Toifani yopish': 'Close category',
+      'Hamma natijalar shu toifadan': 'All foods in this category',
+      'Internet bazasi': 'Online database',
       'Taom nomini yozib qidiring': 'Enter a dish name to search',
       'Masalan: osh, manti, somsa yoki Samarqand':
           'For example: plov, manti, samsa, or Samarkand',
