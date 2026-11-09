@@ -61,10 +61,31 @@ IconData foodCategoryIcon(FoodNutrition food, {String? region}) {
   if (has(['juice', 'tea', 'coffee', 'choy', 'qahva', 'sharbat', 'water'])) {
     return LucideIcons.cupSoda;
   }
+  // Sabzavotlar umumiy "xom"/"raw" qoidasidan oldin tekshiriladi.
+  if (has([
+    'tomato',
+    'pomidor',
+    'vegetable',
+    'potato',
+    'kartoshka',
+    'onion',
+    'piyoz',
+    'carrot',
+    'sabzi',
+    'cabbage',
+    'karam',
+    'cucumber',
+    'bodring',
+    'pepper',
+    'qalampir',
+    'garlic',
+    'sarimsoq',
+  ])) {
+    return LucideIcons.carrot;
+  }
   if (has(['raw', 'xom', 'apple', 'olma', 'berr', 'fruit', 'dried'])) {
     return LucideIcons.apple;
   }
-  if (has(['tomato', 'pomidor', 'vegetable'])) return LucideIcons.carrot;
   return LucideIcons.utensils;
 }
 

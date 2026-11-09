@@ -449,6 +449,25 @@ class AppLocalizations {
       'Saqlangan {count} ta mahsulot menyuga qo‘shilmaydi. Chiqasizmi?':
           'Сохранённые продукты ({count}) не будут добавлены в меню. Выйти?',
       'Qolish': 'Остаться',
+      'Ovqat yaratish': 'Создать блюдо',
+      'Masalliq qo‘shish': 'Добавить ингредиент',
+      'Masalliqlar': 'Ингредиенты',
+      'Ovqat nomi': 'Название блюда',
+      'Masalan: Sho‘rva': 'Например: Шурпа',
+      'Ovqat nomini yozing va unga ketgan masalliqlarni miqdori bilan qo‘shing.':
+          'Введите название блюда и добавьте ингредиенты с их количеством.',
+      'Kamida bitta masalliq qo‘shing.': 'Добавьте хотя бы один ингредиент.',
+      'Tayyor ovqat vazni (ixtiyoriy)': 'Вес готового блюда (необязательно)',
+      'Bo‘sh qolsa, masalliqlar yig‘indisi olinadi. Qaynatishda suv bug‘lansa, tortib kiriting.':
+          'Если пусто, берётся сумма ингредиентов. Если вода выкипела, взвесьте и введите.',
+      '1–20000 g oralig‘ida kiriting.': 'Введите от 1 до 20000 г.',
+      'Jami': 'Итого',
+      '“{name}” yaratildi. Uni qidiruvdan topasiz.':
+          '«{name}» создано. Его можно найти в поиске.',
+      'Ovqatni saqlab bo‘lmadi.': 'Не удалось сохранить блюдо.',
+      'Ovqat saqlanmadi': 'Блюдо не сохранено',
+      'Kiritilgan ma’lumotlar o‘chadi. Chiqasizmi?':
+          'Введённые данные будут потеряны. Выйти?',
       'Qoldi': 'Осталось',
       'Chiqib ketish': 'Выйти',
       'Ro‘yxatni ochish': 'Показать список',
@@ -863,6 +882,24 @@ class AppLocalizations {
       'Saqlangan {count} ta mahsulot menyuga qo‘shilmaydi. Chiqasizmi?':
           '{count} saved items will not be added to the meal. Leave?',
       'Qolish': 'Stay',
+      'Ovqat yaratish': 'Create dish',
+      'Masalliq qo‘shish': 'Add ingredient',
+      'Masalliqlar': 'Ingredients',
+      'Ovqat nomi': 'Dish name',
+      'Ovqat nomini yozing va unga ketgan masalliqlarni miqdori bilan qo‘shing.':
+          'Enter the dish name and add its ingredients with amounts.',
+      'Kamida bitta masalliq qo‘shing.': 'Add at least one ingredient.',
+      'Tayyor ovqat vazni (ixtiyoriy)': 'Cooked weight (optional)',
+      'Bo‘sh qolsa, masalliqlar yig‘indisi olinadi. Qaynatishda suv bug‘lansa, tortib kiriting.':
+          'If empty, the ingredient total is used. If water boiled off, weigh and enter it.',
+      '1–20000 g oralig‘ida kiriting.': 'Enter 1–20000 g.',
+      'Jami': 'Total',
+      '“{name}” yaratildi. Uni qidiruvdan topasiz.':
+          '“{name}” created. You can find it in search.',
+      'Ovqatni saqlab bo‘lmadi.': 'Could not save the dish.',
+      'Ovqat saqlanmadi': 'Dish not saved',
+      'Kiritilgan ma’lumotlar o‘chadi. Chiqasizmi?':
+          'Entered data will be lost. Leave?',
       'Qoldi': 'Remaining',
       'Chiqib ketish': 'Leave',
       'Ro‘yxatni ochish': 'Show list',
