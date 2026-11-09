@@ -36,6 +36,17 @@ abstract final class AppPalette {
   static const carbs = Color(0xFFC9892B);
   static const fat = Color(0xFFC2556B);
   static const fiber = Color(0xFF3E8F7A);
+  // Muted category accents. Used only on small icon tiles, never on large
+  // surfaces, so the interface stays calm.
+  static const accentBlue = Color(0xFF2F5BEA);
+  static const accentTeal = Color(0xFF0F8A7E);
+  static const accentAmber = Color(0xFFC07A12);
+  static const accentViolet = Color(0xFF6D5BD0);
+  static const accentRose = Color(0xFFC94B65);
+  static const accentGreen = Color(0xFF2E8B57);
+  static const accentIndigo = Color(0xFF4A5BC9);
+  static const accentSlate = Color(0xFF5B6475);
+
   static const success = Color(0xFF16804B);
   static const warning = Color(0xFFB7791F);
   static const danger = Color(0xFFD14343);

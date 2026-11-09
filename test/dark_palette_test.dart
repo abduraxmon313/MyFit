@@ -346,16 +346,19 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    await tester.tap(find.byType(PopupMenuButton<String>));
-    await tester.pumpAndSettle();
     for (final material in tester.widgetList<Material>(find.byType(Material))) {
       final color = material.color;
       if (color != null && color.a == 1) {
         expect(color.computeLuminance(), lessThan(.12));
       }
     }
-    await tester.tap(find.byType(PopupMenuItem<String>).first);
+    // Profil bosh sahifadagi avatar orqali ochiladi va orqaga qaytiladi.
+    await tester.tap(find.byKey(const Key('home-profile')));
     await tester.pumpAndSettle();
+    expect(find.byKey(const Key('profile-back')), findsOneWidget);
+    await tester.tap(find.byKey(const Key('profile-back')));
+    await tester.pumpAndSettle();
+    expect(find.byType(NavigationDestination), findsNWidgets(4));
     await tester.tap(find.byType(NavigationDestination).at(2));
     await tester.pumpAndSettle();
     expect(find.byType(AppCard), findsWidgets);

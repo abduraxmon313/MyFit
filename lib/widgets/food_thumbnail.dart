@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../models/food_nutrition.dart';
+import '../theme/app_theme.dart';
 import 'app_ui.dart';
 
 bool _isSupplement(FoodNutrition food) {
@@ -67,7 +68,27 @@ IconData foodCategoryIcon(FoodNutrition food, {String? region}) {
   return LucideIcons.utensils;
 }
 
-/// Neutral icon tile representing a food item.
+/// Muted accent for each food category icon.
+Color foodCategoryColor(IconData icon) {
+  if (icon == LucideIcons.apple) return AppPalette.accentRose;
+  if (icon == LucideIcons.carrot) return AppPalette.accentGreen;
+  if (icon == LucideIcons.milk) return AppPalette.accentBlue;
+  if (icon == LucideIcons.fish) return AppPalette.accentTeal;
+  if (icon == LucideIcons.beef || icon == LucideIcons.drumstick) {
+    return AppPalette.accentRose;
+  }
+  if (icon == LucideIcons.wheat || icon == LucideIcons.nut) {
+    return AppPalette.accentAmber;
+  }
+  if (icon == LucideIcons.egg) return AppPalette.accentAmber;
+  if (icon == LucideIcons.cupSoda) return AppPalette.accentIndigo;
+  if (icon == LucideIcons.cookie || icon == LucideIcons.pill) {
+    return AppPalette.accentViolet;
+  }
+  return AppPalette.accentSlate;
+}
+
+/// Softly tinted icon tile representing a food item.
 class FoodThumbnail extends StatelessWidget {
   const FoodThumbnail({super.key, required this.icon, this.size = 44});
 
@@ -75,9 +96,9 @@ class FoodThumbnail extends StatelessWidget {
   final double size;
 
   @override
-  Widget build(BuildContext context) => AppIconTile(
+  Widget build(BuildContext context) => AppIconTile.tinted(
     icon: icon,
     size: size,
-    color: Theme.of(context).colorScheme.onSurfaceVariant,
+    accent: foodCategoryColor(icon),
   );
 }
