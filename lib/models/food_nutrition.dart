@@ -397,18 +397,18 @@ String _localizedDetailedName({
       'лёгкий',
     );
     addWhen(
-      RegExp(r'(^|[^0-9])1%([^0-9]|$)').hasMatch(source),
+      RegExp(r'(^|[^0-9.,])1%([^0-9]|$)').hasMatch(source),
       '1% yog‘li',
       'жирность 1%',
     );
     addWhen(
-      RegExp(r'(^|[^0-9])2%([^0-9]|$)').hasMatch(source),
+      RegExp(r'(^|[^0-9.,])2%([^0-9]|$)').hasMatch(source),
       '2% yog‘li',
       'жирность 2%',
     );
     for (final percent in [3, 4, 5, 10, 15, 20, 25, 30, 33, 35, 40]) {
       addWhen(
-        RegExp('(^|[^0-9])$percent%([^0-9]|\$)').hasMatch(source),
+        RegExp('(^|[^0-9.,])$percent%([^0-9]|\$)').hasMatch(source),
         '$percent% yog‘li',
         'жирность $percent%',
       );

@@ -8,6 +8,7 @@ import 'food_query_translator.dart';
 import 'fatsecret_service.dart';
 import 'open_food_facts_service.dart';
 import 'custom_food_store.dart';
+import 'recipe_builder.dart';
 
 class FoodDataService {
   FoodDataService({
@@ -74,7 +75,7 @@ class FoodDataService {
     if (englishQuery.length < 2) return const [];
 
     // Bir tildagi ko‘rsatish nomi boshqa til keshiga aralashib ketmasin.
-    final customIds = localFoods.where((food) => food.dataSource == 'User label').map((food) => food.fdcId).join(',');
+    final customIds = localFoods.where((food) => (food.dataSource == 'User label' || food.dataSource == kUserRecipeSource)).map((food) => food.fdcId).join(',');
     final cacheKey = '$languageCode:${trimmed.toLowerCase()}:$englishQuery:$customIds';
     final cached = _cache[cacheKey];
     if (cached != null) {

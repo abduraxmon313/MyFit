@@ -16,7 +16,7 @@ import '../services/profile_service.dart';
 import 'barcode_scanner_page.dart';
 import 'calculator_page.dart';
 import 'food_scan_page.dart';
-import 'food_search_page.dart';
+import 'recipe_builder_page.dart';
 import 'meals_page.dart';
 import 'food_history_page.dart';
 import 'reports_page.dart';
@@ -211,19 +211,13 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<void> _searchFood() async {
-    final food = await Navigator.push<FoodNutrition>(
+  Future<void> _createRecipe() async {
+    await Navigator.push<FoodNutrition>(
       context,
       MaterialPageRoute(
-        builder: (_) => FoodSearchPage(service: _foodDataService),
+        builder: (_) => RecipeBuilderPage(foodDataService: _foodDataService),
       ),
     );
-    if (food != null && mounted) {
-      setState(() => _foods.add(food));
-      final saved = await _persistFoods();
-      if (!mounted || !saved) return;
-      _showFoodAddedMessage(food);
-    }
   }
 
   Future<void> _scanBarcode() async {
@@ -386,10 +380,10 @@ class _HomePageState extends State<HomePage> {
                 onTap: _scanBarcode,
               ),
               _ActionCard(
-                icon: LucideIcons.search,
+                icon: LucideIcons.chefHat,
                 accent: AppPalette.accentIndigo,
-                title: context.tr('Ovqat qidirish'),
-                onTap: _searchFood,
+                title: context.tr('Ovqat qo‘shish'),
+                onTap: _createRecipe,
               ),
               _ActionCard(
                 icon: LucideIcons.calculator,
@@ -403,12 +397,6 @@ class _HomePageState extends State<HomePage> {
                     ),
                   );
                 },
-              ),
-              _ActionCard(
-                icon: LucideIcons.dumbbell,
-                accent: AppPalette.accentRose,
-                title: context.tr('Mashq qo‘shish'),
-                onTap: () => setState(() => _navIndex = 2),
               ),
             ],
           );

@@ -28,10 +28,14 @@ class NationalFoodPickerPage extends StatefulWidget {
     super.key,
     required this.meal,
     this.foodDataService,
+    this.title,
   });
 
   final MealType meal;
   final FoodDataService? foodDataService;
+
+  /// Overrides the meal name in the app bar (e.g. when picking ingredients).
+  final String? title;
 
   @override
   State<NationalFoodPickerPage> createState() => _NationalFoodPickerPageState();
@@ -534,7 +538,7 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
         appBar: AppBar(
           titleSpacing: 4,
           title: Text(
-            widget.meal.localizedTitle(context),
+            widget.title ?? widget.meal.localizedTitle(context),
             style: TextStyle(
               color: colors.onSurface,
               fontSize: 20,
