@@ -365,7 +365,6 @@ class _HomePageState extends State<HomePage> {
               greeting: _greeting(context),
               profile: widget.profile,
               onProfileTap: () => setState(() => _navIndex = 3),
-              onSignOut: widget.authService.signOut,
             ),
             profile: widget.profile,
             calories: _calories,
@@ -376,21 +375,25 @@ class _HomePageState extends State<HomePage> {
             actions: [
               _ActionCard(
                 icon: LucideIcons.scanLine,
+                accent: AppPalette.accentTeal,
                 title: context.tr('Ovqatni skanerlash'),
                 onTap: _addFood,
               ),
               _ActionCard(
                 icon: LucideIcons.scanBarcode,
+                accent: AppPalette.accentBlue,
                 title: context.tr('Shtrix-kod skaneri'),
                 onTap: _scanBarcode,
               ),
               _ActionCard(
                 icon: LucideIcons.search,
+                accent: AppPalette.accentIndigo,
                 title: context.tr('Ovqat qidirish'),
                 onTap: _searchFood,
               ),
               _ActionCard(
                 icon: LucideIcons.calculator,
+                accent: AppPalette.accentAmber,
                 title: context.tr('Kalkulyator'),
                 onTap: () {
                   Navigator.push(
@@ -403,21 +406,45 @@ class _HomePageState extends State<HomePage> {
               ),
               _ActionCard(
                 icon: LucideIcons.dumbbell,
+                accent: AppPalette.accentRose,
                 title: context.tr('Mashq qo‘shish'),
                 onTap: () => setState(() => _navIndex = 2),
               ),
             ],
           );
+    // Profil pastki menyuda emas: unga bosh sahifadagi avatar orqali kiriladi.
+    // _navIndex: 0 bosh sahifa, 1 ovqatlar, 2 mashqlar, 3 profil, 4 hisobotlar.
+    const pageForTab = [0, 1, 2, 4];
     final destinations = [
       (LucideIcons.house, context.tr('Bosh sahifa')),
       (LucideIcons.utensils, context.tr('Ovqatlar')),
       (LucideIcons.dumbbell, context.tr('Mashqlar')),
-      (LucideIcons.user, context.tr('Profil')),
       (LucideIcons.chartColumn, context.tr('Hisobotlar')),
     ];
+    final selectedTab = _navIndex == 3 ? 0 : pageForTab.indexOf(_navIndex);
+    final Widget body = _navIndex == 3
+        ? Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 4, 8, 0),
+                child: Row(
+                  children: [
+                    TextButton.icon(
+                      key: const Key('profile-back'),
+                      onPressed: () => setState(() => _navIndex = 0),
+                      icon: const Icon(LucideIcons.chevronLeft, size: 18),
+                      label: Text(context.tr('Bosh sahifa')),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(child: page),
+            ],
+          )
+        : page;
     final wide = MediaQuery.sizeOf(context).width >= 900;
     final scheme = Theme.of(context).colorScheme;
-    void select(int index) => setState(() => _navIndex = index);
+    void select(int index) => setState(() => _navIndex = pageForTab[index]);
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
@@ -425,7 +452,7 @@ class _HomePageState extends State<HomePage> {
             ? Row(
                 children: [
                   NavigationRail(
-                    selectedIndex: _navIndex,
+                    selectedIndex: selectedTab,
                     onDestinationSelected: select,
                     labelType: NavigationRailLabelType.all,
                     minWidth: 88,
@@ -448,15 +475,15 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                   VerticalDivider(width: 1, color: scheme.outlineVariant),
-                  Expanded(child: page),
+                  Expanded(child: body),
                 ],
               )
             : Column(
                 children: [
-                  Expanded(child: page),
+                  Expanded(child: body),
                   Divider(height: 1, color: scheme.outlineVariant),
                   NavigationBar(
-                    selectedIndex: _navIndex,
+                    selectedIndex: selectedTab,
                     onDestinationSelected: select,
                     destinations: [
                       for (final (icon, label) in destinations)
@@ -475,13 +502,11 @@ class _HomeHeader extends StatelessWidget {
     required this.greeting,
     required this.profile,
     required this.onProfileTap,
-    required this.onSignOut,
   });
 
   final String greeting;
   final UserProfile profile;
   final VoidCallback onProfileTap;
-  final VoidCallback onSignOut;
 
   @override
   Widget build(BuildContext context) {
@@ -491,109 +516,65 @@ class _HomeHeader extends StatelessWidget {
         : profile.firstName.trim();
     return Row(
       children: [
-        Semantics(
-          button: true,
-          label: context.tr('Profil'),
-          child: InkWell(
-            onTap: onProfileTap,
-            customBorder: const CircleBorder(),
-            child: Container(
-              padding: const EdgeInsets.all(2),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: scheme.outlineVariant),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                greeting.replaceAll(',', ''),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: scheme.onSurfaceVariant,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-              child: ProfileAvatar(
-                name: profile.fullName,
-                photoUrl: profile.photoUrl,
-                size: 42,
+              const SizedBox(height: 2),
+              Text(
+                name,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: scheme.onSurface,
+                  fontSize: 22,
+                  height: 1.15,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: -.5,
+                ),
               ),
-            ),
+            ],
           ),
         ),
         const SizedBox(width: 12),
-        Expanded(
-          child: InkWell(
-            onTap: onProfileTap,
-            borderRadius: BorderRadius.circular(AppRadius.sm),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  greeting.replaceAll(',', ''),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: scheme.onSurfaceVariant,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w500,
+        Tooltip(
+          message: context.tr('Profil'),
+          child: Semantics(
+            button: true,
+            label: context.tr('Profil'),
+            child: Material(
+              color: Colors.transparent,
+              shape: const CircleBorder(),
+              child: InkWell(
+                key: const Key('home-profile'),
+                onTap: onProfileTap,
+                customBorder: const CircleBorder(),
+                child: Container(
+                  padding: const EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: scheme.outlineVariant),
+                  ),
+                  child: ProfileAvatar(
+                    name: profile.fullName,
+                    photoUrl: profile.photoUrl,
+                    size: 40,
                   ),
                 ),
-                const SizedBox(height: 2),
-                Text(
-                  name,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: scheme.onSurface,
-                    fontSize: 22,
-                    height: 1.15,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: -.5,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        PopupMenuButton<String>(
-          tooltip: MaterialLocalizations.of(context).showMenuTooltip,
-          position: PopupMenuPosition.under,
-          offset: const Offset(0, 6),
-          icon: Container(
-            width: 38,
-            height: 38,
-            decoration: BoxDecoration(
-              color: scheme.surfaceContainerLowest,
-              borderRadius: BorderRadius.circular(AppRadius.md),
-              border: Border.all(color: scheme.outlineVariant),
-            ),
-            child: Icon(
-              LucideIcons.ellipsis,
-              color: scheme.onSurfaceVariant,
-              size: 18,
-            ),
-          ),
-          itemBuilder: (_) => [
-            PopupMenuItem(
-              value: 'profile',
-              child: Row(
-                children: [
-                  Icon(LucideIcons.user, size: 18, color: scheme.onSurface),
-                  const SizedBox(width: 10),
-                  Text(context.tr('Profil')),
-                ],
               ),
             ),
-            PopupMenuItem(
-              value: 'logout',
-              child: Row(
-                children: [
-                  Icon(LucideIcons.logOut, size: 18, color: scheme.error),
-                  const SizedBox(width: 10),
-                  Text(
-                    context.tr('Chiqish'),
-                    style: TextStyle(color: scheme.error),
-                  ),
-                ],
-              ),
-            ),
-          ],
-          onSelected: (value) {
-            if (value == 'profile') onProfileTap();
-            if (value == 'logout') onSignOut();
-          },
+          ),
         ),
       ],
     );
@@ -1130,11 +1111,13 @@ class _TodaySummaryCard extends StatelessWidget {
 class _ActionCard extends StatelessWidget {
   const _ActionCard({
     required this.icon,
+    required this.accent,
     required this.title,
     required this.onTap,
   });
 
   final IconData icon;
+  final Color accent;
   final String title;
   final VoidCallback onTap;
 
@@ -1158,7 +1141,7 @@ class _ActionCard extends StatelessWidget {
       size: 16,
       color: scheme.onSurfaceVariant,
     );
-    final tile = AppIconTile(icon: icon, size: 38, color: scheme.onSurface);
+    final tile = AppIconTile.tinted(icon: icon, size: 38, accent: accent);
     return AppCard(
       onTap: onTap,
       padding: const EdgeInsets.all(16),

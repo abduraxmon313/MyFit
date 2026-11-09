@@ -81,26 +81,54 @@ class AppIconTile extends StatelessWidget {
     this.color,
     this.background,
     this.iconSize,
-  });
+  }) : accent = null;
+
+  /// Soft tinted tile: light wash of [accent] behind an [accent] icon.
+  const AppIconTile.tinted({
+    super.key,
+    required this.icon,
+    required Color this.accent,
+    this.size = 40,
+    this.iconSize,
+  }) : color = null,
+       background = null;
 
   final IconData icon;
   final double size;
   final Color? color;
   final Color? background;
+  final Color? accent;
   final double? iconSize;
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    final radius = BorderRadius.circular(
+      size >= 44 ? AppRadius.md : AppRadius.sm,
+    );
+    final accent = this.accent;
+    if (accent != null) {
+      // Lighter icon on dark surfaces keeps contrast without louder colors.
+      final iconColor = dark ? Color.lerp(accent, Colors.white, .35)! : accent;
+      return Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          color: accent.withValues(alpha: dark ? .16 : .09),
+          borderRadius: radius,
+          border: Border.all(color: accent.withValues(alpha: dark ? .22 : .14)),
+        ),
+        child: Icon(icon, size: iconSize ?? size * .46, color: iconColor),
+      );
+    }
     final tint = color ?? scheme.onSurface;
     return Container(
       width: size,
       height: size,
       decoration: BoxDecoration(
         color: background ?? scheme.surfaceContainerLow,
-        borderRadius: BorderRadius.circular(
-          size >= 44 ? AppRadius.md : AppRadius.sm,
-        ),
+        borderRadius: radius,
         border: Border.all(color: scheme.outlineVariant.withValues(alpha: .7)),
       ),
       child: Icon(icon, size: iconSize ?? size * .46, color: tint),

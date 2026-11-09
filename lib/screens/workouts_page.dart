@@ -29,6 +29,14 @@ class _WorkoutsPageState extends State<WorkoutsPage> {
   WorkoutCategory? _category;
   String _query = '';
 
+  Color _categoryColor(WorkoutCategory category) => switch (category) {
+    WorkoutCategory.cardio => AppPalette.accentRose,
+    WorkoutCategory.strength => AppPalette.accentBlue,
+    WorkoutCategory.bodyweight => AppPalette.accentTeal,
+    WorkoutCategory.flexibility => AppPalette.accentViolet,
+    WorkoutCategory.sport => AppPalette.accentAmber,
+  };
+
   String _categoryName(WorkoutCategory category) => switch (category) {
     WorkoutCategory.cardio => 'Kardio',
     WorkoutCategory.strength => 'Kuch',
@@ -153,6 +161,7 @@ class _WorkoutsPageState extends State<WorkoutsPage> {
                         value: '$totalMinutes',
                         label: 'daqiqa',
                         icon: LucideIcons.timer,
+                        accent: AppPalette.accentBlue,
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -161,6 +170,7 @@ class _WorkoutsPageState extends State<WorkoutsPage> {
                         value: '${totalCalories.round()}',
                         label: 'kcal',
                         icon: LucideIcons.flame,
+                        accent: AppPalette.accentAmber,
                       ),
                     ),
                   ],
@@ -204,7 +214,10 @@ class _WorkoutsPageState extends State<WorkoutsPage> {
                   ...widget.logs.asMap().entries.map(
                     (e) => ListTile(
                       contentPadding: EdgeInsets.zero,
-                      leading: AppIconTile(icon: e.value.workout.icon),
+                      leading: AppIconTile.tinted(
+                        icon: e.value.workout.icon,
+                        accent: _categoryColor(e.value.workout.category),
+                      ),
                       title: Text(e.value.workout.name),
                       subtitle: Text(
                         '${e.value.minutes} daqiqa · ${e.value.calories.round()} kcal',
@@ -257,7 +270,11 @@ class _WorkoutsPageState extends State<WorkoutsPage> {
                     children: [
                       Row(
                         children: [
-                          AppIconTile(icon: w.icon, size: 36),
+                          AppIconTile.tinted(
+                            icon: w.icon,
+                            size: 36,
+                            accent: _categoryColor(w.category),
+                          ),
                           const Spacer(),
                           Icon(
                             LucideIcons.plus,
@@ -304,10 +321,12 @@ class _Summary extends StatelessWidget {
     required this.value,
     required this.label,
     required this.icon,
+    required this.accent,
   });
   final String value;
   final String label;
   final IconData icon;
+  final Color accent;
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
@@ -315,7 +334,7 @@ class _Summary extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: Row(
         children: [
-          AppIconTile(icon: icon, size: 36),
+          AppIconTile.tinted(icon: icon, size: 36, accent: accent),
           const SizedBox(width: 12),
           Expanded(
             child: Column(

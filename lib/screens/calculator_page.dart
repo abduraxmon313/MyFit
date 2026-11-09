@@ -7,6 +7,8 @@ import 'calorie_calculator_page.dart';
 import 'water_calculator_page.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../widgets/app_ui.dart';
+
 class CalculatorPage extends StatelessWidget {
   const CalculatorPage({super.key});
 
@@ -34,7 +36,7 @@ class CalculatorPage extends StatelessWidget {
           const SizedBox(height: 20),
           _CalculatorCard(
             icon: LucideIcons.flame,
-            color: Color(0xFF2F5BEA),
+            color: AppPalette.accentAmber,
             title: context.tr('Kunlik kaloriya va BMR'),
             description: context.tr(
               'Vazn saqlash, tashlash yoki olish uchun kaloriya miqdori.',
@@ -48,7 +50,7 @@ class CalculatorPage extends StatelessWidget {
           ),
           _CalculatorCard(
             icon: LucideIcons.personStanding,
-            color: Color(0xFF2F5BEA),
+            color: AppPalette.accentTeal,
             title: context.tr('Tana yog‘i foizi'),
             description: context.tr(
               'Bo‘yin, qorin/bel va son o‘lchovlari orqali yog‘ foizini hisoblash.',
@@ -62,7 +64,7 @@ class CalculatorPage extends StatelessWidget {
           ),
           _CalculatorCard(
             icon: LucideIcons.droplet,
-            color: Color(0xFF2F5BEA),
+            color: AppPalette.accentBlue,
             title: context.tr('Kunlik suv ehtiyoji'),
             description: context.tr(
               'Vazn, mashq davomiyligi va ob-havoga qarab suv miqdori.',
@@ -107,15 +109,7 @@ class _CalculatorCard extends StatelessWidget {
           padding: const EdgeInsets.all(18),
           child: Row(
             children: [
-              Container(
-                width: 56,
-                height: 56,
-                decoration: BoxDecoration(
-                  color: color.withValues(alpha: .12),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(icon, color: color, size: 30),
-              ),
+              AppIconTile.tinted(icon: icon, size: 48, accent: color),
               const SizedBox(width: 15),
               Expanded(
                 child: Column(

@@ -237,13 +237,15 @@ void main() {
       for (final (tab, name) in [
         (1, '02-meals'),
         (2, '03-workouts'),
-        (3, '04-profile'),
-        (4, '05-reports'),
+        (3, '05-reports'),
       ]) {
         key = await show(home(), dark, const Size(390, 1300));
         await tester.tap(find.byType(NavigationDestination).at(tab));
         await shot(key, '$name-$m');
       }
+      key = await show(home(), dark, const Size(390, 1300));
+      await tester.tap(find.byKey(const Key('home-profile')));
+      await shot(key, '04-profile-$m');
       key = await show(home(), dark, const Size(1280, 860));
       await shot(key, '06-home-desktop-$m');
 

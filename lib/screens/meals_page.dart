@@ -22,21 +22,10 @@ extension MealTypeDetails on MealType {
   String localizedDescription(BuildContext context) => context.tr(description);
   String localizedTime(BuildContext context) => context.tr(time);
 
-  /// Muted, single-hue accents (navy → blue) so meals read as one family.
+  /// Each meal has its own muted accent, used only on its icon tile.
   Color accent(BuildContext context) {
     final dark = Theme.of(context).brightness == Brightness.dark;
-    return switch (this) {
-      MealType.breakfast =>
-        dark ? const Color(0xFFB9C7E6) : const Color(0xFF34466B),
-      MealType.lunch =>
-        dark ? const Color(0xFF8FB0FF) : const Color(0xFF2F5BEA),
-      MealType.dinner =>
-        dark ? const Color(0xFF9DB4D9) : const Color(0xFF1F3A6E),
-      MealType.snack =>
-        dark ? const Color(0xFFA9B8D6) : const Color(0xFF4B5D82),
-      MealType.fifthSnack =>
-        dark ? const Color(0xFFB4BFD9) : const Color(0xFF5B6475),
-    };
+    return dark ? Color.lerp(color, Colors.white, .35)! : color;
   }
 
   String get time => switch (this) {
@@ -64,11 +53,11 @@ extension MealTypeDetails on MealType {
   };
 
   Color get color => switch (this) {
-    MealType.breakfast => const Color(0xFF34466B),
-    MealType.lunch => const Color(0xFF2F5BEA),
-    MealType.dinner => const Color(0xFF1F3A6E),
-    MealType.snack => const Color(0xFF4B5D82),
-    MealType.fifthSnack => const Color(0xFF5B6475),
+    MealType.breakfast => AppPalette.accentAmber,
+    MealType.lunch => AppPalette.accentGreen,
+    MealType.dinner => AppPalette.accentBlue,
+    MealType.snack => AppPalette.accentRose,
+    MealType.fifthSnack => AppPalette.accentViolet,
   };
 
   Color get background => const Color(0xFFF3F4F6);
@@ -745,11 +734,7 @@ class _MealPhoto extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ExcludeSemantics(
-    child: AppIconTile(
-      icon: meal.icon,
-      size: 44,
-      color: Theme.of(context).colorScheme.onSurface,
-    ),
+    child: AppIconTile.tinted(icon: meal.icon, size: 44, accent: meal.color),
   );
 }
 
