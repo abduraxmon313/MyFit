@@ -36,7 +36,6 @@ class NationalFoodPickerPage extends StatefulWidget {
 
 class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
   static const _border = Color(0xFFE4E9EE);
-  String? _category;
   final _search = TextEditingController();
   late final FoodDataService _foodDataService;
   Timer? _debounce;
@@ -122,13 +121,6 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
         languageCode: languageCode,
       );
       if (!mounted || query != _query.trim()) return;
-      SearchHistoryStore.shared.addSuccessful(query, [
-        for (final dish in _dishes) ...[dish.nameUz, dish.nameRu, dish.nameEn],
-        for (final food in foods) ...[
-          food.name,
-          if (food.localName != null) food.localName!,
-        ],
-      ]);
       final localIds = _dishes.map((dish) => dish.nutrition.fdcId).toSet();
       final uniqueNames = <String>{};
       setState(() {
@@ -234,93 +226,274 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
       context: context,
       isScrollControlled: true,
       showDragHandle: true,
-      builder: (_) =>
-          FoodPortionSheet(food: food, title: displayName, subtitle: subtitle),
+      builder: (_) => FoodPortionSheet(
+        food: food,
+        title: displayName,
+        subtitle: subtitle,
+        actionLabel: 'Saqlash',
+        actionIcon: Icons.bookmark_add_outlined,
+      ),
     );
     if (grams == null || !mounted) return;
+    // Qidiruv tarixiga yozilgan so'rov emas, tanlangan mahsulot nomi tushadi.
+    SearchHistoryStore.shared.add(displayName);
+    final key = _foodKey(food);
+    final portion = food.forGrams(grams, localName: storedName ?? displayName);
+    setState(() {
+      _basket.add(portion);
+      _basketKeys.add(key);
+      _basketCounts[key] = (_basketCounts[key] ?? 0) + 1;
+    });
+    final messenger = ScaffoldMessenger.of(context);
+    messenger.hideCurrentSnackBar();
+    messenger.showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 2),
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+        content: Text(
+          context.tr('{name} saqlandi', {'name': displayName}),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+    );
+  }
+
+  /// Saqlangan, lekin hali menyuga qo'shilmagan mahsulotlar.
+  final List<FoodNutrition> _basket = [];
+  final List<String> _basketKeys = [];
+  final Map<String, int> _basketCounts = {};
+  bool _finishing = false;
+
+  String _foodKey(FoodNutrition food) => '${food.dataSource}:${food.fdcId}';
+
+  double get _basketCalories =>
+      _basket.fold(0, (total, food) => total + food.calories);
+
+  void _removeFromBasket(int index) {
+    setState(() {
+      _basket.removeAt(index);
+      final key = _basketKeys.removeAt(index);
+      final left = (_basketCounts[key] ?? 1) - 1;
+      if (left <= 0) {
+        _basketCounts.remove(key);
+      } else {
+        _basketCounts[key] = left;
+      }
+    });
+  }
+
+  Future<void> _finish() async {
+    if (_basket.isEmpty) return;
+    setState(() => _finishing = true);
     // Modal route va uning InheritedWidget dependentlari to‘liq deactivation
     // bosqichidan o‘tgachgina ota sahifani yopamiz.
     await Future<void>.delayed(Duration.zero);
     await WidgetsBinding.instance.endOfFrame;
     if (!mounted) return;
-    Navigator.pop(
-      context,
-      food.forGrams(grams, localName: storedName ?? displayName),
+    Navigator.pop(context, List<FoodNutrition>.unmodifiable(_basket));
+  }
+
+  Future<void> _confirmLeave() async {
+    final leave = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(context.tr('Tanlanganlar qo‘shilmadi')),
+        content: Text(
+          context.tr(
+            'Saqlangan {count} ta mahsulot menyuga qo‘shilmaydi. Chiqasizmi?',
+            {'count': _basket.length},
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(context.tr('Qolish')),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(
+              foregroundColor: Theme.of(context).colorScheme.error,
+            ),
+            child: Text(context.tr('Chiqib ketish')),
+          ),
+        ],
+      ),
+    );
+    if (leave != true || !mounted) return;
+    setState(() => _finishing = true);
+    await WidgetsBinding.instance.endOfFrame;
+    if (mounted) Navigator.pop(context);
+  }
+
+  Future<void> _showBasket() async {
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (sheetContext) => StatefulBuilder(
+        builder: (sheetContext, refresh) {
+          final colors = Theme.of(sheetContext).colorScheme;
+          final languageCode = Localizations.localeOf(
+            sheetContext,
+          ).languageCode;
+          return SafeArea(
+            top: false,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery.sizeOf(sheetContext).height * .7,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
+                    child: Text(
+                      context.tr('Saqlanganlar'),
+                      style: TextStyle(
+                        color: colors.onSurface,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    child: ListView.separated(
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                      itemCount: _basket.length,
+                      separatorBuilder: (_, _) => const Divider(height: 1),
+                      itemBuilder: (_, index) {
+                        final food = _basket[index];
+                        return ListTile(
+                          leading: FoodThumbnail(
+                            asset: foodThumbnailAsset(food),
+                            size: 40,
+                          ),
+                          title: Text(
+                            food.displayNameFor(languageCode),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          subtitle: Text(
+                            '${food.grams.round()} ${context.tr(food.basisUnit)} · ${food.calories.round()} ${context.tr('kcal')}',
+                          ),
+                          trailing: IconButton(
+                            tooltip: MaterialLocalizations.of(
+                              context,
+                            ).deleteButtonTooltip,
+                            icon: Icon(
+                              Icons.delete_outline_rounded,
+                              color: colors.error,
+                            ),
+                            onPressed: () {
+                              _removeFromBasket(index);
+                              if (_basket.isEmpty) {
+                                Navigator.pop(sheetContext);
+                              } else {
+                                refresh(() {});
+                              }
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 
-  void _openCategory(String region) {
-    _debounce?.cancel();
-    FocusScope.of(context).unfocus();
-    _search.clear();
-    setState(() {
-      _category = region;
-      _query = '';
-      _globalFoods = const [];
-      _nextPage = null;
-      _searchError = null;
-      _isSearching = false;
-    });
-  }
-
-  void _closeCategory() => setState(() => _category = null);
-
-  Widget _categories(BuildContext context, String languageCode) {
+  Widget _basketBar(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     final dark = Theme.of(context).brightness == Brightness.dark;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text(
-          context.tr('Kategoriyalar'),
-          style: TextStyle(
-            color: colors.onSurface,
-            fontSize: 17,
-            fontWeight: FontWeight.w700,
-            letterSpacing: -.2,
-          ),
+    return Container(
+      decoration: BoxDecoration(
+        color: colors.surfaceContainerLowest,
+        border: Border(
+          top: BorderSide(color: dark ? colors.outlineVariant : _border),
         ),
-        const SizedBox(height: 12),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            for (final category in kSearchCategories)
-              Material(
-                color: colors.surfaceContainerLowest,
-                shape: StadiumBorder(
-                  side: BorderSide(
-                    color: dark ? colors.outlineVariant : _border,
-                  ),
+        boxShadow: dark
+            ? null
+            : const [
+                BoxShadow(
+                  color: Color(0x140F1B2D),
+                  blurRadius: 20,
+                  offset: Offset(0, -6),
                 ),
-                clipBehavior: Clip.antiAlias,
+              ],
+      ),
+      child: SafeArea(
+        top: false,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(12, 10, 16, 10),
+          child: Row(
+            children: [
+              Expanded(
                 child: InkWell(
-                  key: Key('category-${category.region}'),
-                  onTap: () => _openCategory(category.region),
+                  key: const Key('basket-open'),
+                  onTap: _showBasket,
+                  borderRadius: BorderRadius.circular(14),
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(5, 5, 14, 5),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 6,
+                      vertical: 4,
+                    ),
                     child: Row(
-                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        ClipOval(
-                          child: Image.asset(
-                            category.asset,
-                            width: 28,
-                            height: 28,
-                            fit: BoxFit.cover,
-                            cacheWidth: 84,
+                        Badge.count(
+                          count: _basket.length,
+                          backgroundColor: colors.primary,
+                          textColor: colors.onPrimary,
+                          child: Container(
+                            width: 42,
+                            height: 42,
+                            decoration: BoxDecoration(
+                              color: colors.primaryContainer,
+                              borderRadius: BorderRadius.circular(13),
+                            ),
+                            child: Icon(
+                              Icons.shopping_basket_outlined,
+                              color: colors.primary,
+                              size: 22,
+                            ),
                           ),
                         ),
-                        const SizedBox(width: 8),
-                        Text(
-                          UzbekDish.localizeRegion(
-                            category.region,
-                            languageCode,
-                          ),
-                          style: TextStyle(
-                            color: colors.onSurface,
-                            fontSize: 13.5,
-                            fontWeight: FontWeight.w600,
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                context.tr('{count} ta mahsulot', {
+                                  'count': _basket.length,
+                                }),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: colors.onSurface,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                '${_basketCalories.round()} ${context.tr('kcal')}',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: colors.onSurfaceVariant,
+                                  fontSize: 12.5,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
@@ -328,278 +501,276 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
                   ),
                 ),
               ),
-          ],
+              const SizedBox(width: 10),
+              FilledButton.icon(
+                key: const Key('basket-add'),
+                onPressed: _finish,
+                style: FilledButton.styleFrom(
+                  minimumSize: const Size(0, 48),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                ),
+                icon: const Icon(Icons.check_rounded, size: 20),
+                label: Text(context.tr('Qo‘shish')),
+              ),
+            ],
+          ),
         ),
-      ],
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     final languageCode = Localizations.localeOf(context).languageCode;
-    final category = _category;
-    final dishes = category == null
-        ? _dishes
-        : kUzbekDishes
-              .where((dish) => dish.region == category)
-              .toList(growable: false);
-    final globalFoods = category == null
-        ? _globalFoods
-        : const <FoodNutrition>[];
+    final dishes = _dishes;
+    final globalFoods = _globalFoods;
     final totalResults = dishes.length + globalFoods.length;
     final colors = Theme.of(context).colorScheme;
     final dark = Theme.of(context).brightness == Brightness.dark;
-    final showResults = category != null || _query.trim().isNotEmpty;
+    final showResults = _query.trim().isNotEmpty;
     final fieldBorder = OutlineInputBorder(
       borderRadius: BorderRadius.circular(16),
       borderSide: BorderSide(color: dark ? colors.outlineVariant : _border),
     );
-    return Scaffold(
-      appBar: AppBar(
-        titleSpacing: 4,
-        title: Text(
-          widget.meal.localizedTitle(context),
-          style: TextStyle(
-            color: colors.onSurface,
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-            letterSpacing: -.3,
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 12),
-            child: IconButton.filledTonal(
-              tooltip: context.tr('Yorliqdan mahsulot qo‘shish'),
-              style: IconButton.styleFrom(
-                backgroundColor: colors.primaryContainer,
-                foregroundColor: colors.primary,
-              ),
-              icon: const Icon(Icons.add_rounded),
-              onPressed: () async {
-                final food = await Navigator.push<FoodNutrition>(
-                  context,
-                  MaterialPageRoute(builder: (_) => const CustomFoodPage()),
-                );
-                if (food != null && mounted) {
-                  await _chooseGlobal(food);
-                }
-              },
+    return PopScope(
+      canPop: _basket.isEmpty || _finishing,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) _confirmLeave();
+      },
+      child: Scaffold(
+        bottomNavigationBar: _basket.isEmpty ? null : _basketBar(context),
+        appBar: AppBar(
+          titleSpacing: 4,
+          title: Text(
+            widget.meal.localizedTitle(context),
+            style: TextStyle(
+              color: colors.onSurface,
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              letterSpacing: -.3,
             ),
           ),
-        ],
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(18, 6, 18, 14),
-            child: TextField(
-              controller: _search,
-              onChanged: (value) {
-                if (_category != null) _category = null;
-                _onSearchChanged(value);
-              },
-              textInputAction: TextInputAction.search,
-              style: TextStyle(color: colors.onSurface, fontSize: 16),
-              decoration: InputDecoration(
-                hintText: context.tr('Taom yoki mahsulotni qidiring'),
-                hintStyle: TextStyle(
-                  color: colors.onSurfaceVariant.withValues(alpha: .8),
-                  fontSize: 15.5,
-                ),
-                prefixIcon: Icon(
-                  Icons.search_rounded,
-                  color: colors.onSurfaceVariant,
-                ),
-                suffixIcon: _query.isEmpty
-                    ? null
-                    : IconButton(
-                        tooltip: MaterialLocalizations.of(
-                          context,
-                        ).deleteButtonTooltip,
-                        onPressed: () {
-                          _search.clear();
-                          _onSearchChanged('');
-                        },
-                        icon: Container(
-                          width: 22,
-                          height: 22,
-                          decoration: BoxDecoration(
-                            color: colors.onSurfaceVariant.withValues(
-                              alpha: .18,
-                            ),
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            Icons.close_rounded,
-                            size: 14,
-                            color: colors.onSurface,
-                          ),
-                        ),
-                      ),
-                filled: true,
-                fillColor: colors.surfaceContainerLowest,
-                contentPadding: const EdgeInsets.symmetric(vertical: 16),
-                border: fieldBorder,
-                enabledBorder: fieldBorder,
-                focusedBorder: fieldBorder.copyWith(
-                  borderSide: BorderSide(color: colors.primary, width: 1.6),
-                ),
-              ),
-            ),
-          ),
-          if (showResults) ...[
+          actions: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 12, 0),
-              child: Row(
-                children: [
-                  Flexible(
-                    child: Text(
-                      category == null
-                          ? context.tr('Qidiruv natijalari')
-                          : UzbekDish.localizeRegion(category, languageCode),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: colors.onSurface,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: -.2,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 9,
-                      vertical: 3,
-                    ),
-                    decoration: BoxDecoration(
-                      color: colors.primaryContainer,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      '$totalResults',
-                      style: TextStyle(
-                        color: colors.primary,
-                        fontSize: 12.5,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                  const Spacer(),
-                  if (category != null)
-                    IconButton(
-                      tooltip: context.tr('Toifani yopish'),
-                      onPressed: _closeCategory,
-                      visualDensity: VisualDensity.compact,
-                      icon: Icon(
-                        Icons.close_rounded,
-                        size: 20,
-                        color: colors.onSurfaceVariant,
-                      ),
-                    )
-                  else if (_isSearching)
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: SizedBox(
-                        width: 16,
-                        height: 16,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: colors.primary,
-                        ),
-                      ),
-                    )
-                  else
-                    const SizedBox(height: 40),
-                ],
+              padding: const EdgeInsets.only(right: 12),
+              child: IconButton.filledTonal(
+                tooltip: context.tr('Yorliqdan mahsulot qo‘shish'),
+                style: IconButton.styleFrom(
+                  backgroundColor: colors.primaryContainer,
+                  foregroundColor: colors.primary,
+                ),
+                icon: const Icon(Icons.add_rounded),
+                onPressed: () async {
+                  final food = await Navigator.push<FoodNutrition>(
+                    context,
+                    MaterialPageRoute(builder: (_) => const CustomFoodPage()),
+                  );
+                  if (food != null && mounted) {
+                    await _chooseGlobal(food);
+                  }
+                },
               ),
             ),
-            const SizedBox(height: 8),
           ],
-          Expanded(
-            child: !showResults
-                ? SearchHistoryPanel(
-                    header: _categories(context, languageCode),
-                    onSelected: (query) {
-                      _search.text = query;
-                      _search.selection = TextSelection.collapsed(
-                        offset: query.length,
-                      );
-                      _onSearchChanged(query);
-                    },
-                  )
-                : totalResults == 0 && !_isSearching
-                ? _SearchEmptyState(
-                    title: context.tr('Mahsulot topilmadi'),
-                    subtitle:
-                        _searchError ??
-                        context.tr('Boshqa nom bilan qayta qidiring'),
-                  )
-                : ListView(
-                    keyboardDismissBehavior:
-                        ScrollViewKeyboardDismissBehavior.onDrag,
-                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 28),
-                    children: [
-                      for (final dish in dishes) ...[
-                        _FoodResultCard(
-                          food: dish.nutrition,
-                          title: dish.localizedName(languageCode),
-                          subtitle: dish.region == 'Umumiy'
-                              ? '100 ${context.tr(dish.nutrition.basisUnit)}'
-                              : '${dish.localizedRegion(languageCode)} · 100 ${context.tr(dish.nutrition.basisUnit)}',
-                          asset: foodThumbnailAsset(
-                            dish.nutrition,
-                            region: dish.region,
-                          ),
-                          onTap: () => _choose(dish),
-                        ),
-                        const SizedBox(height: 10),
-                      ],
-                      for (final food in globalFoods) ...[
-                        _FoodResultCard(
-                          food: food,
-                          title: food.displayNameFor(languageCode),
-                          subtitle:
-                              '${context.tr('Internet bazasi')} · 100 ${context.tr(food.basisUnit)}',
-                          asset: foodThumbnailAsset(food),
-                          fallbackIcon: Icons.public_rounded,
-                          onTap: () => _chooseGlobal(food),
-                        ),
-                        const SizedBox(height: 10),
-                      ],
-                      if (_isSearching && totalResults == 0)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 32),
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              color: colors.primary,
+        ),
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(18, 6, 18, 14),
+              child: TextField(
+                controller: _search,
+                onChanged: _onSearchChanged,
+                textInputAction: TextInputAction.search,
+                style: TextStyle(color: colors.onSurface, fontSize: 16),
+                decoration: InputDecoration(
+                  hintText: context.tr('Taom yoki mahsulotni qidiring'),
+                  hintStyle: TextStyle(
+                    color: colors.onSurfaceVariant.withValues(alpha: .8),
+                    fontSize: 15.5,
+                  ),
+                  prefixIcon: Icon(
+                    Icons.search_rounded,
+                    color: colors.onSurfaceVariant,
+                  ),
+                  suffixIcon: _query.isEmpty
+                      ? null
+                      : IconButton(
+                          tooltip: MaterialLocalizations.of(
+                            context,
+                          ).deleteButtonTooltip,
+                          onPressed: () {
+                            _search.clear();
+                            _onSearchChanged('');
+                          },
+                          icon: Container(
+                            width: 22,
+                            height: 22,
+                            decoration: BoxDecoration(
+                              color: colors.onSurfaceVariant.withValues(
+                                alpha: .18,
+                              ),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.close_rounded,
+                              size: 14,
+                              color: colors.onSurface,
                             ),
                           ),
                         ),
-                      if (!_isSearching && _nextPage != null)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4),
-                          child: OutlinedButton.icon(
-                            onPressed: _loadMore,
-                            icon: const Icon(Icons.expand_more_rounded),
-                            label: Text(context.tr('Yana ko‘rsatish')),
-                          ),
-                        ),
-                      if (_searchError != null && totalResults > 0)
-                        Padding(
-                          padding: const EdgeInsets.all(12),
-                          child: Text(
-                            _searchError!,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: colors.error),
-                          ),
-                        ),
-                    ],
+                  filled: true,
+                  fillColor: colors.surfaceContainerLowest,
+                  contentPadding: const EdgeInsets.symmetric(vertical: 16),
+                  border: fieldBorder,
+                  enabledBorder: fieldBorder,
+                  focusedBorder: fieldBorder.copyWith(
+                    borderSide: BorderSide(color: colors.primary, width: 1.6),
                   ),
-          ),
-        ],
+                ),
+              ),
+            ),
+            if (showResults) ...[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 12, 0),
+                child: Row(
+                  children: [
+                    Flexible(
+                      child: Text(
+                        context.tr('Qidiruv natijalari'),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: colors.onSurface,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: -.2,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 9,
+                        vertical: 3,
+                      ),
+                      decoration: BoxDecoration(
+                        color: colors.primaryContainer,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        '$totalResults',
+                        style: TextStyle(
+                          color: colors.primary,
+                          fontSize: 12.5,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    const Spacer(),
+                    if (_isSearching)
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: colors.primary,
+                          ),
+                        ),
+                      )
+                    else
+                      const SizedBox(height: 40),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 8),
+            ],
+            Expanded(
+              child: !showResults
+                  ? SearchHistoryPanel(
+                      onSelected: (query) {
+                        _search.text = query;
+                        _search.selection = TextSelection.collapsed(
+                          offset: query.length,
+                        );
+                        _onSearchChanged(query);
+                      },
+                    )
+                  : totalResults == 0 && !_isSearching
+                  ? _SearchEmptyState(
+                      title: context.tr('Mahsulot topilmadi'),
+                      subtitle:
+                          _searchError ??
+                          context.tr('Boshqa nom bilan qayta qidiring'),
+                    )
+                  : ListView(
+                      keyboardDismissBehavior:
+                          ScrollViewKeyboardDismissBehavior.onDrag,
+                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 28),
+                      children: [
+                        for (final dish in dishes) ...[
+                          _FoodResultCard(
+                            food: dish.nutrition,
+                            title: dish.localizedName(languageCode),
+                            subtitle: dish.region == 'Umumiy'
+                                ? '100 ${context.tr(dish.nutrition.basisUnit)}'
+                                : '${dish.localizedRegion(languageCode)} · 100 ${context.tr(dish.nutrition.basisUnit)}',
+                            asset: foodThumbnailAsset(
+                              dish.nutrition,
+                              region: dish.region,
+                            ),
+                            selected:
+                                _basketCounts[_foodKey(dish.nutrition)] ?? 0,
+                            onTap: () => _choose(dish),
+                          ),
+                          const SizedBox(height: 10),
+                        ],
+                        for (final food in globalFoods) ...[
+                          _FoodResultCard(
+                            food: food,
+                            title: food.displayNameFor(languageCode),
+                            subtitle:
+                                '${context.tr('Internet bazasi')} · 100 ${context.tr(food.basisUnit)}',
+                            asset: foodThumbnailAsset(food),
+                            fallbackIcon: Icons.public_rounded,
+                            selected: _basketCounts[_foodKey(food)] ?? 0,
+                            onTap: () => _chooseGlobal(food),
+                          ),
+                          const SizedBox(height: 10),
+                        ],
+                        if (_isSearching && totalResults == 0)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 32),
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color: colors.primary,
+                              ),
+                            ),
+                          ),
+                        if (!_isSearching && _nextPage != null)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 4),
+                            child: OutlinedButton.icon(
+                              onPressed: _loadMore,
+                              icon: const Icon(Icons.expand_more_rounded),
+                              label: Text(context.tr('Yana ko‘rsatish')),
+                            ),
+                          ),
+                        if (_searchError != null && totalResults > 0)
+                          Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Text(
+                              _searchError!,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: colors.error),
+                            ),
+                          ),
+                      ],
+                    ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -613,7 +784,11 @@ class _FoodResultCard extends StatelessWidget {
     required this.asset,
     required this.onTap,
     this.fallbackIcon = Icons.restaurant_rounded,
+    this.selected = 0,
   });
+
+  /// Shu mahsulotdan nechta porsiya saqlangan.
+  final int selected;
 
   final FoodNutrition food;
   final String title;
@@ -746,17 +921,27 @@ class _FoodResultCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              Container(
-                width: 34,
-                height: 34,
-                decoration: BoxDecoration(
-                  color: colors.primary,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.add_rounded,
-                  color: colors.onPrimary,
-                  size: 21,
+              Badge(
+                isLabelVisible: selected > 1,
+                label: Text('$selected'),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 180),
+                  width: 34,
+                  height: 34,
+                  decoration: BoxDecoration(
+                    color: selected > 0
+                        ? colors.primaryContainer
+                        : colors.primary,
+                    shape: BoxShape.circle,
+                    border: selected > 0
+                        ? Border.all(color: colors.primary, width: 1.5)
+                        : null,
+                  ),
+                  child: Icon(
+                    selected > 0 ? Icons.check_rounded : Icons.add_rounded,
+                    color: selected > 0 ? colors.primary : colors.onPrimary,
+                    size: 21,
+                  ),
                 ),
               ),
             ],

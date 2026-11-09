@@ -92,12 +92,6 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
         languageCode: Localizations.localeOf(context).languageCode,
       );
       if (!mounted || searchId != _searchId) return;
-      SearchHistoryStore.shared.addSuccessful(
-        text,
-        results.expand(
-          (food) => [food.name, if (food.localName != null) food.localName!],
-        ),
-      );
       setState(() {
         _results = results;
         _completedQuery = text;
@@ -136,6 +130,10 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
       ),
     );
     if (grams == null || !mounted) return;
+    // Tarixda yozilgan so'rov emas, tanlangan mahsulot nomi qoladi.
+    SearchHistoryStore.shared.add(
+      food.displayNameFor(Localizations.localeOf(context).languageCode),
+    );
     await Future<void>.delayed(Duration.zero);
     await WidgetsBinding.instance.endOfFrame;
     if (!mounted) return;

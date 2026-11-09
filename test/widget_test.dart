@@ -1037,15 +1037,27 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: MealsPage(onMealSelected: (_) {}, foods: const [breakfast]),
+          body: MealsPage(
+            onMealSelected: (_) {},
+            foods: const [breakfast],
+            onFoodRemoved: (_) {},
+          ),
         ),
       ),
     );
     await tester.pumpAndSettle();
 
+    // Ro'yxat avtomatik yopiq turadi.
+    expect(find.text('1 mahsulot · 180 kcal'), findsOneWidget);
+    expect(find.text('Tovuq shashlik'), findsNothing);
+    await tester.tap(find.byKey(const ValueKey('meal-toggle-breakfast')));
+    await tester.pumpAndSettle();
     expect(find.text('Tovuq shashlik'), findsOneWidget);
     expect(find.text('180 kcal'), findsOneWidget);
-    expect(find.text('1 mahsulot · 180 kcal'), findsOneWidget);
+    expect(find.byIcon(Icons.delete_outline_rounded), findsOneWidget);
+    await tester.tap(find.byKey(const ValueKey('meal-toggle-breakfast')));
+    await tester.pumpAndSettle();
+    expect(find.text('Tovuq shashlik'), findsNothing);
   });
 
   testWidgets('Profil sahifasi shaxsiy ma’lumotlarni ko‘rsatadi', (
@@ -1148,7 +1160,7 @@ void main() {
   testWidgets('milliy taomni gramm bilan qo‘shish xatosiz yakunlanadi', (
     tester,
   ) async {
-    FoodNutrition? selectedFood;
+    List<FoodNutrition>? selectedFoods;
     await tester.pumpWidget(
       MaterialApp(
         locale: const Locale('uz'),
@@ -1159,7 +1171,7 @@ void main() {
             body: Center(
               child: FilledButton(
                 onPressed: () async {
-                  selectedFood = await Navigator.push<FoodNutrition>(
+                  selectedFoods = await Navigator.push<List<FoodNutrition>>(
                     context,
                     MaterialPageRoute(
                       builder: (_) =>
@@ -1182,13 +1194,16 @@ void main() {
     await tester.tap(find.text('Samarqand oshi').last);
     await tester.pumpAndSettle();
     await tester.enterText(find.byType(TextField).last, '150');
-    await tester.tap(find.text('Ovqatga qo‘shish'));
+    await tester.tap(find.text('Saqlash'));
+    await tester.pumpAndSettle();
+    expect(find.text('1 ta mahsulot'), findsOneWidget);
+    await tester.tap(find.byKey(const Key('basket-add')));
     await tester.pumpAndSettle();
 
     expect(tester.takeException(), isNull);
-    expect(selectedFood, isNotNull);
-    expect(selectedFood!.grams, 150);
-    expect(selectedFood!.calories, closeTo(348, .001));
+    expect(selectedFoods, hasLength(1));
+    expect(selectedFoods!.single.grams, 150);
+    expect(selectedFoods!.single.calories, closeTo(348, .001));
   });
 
   testWidgets(
@@ -1205,7 +1220,7 @@ void main() {
               body: Center(
                 child: FilledButton(
                   onPressed: () async {
-                    final selected = await Navigator.push<FoodNutrition>(
+                    final selected = await Navigator.push<List<FoodNutrition>>(
                       context,
                       MaterialPageRoute(
                         builder: (_) => NationalFoodPickerPage(
@@ -1214,7 +1229,7 @@ void main() {
                         ),
                       ),
                     );
-                    if (selected != null) addedCount++;
+                    addedCount += selected?.length ?? 0;
                   },
                   child: const Text('Global qidiruv'),
                 ),
@@ -1224,20 +1239,24 @@ void main() {
         ),
       );
 
+      await tester.tap(find.text('Global qidiruv'));
+      await tester.pumpAndSettle();
+      await tester.enterText(find.byType(TextField), 'pomidor');
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.pumpAndSettle();
+      // Bitta oynada uchta porsiya saqlanadi, keyin birdaniga qo'shiladi.
       for (var attempt = 0; attempt < 3; attempt++) {
-        await tester.tap(find.text('Global qidiruv'));
-        await tester.pumpAndSettle();
-        await tester.enterText(find.byType(TextField), 'pomidor');
-        await tester.pump(const Duration(milliseconds: 500));
-        await tester.pumpAndSettle();
         await tester.tap(find.text('pomidor — xom'));
         await tester.pumpAndSettle();
-        await tester.tap(find.text('Ovqatga qo‘shish'));
+        await tester.tap(find.text('Saqlash'));
         await tester.pumpAndSettle();
-
         expect(tester.takeException(), isNull);
       }
+      expect(find.text('3 ta mahsulot'), findsOneWidget);
+      await tester.tap(find.byKey(const Key('basket-add')));
+      await tester.pumpAndSettle();
 
+      expect(tester.takeException(), isNull);
       expect(addedCount, 3);
     },
   );

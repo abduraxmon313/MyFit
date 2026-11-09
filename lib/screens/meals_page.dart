@@ -191,6 +191,7 @@ class MealsPage extends StatelessWidget {
                       )
                       .toList(growable: false);
                   return _ExpandableMealTimelineItem(
+                    key: ValueKey('meal-${entry.$2.name}'),
                     meal: entry.$2,
                     foods: mealFoods,
                     isLast: entry.$1 == MealType.values.length - 1,
@@ -637,8 +638,9 @@ class _NutritionValue extends StatelessWidget {
   }
 }
 
-class _ExpandableMealTimelineItem extends StatelessWidget {
+class _ExpandableMealTimelineItem extends StatefulWidget {
   const _ExpandableMealTimelineItem({
+    super.key,
     required this.meal,
     required this.foods,
     required this.isLast,
@@ -652,11 +654,27 @@ class _ExpandableMealTimelineItem extends StatelessWidget {
   final VoidCallback onAdd;
   final ValueChanged<FoodNutrition>? onRemove;
 
-  double get totalCalories =>
-      foods.fold(0, (total, food) => total + food.calories);
+  @override
+  State<_ExpandableMealTimelineItem> createState() =>
+      _ExpandableMealTimelineItemState();
+}
+
+class _ExpandableMealTimelineItemState
+    extends State<_ExpandableMealTimelineItem> {
+  // Ro'yxat boshida yopiq turadi; foydalanuvchi o'zi ochadi.
+  bool _expanded = false;
+
+  double get _totalCalories =>
+      widget.foods.fold(0, (total, food) => total + food.calories);
+
+  void _toggle() => setState(() => _expanded = !_expanded);
 
   @override
   Widget build(BuildContext context) {
+    final meal = widget.meal;
+    final foods = widget.foods;
+    final hasFoods = foods.isNotEmpty;
+    final expanded = _expanded && hasFoods;
     final colors = Theme.of(context).colorScheme;
     final dark = Theme.of(context).brightness == Brightness.dark;
     final accent = meal.accent(context);
@@ -664,7 +682,7 @@ class _ExpandableMealTimelineItem extends StatelessWidget {
     final radius = BorderRadius.circular(20);
     final languageCode = Localizations.localeOf(context).languageCode;
     return Padding(
-      padding: EdgeInsets.only(bottom: isLast ? 0 : 12),
+      padding: EdgeInsets.only(bottom: widget.isLast ? 0 : 12),
       child: Container(
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
@@ -686,9 +704,11 @@ class _ExpandableMealTimelineItem extends StatelessWidget {
           child: Column(
             children: [
               InkWell(
-                onTap: onAdd,
+                // Bo'sh mahal bosilsa darhol qo'shish ochiladi, aks holda
+                // ro'yxat ochiladi/yopiladi.
+                onTap: hasFoods ? _toggle : widget.onAdd,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+                  padding: const EdgeInsets.all(12),
                   child: Row(
                     children: [
                       _MealPhoto(meal: meal),
@@ -708,62 +728,56 @@ class _ExpandableMealTimelineItem extends StatelessWidget {
                                 letterSpacing: -.2,
                               ),
                             ),
-                            const SizedBox(height: 4),
-                            Row(
-                              children: [
-                                Icon(
-                                  foods.isEmpty
-                                      ? Icons.schedule_rounded
-                                      : Icons.check_circle_rounded,
-                                  size: 13,
-                                  color: foods.isEmpty
-                                      ? colors.onSurfaceVariant
-                                      : accent,
+                            if (hasFoods) ...[
+                              const SizedBox(height: 4),
+                              Text(
+                                '${foods.length} ${context.tr('mahsulot')} · ${_totalCalories.round()} ${context.tr('kcal')}',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: colors.onSurfaceVariant,
+                                  fontSize: 12.5,
+                                  fontWeight: FontWeight.w500,
                                 ),
-                                const SizedBox(width: 4),
-                                Flexible(
-                                  child: Text(
-                                    foods.isEmpty
-                                        ? meal.localizedTime(context)
-                                        : '${foods.length} ${context.tr('mahsulot')} · ${totalCalories.round()} ${context.tr('kcal')}',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      color: colors.onSurfaceVariant,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ],
                         ),
                       ),
-                      const SizedBox(width: 10),
+                      if (hasFoods)
+                        IconButton(
+                          key: ValueKey('meal-toggle-${meal.name}'),
+                          tooltip: context.tr(
+                            expanded ? 'Ro‘yxatni yopish' : 'Ro‘yxatni ochish',
+                          ),
+                          onPressed: _toggle,
+                          icon: AnimatedRotation(
+                            turns: expanded ? .5 : 0,
+                            duration: const Duration(milliseconds: 200),
+                            child: Icon(
+                              Icons.keyboard_arrow_down_rounded,
+                              color: colors.onSurfaceVariant,
+                            ),
+                          ),
+                        ),
+                      const SizedBox(width: 4),
                       Semantics(
                         button: true,
                         label: context.tr('Ovqat qo‘shish'),
-                        child: Container(
-                          width: 38,
-                          height: 38,
-                          decoration: BoxDecoration(
-                            color: accent,
-                            shape: BoxShape.circle,
-                            boxShadow: dark
-                                ? null
-                                : [
-                                    BoxShadow(
-                                      color: accent.withValues(alpha: .3),
-                                      blurRadius: 10,
-                                      offset: const Offset(0, 4),
-                                    ),
-                                  ],
-                          ),
-                          child: Icon(
-                            Icons.add_rounded,
-                            color: dark ? colors.surface : Colors.white,
-                            size: 22,
+                        child: Material(
+                          color: accent,
+                          shape: const CircleBorder(),
+                          child: InkWell(
+                            customBorder: const CircleBorder(),
+                            onTap: widget.onAdd,
+                            child: SizedBox.square(
+                              dimension: 38,
+                              child: Icon(
+                                Icons.add_rounded,
+                                color: dark ? colors.surface : Colors.white,
+                                size: 22,
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -771,25 +785,38 @@ class _ExpandableMealTimelineItem extends StatelessWidget {
                   ),
                 ),
               ),
-              if (foods.isNotEmpty) ...[
-                Divider(height: 1, thickness: 1, color: border),
-                for (var index = 0; index < foods.length; index++) ...[
-                  if (index > 0)
-                    Divider(
-                      height: 1,
-                      thickness: 1,
-                      indent: 66,
-                      color: border.withValues(alpha: .7),
-                    ),
-                  _MealFoodRow(
-                    food: foods[index],
-                    languageCode: languageCode,
-                    onRemove: onRemove == null
-                        ? null
-                        : () => onRemove!(foods[index]),
-                  ),
-                ],
-              ],
+              AnimatedSize(
+                duration: const Duration(milliseconds: 220),
+                curve: Curves.easeOutCubic,
+                alignment: Alignment.topCenter,
+                child: !expanded
+                    ? const SizedBox(width: double.infinity)
+                    : Column(
+                        children: [
+                          Divider(height: 1, thickness: 1, color: border),
+                          for (
+                            var index = 0;
+                            index < foods.length;
+                            index++
+                          ) ...[
+                            if (index > 0)
+                              Divider(
+                                height: 1,
+                                thickness: 1,
+                                indent: 66,
+                                color: border.withValues(alpha: .7),
+                              ),
+                            _MealFoodRow(
+                              food: foods[index],
+                              languageCode: languageCode,
+                              onRemove: widget.onRemove == null
+                                  ? null
+                                  : () => widget.onRemove!(foods[index]),
+                            ),
+                          ],
+                        ],
+                      ),
+              ),
             ],
           ),
         ),
@@ -901,9 +928,9 @@ class _MealFoodRow extends StatelessWidget {
               visualDensity: VisualDensity.compact,
               tooltip: MaterialLocalizations.of(context).deleteButtonTooltip,
               icon: Icon(
-                Icons.close_rounded,
-                color: colors.onSurfaceVariant,
-                size: 18,
+                Icons.delete_outline_rounded,
+                color: colors.error,
+                size: 21,
               ),
             ),
         ],

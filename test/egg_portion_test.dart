@@ -109,7 +109,7 @@ void main() {
   testWidgets('Egg picker adds three eggs with scaled nutrients', (
     tester,
   ) async {
-    FoodNutrition? selected;
+    List<FoodNutrition>? selected;
     await tester.pumpWidget(
       MaterialApp(
         locale: const Locale('uz'),
@@ -120,7 +120,7 @@ void main() {
             body: TextButton(
               child: const Text('Open'),
               onPressed: () async {
-                selected = await Navigator.push<FoodNutrition>(
+                selected = await Navigator.push<List<FoodNutrition>>(
                   context,
                   MaterialPageRoute(
                     builder: (_) => NationalFoodPickerPage(
@@ -147,12 +147,15 @@ void main() {
     await tester.enterText(field, '3');
     await tester.pump();
     expect(find.text('132 g · 194.0 kcal'), findsOneWidget);
-    await tester.tap(find.text('Ovqatga qo\u2018shish'));
+    await tester.tap(find.text('Saqlash'));
     await tester.pumpAndSettle();
-    expect(selected, isNotNull);
-    expect(selected!.grams, 132);
-    expect(selected!.calories, closeTo(194.04, .001));
-    expect(selected!.protein, closeTo(16.6056, .001));
+    expect(selected, isNull, reason: 'Saqlash faqat savatga qo‘shadi');
+    await tester.tap(find.byKey(const Key('basket-add')));
+    await tester.pumpAndSettle();
+    expect(selected, hasLength(1));
+    expect(selected!.single.grams, 132);
+    expect(selected!.single.calories, closeTo(194.04, .001));
+    expect(selected!.single.protein, closeTo(16.6056, .001));
     expect(tester.takeException(), isNull);
   });
 
