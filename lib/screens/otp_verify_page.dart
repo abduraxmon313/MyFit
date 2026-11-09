@@ -194,6 +194,26 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
         return context.tr('Juda ko‘p urinish. Keyinroq qayta urinib ko‘ring.');
       case 'network-request-failed':
         return context.tr('Internet aloqasi yo‘q.');
+      // Quyidagilar Firebase loyiha sozlamasi bilan bog'liq.
+      case 'billing-not-enabled':
+        return context.tr(
+          'SMS xizmati yoqilmagan: Firebase loyihasiga billing ulanmagan.',
+        );
+      case 'quota-exceeded':
+        return context.tr(
+          'Bugungi SMS limiti tugadi. Keyinroq urinib ko‘ring.',
+        );
+      case 'operation-not-allowed':
+        return context.tr(
+          'Telefon orqali kirish Firebase’da yoqilmagan yoki bu davlatga SMS ruxsat etilmagan.',
+        );
+      case 'app-not-authorized':
+      case 'missing-client-identifier':
+      case 'invalid-app-credential':
+      case 'captcha-check-failed':
+        return context.tr(
+          'Ilova Firebase’da tasdiqlanmagan (SHA kalitlari yoki APNs sozlanmagan).',
+        );
       default:
         return context.tr('Xatolik ({code}).', {'code': e.code});
     }

@@ -449,6 +449,14 @@ class AppLocalizations {
       'Saqlangan {count} ta mahsulot menyuga qo‘shilmaydi. Chiqasizmi?':
           'Сохранённые продукты ({count}) не будут добавлены в меню. Выйти?',
       'Qolish': 'Остаться',
+      'SMS xizmati yoqilmagan: Firebase loyihasiga billing ulanmagan.':
+          'SMS не включены: к проекту Firebase не подключён биллинг.',
+      'Bugungi SMS limiti tugadi. Keyinroq urinib ko‘ring.':
+          'Лимит SMS на сегодня исчерпан. Попробуйте позже.',
+      'Telefon orqali kirish Firebase’da yoqilmagan yoki bu davlatga SMS ruxsat etilmagan.':
+          'Вход по телефону не включён в Firebase или SMS в эту страну запрещены.',
+      'Ilova Firebase’da tasdiqlanmagan (SHA kalitlari yoki APNs sozlanmagan).':
+          'Приложение не подтверждено в Firebase (не настроены SHA или APNs).',
       'Ovqat yaratish': 'Создать блюдо',
       'Masalliq qo‘shish': 'Добавить ингредиент',
       'Masalliqlar': 'Ингредиенты',
@@ -882,6 +890,14 @@ class AppLocalizations {
       'Saqlangan {count} ta mahsulot menyuga qo‘shilmaydi. Chiqasizmi?':
           '{count} saved items will not be added to the meal. Leave?',
       'Qolish': 'Stay',
+      'SMS xizmati yoqilmagan: Firebase loyihasiga billing ulanmagan.':
+          'SMS is not enabled: no billing account is linked to the Firebase project.',
+      'Bugungi SMS limiti tugadi. Keyinroq urinib ko‘ring.':
+          'Today’s SMS limit is reached. Please try later.',
+      'Telefon orqali kirish Firebase’da yoqilmagan yoki bu davlatga SMS ruxsat etilmagan.':
+          'Phone sign-in is disabled in Firebase or SMS to this country is not allowed.',
+      'Ilova Firebase’da tasdiqlanmagan (SHA kalitlari yoki APNs sozlanmagan).':
+          'The app is not verified in Firebase (SHA keys or APNs are not set up).',
       'Ovqat yaratish': 'Create dish',
       'Masalliq qo‘shish': 'Add ingredient',
       'Masalliqlar': 'Ingredients',
