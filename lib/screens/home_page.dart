@@ -450,6 +450,7 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
         child: wide
             ? Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   NavigationRail(
                     selectedIndex: selectedTab,
@@ -895,10 +896,42 @@ class _BmiScale extends StatelessWidget {
     (_max, AppPalette.danger),
   ];
 
+  /// Integer flex in thousandths of the 16–40 range, so bands, marker and
+  /// labels all use exactly the same horizontal mapping.
+  static int _flex(double from, double to) =>
+      ((to.clamp(_min, _max) - from.clamp(_min, _max)) / (_max - _min) * 1000)
+          .round();
+
+  static String _label(double value) => value == value.roundToDouble()
+      ? value.round().toString()
+      : value.toString();
+
+  /// Zero-width anchor: [child] is centred exactly on this point of the row.
+  static Widget _anchor(Widget child, {double width = 48}) => SizedBox(
+    width: 0,
+    child: OverflowBox(
+      minWidth: 0,
+      maxWidth: width,
+      alignment: Alignment.center,
+      child: child,
+    ),
+  );
+
+  static Widget _spacer(int flex) =>
+      flex <= 0 ? const SizedBox.shrink() : Spacer(flex: flex);
+
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    final position = ((bmi - _min) / (_max - _min)).clamp(0.0, 1.0);
+    final value = bmi.clamp(_min, _max);
+    final labelStyle = TextStyle(
+      color: scheme.onSurfaceVariant,
+      fontSize: 11,
+      height: 1.2,
+      fontFeatures: const [FontFeature.tabularFigures()],
+    );
+    Text label(double v) =>
+        Text(_label(v), key: Key('bmi-label-${_label(v)}'), style: labelStyle);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -911,11 +944,11 @@ class _BmiScale extends StatelessWidget {
                   children: [
                     for (var i = 0; i < _bands.length; i++)
                       Expanded(
-                        flex:
-                            ((_bands[i].$1 -
-                                        (i == 0 ? _min : _bands[i - 1].$1)) *
-                                    10)
-                                .round(),
+                        key: Key('bmi-band-$i'),
+                        flex: _flex(
+                          i == 0 ? _min : _bands[i - 1].$1,
+                          _bands[i].$1,
+                        ),
                         child: Container(
                           height: 6,
                           margin: const EdgeInsets.symmetric(horizontal: 1),
@@ -929,17 +962,30 @@ class _BmiScale extends StatelessWidget {
                 ),
               ),
               if (bmi > 0)
-                AnimatedAlign(
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeOutCubic,
-                  alignment: Alignment(position * 2 - 1, 0),
-                  child: Container(
-                    width: 14,
-                    height: 14,
-                    decoration: BoxDecoration(
-                      color: scheme.surfaceContainerLowest,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: scheme.onSurface, width: 3),
+                Positioned.fill(
+                  child: Padding(
+                    // Keep the 14 px marker fully visible at both ends.
+                    padding: const EdgeInsets.symmetric(horizontal: 7),
+                    child: Row(
+                      children: [
+                        _spacer(_flex(_min, value)),
+                        _anchor(
+                          Container(
+                            key: const Key('bmi-marker'),
+                            width: 14,
+                            height: 14,
+                            decoration: BoxDecoration(
+                              color: scheme.surfaceContainerLowest,
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: scheme.onSurface,
+                                width: 3,
+                              ),
+                            ),
+                          ),
+                        ),
+                        _spacer(_flex(value, _max)),
+                      ],
                     ),
                   ),
                 ),
@@ -947,19 +993,31 @@ class _BmiScale extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            for (final label in ['16', '18.5', '25', '30', '40'])
-              Text(
-                label,
-                style: TextStyle(
-                  color: scheme.onSurfaceVariant,
-                  fontSize: 11,
-                  fontFeatures: const [FontFeature.tabularFigures()],
+        SizedBox(
+          height: 14,
+          child: Stack(
+            children: [
+              Align(alignment: Alignment.centerLeft, child: label(_min)),
+              Align(alignment: Alignment.centerRight, child: label(_max)),
+              // Interior boundaries are centred under the band edges.
+              Positioned.fill(
+                child: Row(
+                  children: [
+                    for (var i = 0; i < _bands.length - 1; i++) ...[
+                      Spacer(
+                        flex: _flex(
+                          i == 0 ? _min : _bands[i - 1].$1,
+                          _bands[i].$1,
+                        ),
+                      ),
+                      _anchor(label(_bands[i].$1)),
+                    ],
+                    Spacer(flex: _flex(_bands[_bands.length - 2].$1, _max)),
+                  ],
                 ),
               ),
-          ],
+            ],
+          ),
         ),
       ],
     );
