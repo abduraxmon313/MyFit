@@ -166,9 +166,15 @@ class _HomePageState extends State<HomePage> {
     await _profileService.saveProfile(uid, profile);
   }
 
-  void _showFoodAddedMessage(FoodNutrition food) {
+  void _showFoodAddedMessage(FoodNutrition food) =>
+      _showFoodsAddedMessage([food]);
+
+  void _showFoodsAddedMessage(List<FoodNutrition> foods) {
     final messenger = ScaffoldMessenger.of(context);
     final languageCode = Localizations.localeOf(context).languageCode;
+    final food = foods.first;
+    final grams = foods.fold<double>(0, (sum, item) => sum + item.grams);
+    final calories = foods.fold<double>(0, (sum, item) => sum + item.calories);
     messenger.hideCurrentSnackBar();
     messenger.showSnackBar(
       SnackBar(
@@ -180,10 +186,12 @@ class _HomePageState extends State<HomePage> {
         duration: const Duration(seconds: 3),
         dismissDirection: DismissDirection.horizontal,
         content: _FoodAddedToast(
-          foodName: food.displayNameFor(languageCode),
+          foodName: foods.length == 1
+              ? food.displayNameFor(languageCode)
+              : context.tr('{count} ta mahsulot', {'count': foods.length}),
           details:
-              '${food.grams.round()} ${context.tr(food.basisUnit)}  •  '
-              '${food.calories.round()} ${context.tr('kcal')}',
+              '${grams.round()} ${context.tr(food.basisUnit)}  •  '
+              '${calories.round()} ${context.tr('kcal')}',
           onClose: messenger.hideCurrentSnackBar,
         ),
       ),
@@ -244,16 +252,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _selectMeal(MealType meal) async {
-    final food = await Navigator.push<FoodNutrition>(
+    final foods = await Navigator.push<List<FoodNutrition>>(
       context,
       MaterialPageRoute(builder: (_) => NationalFoodPickerPage(meal: meal)),
     );
-    if (food == null || !mounted) return;
-    final mealFood = food.withMealType(meal.name);
-    setState(() => _foods.add(mealFood));
+    if (foods == null || foods.isEmpty || !mounted) return;
+    final mealFoods = [for (final food in foods) food.withMealType(meal.name)];
+    setState(() => _foods.addAll(mealFoods));
     final saved = await _persistFoods();
     if (!mounted || !saved) return;
-    _showFoodAddedMessage(mealFood);
+    _showFoodsAddedMessage(mealFoods);
   }
 
   void _openFoodHistory(DateTime day) {

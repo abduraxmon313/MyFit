@@ -106,11 +106,17 @@ class FoodPortionSheet extends StatefulWidget {
     required this.food,
     required this.title,
     required this.subtitle,
+    this.actionLabel = 'Ovqatga qo\u2018shish',
+    this.actionIcon = Icons.add_rounded,
   });
 
   final FoodNutrition food;
   final String title;
   final String subtitle;
+
+  /// Asosiy tugma matni (tarjima kaliti) va ikonkasi.
+  final String actionLabel;
+  final IconData actionIcon;
 
   @override
   State<FoodPortionSheet> createState() => _FoodPortionSheetState();
@@ -353,8 +359,8 @@ class _FoodPortionSheetState extends State<FoodPortionSheet> {
             ],
             FilledButton.icon(
               onPressed: !widget.food.hasMissingCoreNutrients ? _submit : null,
-              icon: const Icon(Icons.add_rounded),
-              label: Text(context.tr('Ovqatga qo\u2018shish')),
+              icon: Icon(widget.actionIcon),
+              label: Text(context.tr(widget.actionLabel)),
               style: FilledButton.styleFrom(
                 backgroundColor: colors.primary,
                 foregroundColor: colors.onPrimary,

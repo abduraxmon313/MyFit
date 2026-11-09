@@ -2,15 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../models/food_nutrition.dart';
 
-/// Qidiruvda ko'rsatiladigan tezkor kategoriya.
-class FoodCategory {
-  const FoodCategory(this.region, this.asset);
-
-  /// Katalogdagi `UzbekDish.region` qiymati bilan aynan bir xil.
-  final String region;
-  final String asset;
-}
-
 const _produce = 'assets/food_categories/produce.png';
 const _dairy = 'assets/food_categories/dairy.png';
 const _fish = 'assets/food_categories/fish.png';
@@ -19,21 +10,6 @@ const _bread = 'assets/food_categories/bread.png';
 const _beverage = 'assets/food_categories/beverage.png';
 const _egg = 'assets/food_categories/egg.png';
 const _mainDish = 'assets/food_categories/main_dish.png';
-
-const kSearchCategories = <FoodCategory>[
-  FoodCategory('Mevalar', _produce),
-  FoodCategory('O‘rmon mevalari', _produce),
-  FoodCategory('Quruq mevalar', _produce),
-  FoodCategory('Sabzavotlar', _produce),
-  FoodCategory('Sut mahsulotlari', _dairy),
-  FoodCategory('Pishloqlar', _dairy),
-  FoodCategory('Baliqlar', _fish),
-  FoodCategory('Mol qismlari', _meat),
-  FoodCategory('Nonlar', _bread),
-  FoodCategory('Garnirlar', _mainDish),
-  FoodCategory('Ichimliklar', _beverage),
-  FoodCategory('Yong‘oq va urug‘lar', _produce),
-];
 
 bool _isSupplement(FoodNutrition food) {
   final type = food.productType?.toUpperCase() ?? '';
