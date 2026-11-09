@@ -56,3 +56,6 @@ firepit-log.txt
 
 # Raw USDA import responses; the reviewed subset is recorded separately.
 /data_sources/usda/
+
+# Local design preview renders (MYFIT_PREVIEW_DIR); never committed.
+/output/
