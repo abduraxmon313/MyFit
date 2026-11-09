@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import '../l10n/app_localizations.dart';
 import '../models/food_nutrition.dart';
 import '../services/food_vision_service.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class FoodScanPage extends StatefulWidget {
   const FoodScanPage({super.key, required this.service});
@@ -18,7 +19,7 @@ class FoodScanPage extends StatefulWidget {
 }
 
 class _FoodScanPageState extends State<FoodScanPage> {
-  static const _green = Color(0xFF19C565);
+  static const _green = Color(0xFF2F5BEA);
   static const _navy = Color(0xFF10223C);
   final _picker = ImagePicker();
   final _grams = TextEditingController(text: '100');
@@ -110,7 +111,7 @@ class _FoodScanPageState extends State<FoodScanPage> {
 
   Widget _scanner(BuildContext context) {
     return Scaffold(
-      backgroundColor: context.appColor(Color(0xFF03130E), surface: true),
+      backgroundColor: context.appColor(Color(0xFF0B1324), surface: true),
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -122,7 +123,7 @@ class _FoodScanPageState extends State<FoodScanPage> {
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [Color(0xFF0A2B20), Color(0xFF020B08)],
+                  colors: [Color(0xFF0B1324), Color(0xFF0B1324)],
                 ),
               ),
             ),
@@ -233,7 +234,7 @@ class _FoodScanPageState extends State<FoodScanPage> {
                         surface: true,
                       ),
                     ),
-                    icon: const Icon(Icons.arrow_back_ios_new),
+                    icon: const Icon(LucideIcons.chevronLeft),
                   ),
                 ),
               ),
@@ -249,7 +250,7 @@ class _FoodScanPageState extends State<FoodScanPage> {
                           color: Theme.of(
                             context,
                           ).colorScheme.surfaceContainerLowest,
-                          borderRadius: BorderRadius.circular(25),
+                          borderRadius: BorderRadius.circular(12),
                           boxShadow: const [
                             BoxShadow(
                               color: Color(0x10000000),
@@ -262,7 +263,7 @@ class _FoodScanPageState extends State<FoodScanPage> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             ClipRRect(
-                              borderRadius: BorderRadius.circular(17),
+                              borderRadius: BorderRadius.circular(12),
                               child: AspectRatio(
                                 aspectRatio: 16 / 9,
                                 child: Image.file(
@@ -277,10 +278,10 @@ class _FoodScanPageState extends State<FoodScanPage> {
                               child: DecoratedBox(
                                 decoration: BoxDecoration(
                                   color: context.appColor(
-                                    Color(0xFFE4FAED),
+                                    Color(0xFFF1F3F6),
                                     surface: true,
                                   ),
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
@@ -289,12 +290,12 @@ class _FoodScanPageState extends State<FoodScanPage> {
                                   ),
                                   child: Text(
                                     confidence == null
-                                        ? context.tr('✓ AI aniqlandi')
-                                        : '${context.tr('✓ AI aniqlandi')} · '
+                                        ? context.tr('AI aniqlandi')
+                                        : '${context.tr('AI aniqlandi')} · '
                                               '${(confidence * 100).round()}%',
                                     style: TextStyle(
                                       color: context.appColor(
-                                        Color(0xFF07883E),
+                                        Color(0xFF2F5BEA),
                                         surface: false,
                                       ),
                                       fontSize: 12,
@@ -353,7 +354,7 @@ class _FoodScanPageState extends State<FoodScanPage> {
                                             vertical: 10,
                                           ),
                                       border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(16),
+                                        borderRadius: BorderRadius.circular(12),
                                       ),
                                     ),
                                     style: TextStyle(
@@ -387,7 +388,7 @@ class _FoodScanPageState extends State<FoodScanPage> {
                                   value:
                                       '${calculated.protein.toStringAsFixed(1)} ${context.tr('g')}',
                                   color: context.appColor(
-                                    Color(0xFF098B3F),
+                                    Color(0xFF2F5BEA),
                                     surface: true,
                                   ),
                                 ),
@@ -401,7 +402,7 @@ class _FoodScanPageState extends State<FoodScanPage> {
                                   value:
                                       '${calculated.fat.toStringAsFixed(1)} ${context.tr('g')}',
                                   color: context.appColor(
-                                    Color(0xFFF08A00),
+                                    Color(0xFFB7791F),
                                     surface: true,
                                   ),
                                 ),
@@ -411,7 +412,7 @@ class _FoodScanPageState extends State<FoodScanPage> {
                                       ? '${calculated.water.toStringAsFixed(1)} ${context.tr('ml')}'
                                       : context.tr('Ma’lumot yo‘q'),
                                   color: context.appColor(
-                                    Color(0xFF168BD2),
+                                    Color(0xFF3B6FE0),
                                     surface: true,
                                   ),
                                 ),
@@ -447,7 +448,7 @@ class _FoodScanPageState extends State<FoodScanPage> {
                     style: FilledButton.styleFrom(
                       backgroundColor: Theme.of(context).colorScheme.primary,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                     child: Text(
@@ -483,7 +484,7 @@ class _ScannerHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        _GlassIconButton(icon: Icons.arrow_back_ios_new_rounded, onTap: onBack),
+        _GlassIconButton(icon: LucideIcons.chevronLeft, onTap: onBack),
         const SizedBox(width: 12),
         Expanded(
           child: Container(
@@ -491,9 +492,9 @@ class _ScannerHeader extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 15),
             decoration: BoxDecoration(
               color: context
-                  .appColor(Color(0xFF071C15), surface: true)
+                  .appColor(Color(0xFF0B1324), surface: true)
                   .withValues(alpha: .72),
-              borderRadius: BorderRadius.circular(19),
+              borderRadius: BorderRadius.circular(12),
               border: Border.all(
                 color: context
                     .appColor(Colors.white, surface: true)
@@ -510,8 +511,8 @@ class _ScannerHeader extends StatelessWidget {
                     borderRadius: BorderRadius.circular(11),
                   ),
                   child: const Icon(
-                    Icons.auto_awesome_rounded,
-                    color: Color(0xFF75F2A8),
+                    LucideIcons.sparkles,
+                    color: Color(0xFFA9C1FF),
                     size: 18,
                   ),
                 ),
@@ -566,10 +567,10 @@ class _GlassIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: context
-          .appColor(Color(0xFF071C15), surface: true)
+          .appColor(Color(0xFF0B1324), surface: true)
           .withValues(alpha: .76),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(12),
         side: BorderSide(
           color: context
               .appColor(Colors.white, surface: true)
@@ -578,7 +579,7 @@ class _GlassIconButton extends StatelessWidget {
       ),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(12),
         child: SizedBox(
           width: 56,
           height: 56,
@@ -642,7 +643,7 @@ class _ScanFrame extends StatelessWidget {
                     color: context
                         .appColor(Colors.white, surface: true)
                         .withValues(alpha: .025),
-                    borderRadius: BorderRadius.circular(34),
+                    borderRadius: BorderRadius.circular(12),
                     border: Border.all(
                       color: context
                           .appColor(Colors.white, surface: true)
@@ -654,7 +655,7 @@ class _ScanFrame extends StatelessWidget {
                   child: CustomPaint(
                     painter: _ScanCornersPainter(
                       color: analyzing
-                          ? context.appColor(Color(0xFF9AFAC0), surface: true)
+                          ? context.appColor(Color(0xFFA9C1FF), surface: true)
                           : _FoodScanPageState._green,
                     ),
                   ),
@@ -666,8 +667,8 @@ class _ScanFrame extends StatelessWidget {
                     vertical: 9,
                   ),
                   decoration: BoxDecoration(
-                    color: context.appColor(Color(0xE6071A13), surface: true),
-                    borderRadius: BorderRadius.circular(16),
+                    color: context.appColor(Color(0xE60B1324), surface: true),
+                    borderRadius: BorderRadius.circular(12),
                     border: Border.all(
                       color: context
                           .appColor(Colors.white, surface: true)
@@ -685,14 +686,14 @@ class _ScanFrame extends StatelessWidget {
                           width: 17,
                           height: 17,
                           child: CircularProgressIndicator(
-                            color: Color(0xFF74F3A8),
+                            color: Color(0xFFA9C1FF),
                             strokeWidth: 2.2,
                           ),
                         )
                       else
                         const Icon(
-                          Icons.center_focus_strong_rounded,
-                          color: Color(0xFF74F3A8),
+                          LucideIcons.focus,
+                          color: Color(0xFFA9C1FF),
                           size: 18,
                         ),
                       const SizedBox(width: 8),
@@ -757,13 +758,13 @@ class _ScanningBeamState extends State<_ScanningBeam>
               gradient: LinearGradient(
                 colors: [
                   Colors.transparent,
-                  Color(0xFF63F49E),
+                  Color(0xFFA9C1FF),
                   Colors.transparent,
                 ],
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Color(0xAA31DA79),
+                  color: Color(0xAAA9C1FF),
                   blurRadius: 12,
                   spreadRadius: 2,
                 ),
@@ -841,7 +842,7 @@ class _ScannerError extends StatelessWidget {
         color: context
             .appColor(Color(0xFFFDF8F2), surface: true)
             .withValues(alpha: .96),
-        borderRadius: BorderRadius.circular(19),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: context.appColor(Color(0xFFFFD8C5), surface: true),
         ),
@@ -859,12 +860,12 @@ class _ScannerError extends StatelessWidget {
             width: 38,
             height: 38,
             decoration: BoxDecoration(
-              color: context.appColor(Color(0xFFFFE7DA), surface: true),
+              color: context.appColor(Color(0xFFF1F3F6), surface: true),
               borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(
-              Icons.info_outline_rounded,
-              color: Color(0xFFE56B3E),
+              LucideIcons.info,
+              color: Color(0xFFB7791F),
               size: 21,
             ),
           ),
@@ -886,15 +887,15 @@ class _ScannerError extends StatelessWidget {
             onPressed: onRetry,
             style: IconButton.styleFrom(
               backgroundColor: context.appColor(
-                Color(0xFFFFE7DA),
+                Color(0xFFF1F3F6),
                 surface: true,
               ),
               foregroundColor: context.appColor(
-                Color(0xFFE56B3E),
+                Color(0xFFB7791F),
                 surface: false,
               ),
             ),
-            icon: const Icon(Icons.refresh_rounded, size: 21),
+            icon: const Icon(LucideIcons.refreshCw, size: 21),
           ),
         ],
       ),
@@ -927,8 +928,8 @@ class _ScannerControls extends StatelessWidget {
       height: 104,
       padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-        color: context.appColor(Color(0xE60A1C16), surface: true),
-        borderRadius: BorderRadius.circular(16),
+        color: context.appColor(Color(0xE60B1324), surface: true),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: context
               .appColor(Colors.white, surface: true)
@@ -946,7 +947,7 @@ class _ScannerControls extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _ScanAction(
-            icon: Icons.photo_library_outlined,
+            icon: LucideIcons.images,
             label: galleryLabel,
             onTap: analyzing ? null : onGallery,
           ),
@@ -967,7 +968,7 @@ class _ScannerControls extends StatelessWidget {
                     color: Theme.of(context).colorScheme.surfaceContainerLowest,
                     boxShadow: const [
                       BoxShadow(
-                        color: Color(0x6619C565),
+                        color: Color(0x662F5BEA),
                         blurRadius: 18,
                         spreadRadius: 2,
                       ),
@@ -984,14 +985,14 @@ class _ScannerControls extends StatelessWidget {
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
-                        colors: [Color(0xFF32DC7D), Color(0xFF0BA84D)],
+                        colors: [Color(0xFFA9C1FF), Color(0xFF2F5BEA)],
                       ),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
                       analyzing
-                          ? Icons.hourglass_top_rounded
-                          : Icons.camera_alt_rounded,
+                          ? LucideIcons.hourglass
+                          : LucideIcons.camera,
                       color: context.appColor(Colors.white, surface: false),
                       size: 27,
                     ),
@@ -1001,7 +1002,7 @@ class _ScannerControls extends StatelessWidget {
             ),
           ),
           _ScanAction(
-            icon: Icons.refresh_rounded,
+            icon: LucideIcons.refreshCw,
             label: retryLabel,
             onTap: analyzing ? null : onRetry,
           ),
@@ -1026,7 +1027,7 @@ class _ScanAction extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(17),
+      borderRadius: BorderRadius.circular(12),
       child: SizedBox(
         width: 82,
         child: Column(
@@ -1039,7 +1040,7 @@ class _ScanAction extends StatelessWidget {
                 color: context
                     .appColor(Colors.white, surface: true)
                     .withValues(alpha: .09),
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: BorderRadius.circular(12),
                 border: Border.all(
                   color: context
                       .appColor(Colors.white, surface: true)
@@ -1091,7 +1092,7 @@ class _Nutrient extends StatelessWidget {
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: context.appColor(Color(0xFFF7F8FA), surface: true),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

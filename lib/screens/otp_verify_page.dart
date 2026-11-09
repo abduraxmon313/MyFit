@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 
 import '../l10n/app_localizations.dart';
 import '../services/auth_service.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class OtpVerifyPage extends StatefulWidget {
   const OtpVerifyPage({
@@ -210,7 +211,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Color(0xFF0B3D2E), Color(0xFF145A32), Color(0xFF1B6B3A)],
+            colors: [Color(0xFF0B1324), Color(0xFF111B30), Color(0xFF16213A)],
           ),
         ),
         child: SafeArea(
@@ -221,7 +222,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                 child: IconButton(
                   onPressed: () => Navigator.of(context).maybePop(),
                   icon: Icon(
-                    Icons.arrow_back_ios_new,
+                    LucideIcons.chevronLeft,
                     color: context.appColor(Colors.white, surface: false),
                   ),
                 ),
@@ -270,7 +271,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                               color: context
                                   .appColor(Colors.white, surface: true)
                                   .withValues(alpha: 0.08),
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(12),
                               border: Border.all(
                                 color: context.appColor(
                                   Colors.white24,
@@ -286,7 +287,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                                   if (_sending) ...[
                                     const Center(
                                       child: CircularProgressIndicator(
-                                        color: Color(0xFF7CFFB2),
+                                        color: Color(0xFFA9C1FF),
                                       ),
                                     ),
                                     const SizedBox(height: 16),
@@ -327,7 +328,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                                           .appColor(Colors.black, surface: true)
                                           .withValues(alpha: 0.25),
                                       border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(14),
+                                        borderRadius: BorderRadius.circular(12),
                                         borderSide: BorderSide.none,
                                       ),
                                     ),
@@ -347,7 +348,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         color: context.appColor(
-                                          Color(0xFFB8F5D1),
+                                          Color(0xFFA9C1FF),
                                           surface: false,
                                         ),
                                       ),
@@ -385,7 +386,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                                         vertical: 16,
                                       ),
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(14),
+                                        borderRadius: BorderRadius.circular(12),
                                       ),
                                     ),
                                     child: _loading
@@ -394,7 +395,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                                             width: 22,
                                             child: CircularProgressIndicator(
                                               strokeWidth: 2.4,
-                                              color: Color(0xFF7CFFB2),
+                                              color: Color(0xFFA9C1FF),
                                             ),
                                           )
                                         : Text(
@@ -422,7 +423,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                                       style: TextStyle(
                                         color: canResend
                                             ? context.appColor(
-                                                Color(0xFF7CFFB2),
+                                                Color(0xFFA9C1FF),
                                                 surface: false,
                                               )
                                             : context.appColor(

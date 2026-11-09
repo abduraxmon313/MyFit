@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class ProfileAvatar extends StatelessWidget {
   const ProfileAvatar({
@@ -28,7 +29,7 @@ class ProfileAvatar extends StatelessWidget {
       child: Center(
         child: initials.isEmpty
             ? Icon(
-                Icons.person_outline_rounded,
+                LucideIcons.user,
                 size: size * .42,
                 color: colors.onPrimaryContainer,
               )

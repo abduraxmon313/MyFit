@@ -7,6 +7,7 @@ import '../services/profile_photo_picker.dart';
 import '../widgets/appearance_selector.dart';
 import '../widgets/profile_avatar.dart';
 import 'profile_editor_page.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({
@@ -76,19 +77,19 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               ListTile(
-                leading: const Icon(Icons.photo_library_outlined),
+                leading: const Icon(LucideIcons.images),
                 title: Text(context.tr('Galereyadan tanlash')),
                 onTap: () => Navigator.pop(context, 'gallery'),
               ),
               ListTile(
-                leading: const Icon(Icons.photo_camera_outlined),
+                leading: const Icon(LucideIcons.camera),
                 title: Text(context.tr('Kamerada suratga olish')),
                 onTap: () => Navigator.pop(context, 'camera'),
               ),
               if (_profile.photoUrl != null && widget.onPhotoRemove != null)
                 ListTile(
                   leading: Icon(
-                    Icons.delete_outline_rounded,
+                    LucideIcons.trash2,
                     color: Theme.of(context).colorScheme.error,
                   ),
                   title: Text(
@@ -292,7 +293,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ),
                                 child: Icon(
-                                  Icons.add_a_photo_outlined,
+                                  LucideIcons.imagePlus,
                                   size: 16,
                                   color: colors.onPrimary,
                                 ),
@@ -367,12 +368,12 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(height: 14),
               OutlinedButton.icon(
                 onPressed: _busy ? null : _edit,
-                icon: const Icon(Icons.tune_rounded, size: 18),
+                icon: const Icon(LucideIcons.slidersHorizontal, size: 18),
                 label: Text(context.tr('Profilni tahrirlash')),
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                 ),
               ),
@@ -383,7 +384,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     _row(
                       context,
-                      Icons.flag_outlined,
+                      LucideIcons.flag,
                       'Maqsad',
                       context.tr(goal),
                       onTap: _busy ? null : _edit,
@@ -391,7 +392,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     Divider(height: 24, color: colors.outlineVariant),
                     _row(
                       context,
-                      Icons.directions_walk_rounded,
+                      LucideIcons.footprints,
                       'Faollik',
                       context.tr(activity),
                       onTap: _busy ? null : _edit,
@@ -406,21 +407,21 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     _row(
                       context,
-                      Icons.cake_outlined,
+                      LucideIcons.cake,
                       'Yosh',
                       '${profile.age}',
                     ),
                     Divider(height: 24, color: colors.outlineVariant),
                     _row(
                       context,
-                      Icons.person_outline_rounded,
+                      LucideIcons.user,
                       'Jins',
                       context.tr(profile.gender == 'male' ? 'Erkak' : 'Ayol'),
                     ),
                     Divider(height: 24, color: colors.outlineVariant),
                     _row(
                       context,
-                      Icons.phone_outlined,
+                      LucideIcons.phone,
                       'Telefon',
                       widget.phoneNumber.isEmpty
                           ? context.tr('Kiritilmagan')
@@ -437,7 +438,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     _settingLabel(
                       context,
-                      Icons.contrast_rounded,
+                      LucideIcons.contrast,
                       'Ilova ko‘rinishi',
                     ),
                     const SizedBox(height: 14),
@@ -467,7 +468,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     const SizedBox(height: 24),
-                    _settingLabel(context, Icons.language_rounded, 'Til'),
+                    _settingLabel(context, LucideIcons.languages, 'Til'),
                     const SizedBox(height: 14),
                     SegmentedButton<String>(
                       showSelectedIcon: false,
@@ -487,7 +488,7 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(height: 24),
               TextButton.icon(
                 onPressed: _busy ? null : widget.onSignOut,
-                icon: const Icon(Icons.logout_rounded, size: 19),
+                icon: const Icon(LucideIcons.logOut, size: 19),
                 label: Text(context.tr('Akkauntdan chiqish')),
                 style: TextButton.styleFrom(
                   foregroundColor: colors.error,
@@ -518,7 +519,7 @@ class _ProfilePageState extends State<ProfilePage> {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: colors.surfaceContainerLowest,
-        borderRadius: BorderRadius.circular(22),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(color: colors.outlineVariant.withValues(alpha: .7)),
       ),
       child: child,
@@ -634,7 +635,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             if (onTap != null)
               Icon(
-                Icons.chevron_right_rounded,
+                LucideIcons.chevronRight,
                 size: 20,
                 color: colors.onSurfaceVariant,
               ),

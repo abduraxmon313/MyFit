@@ -2,6 +2,7 @@ import '../theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 import '../l10n/app_localizations.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class WaterCalculatorPage extends StatefulWidget {
   const WaterCalculatorPage({super.key});
@@ -51,7 +52,7 @@ class _WaterCalculatorPageState extends State<WaterCalculatorPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: context.appColor(Color(0xFFFAFCFA), surface: true),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text(
@@ -129,10 +130,10 @@ class _WaterCalculatorPageState extends State<WaterCalculatorPage> {
                   end: Alignment.bottomRight,
                   colors: context.appPanelColors,
                 ),
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(12),
                 boxShadow: const [
                   BoxShadow(
-                    color: Color(0x2613B957),
+                    color: Color(0x262F5BEA),
                     blurRadius: 24,
                     offset: Offset(0, 12),
                   ),
@@ -150,8 +151,8 @@ class _WaterCalculatorPageState extends State<WaterCalculatorPage> {
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(
-                      Icons.water_drop_rounded,
-                      color: Color(0xFFBFFFF0),
+                      LucideIcons.droplet,
+                      color: Color(0xFFF1F3F6),
                       size: 32,
                     ),
                   ),

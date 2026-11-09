@@ -6,6 +6,7 @@ import '../models/nutrition_report.dart';
 import '../services/food_log_service.dart';
 import 'food_history_page.dart';
 import 'meals_page.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class ReportsPage extends StatefulWidget {
   const ReportsPage({
@@ -154,7 +155,7 @@ class _ReportsPageState extends State<ReportsPage> {
                       IconButton.filledTonal(
                         onPressed: _calendar,
                         tooltip: context.tr('Kalendar'),
-                        icon: const Icon(Icons.calendar_month_outlined),
+                        icon: const Icon(LucideIcons.calendarDays),
                       ),
                     ],
                   ),
@@ -189,7 +190,7 @@ class _ReportsPageState extends State<ReportsPage> {
                             ? null
                             : () => _move(-1),
                         tooltip: context.tr('Oldingi davr'),
-                        icon: const Icon(Icons.chevron_left),
+                        icon: const Icon(LucideIcons.chevronLeft),
                       ),
                       Expanded(
                         child: TextButton(
@@ -202,7 +203,7 @@ class _ReportsPageState extends State<ReportsPage> {
                             ? null
                             : () => _move(1),
                         tooltip: context.tr('Keyingi davr'),
-                        icon: const Icon(Icons.chevron_right),
+                        icon: const Icon(LucideIcons.chevronRight),
                       ),
                       TextButton(
                         onPressed: () {
@@ -225,7 +226,7 @@ class _ReportsPageState extends State<ReportsPage> {
                       Column(
                         children: [
                           Icon(
-                            Icons.cloud_off_outlined,
+                            LucideIcons.cloudOff,
                             color: colors.onSurfaceVariant,
                             size: 36,
                           ),
@@ -233,7 +234,7 @@ class _ReportsPageState extends State<ReportsPage> {
                           Text(context.tr('Hisobotni yuklab bo‘lmadi.')),
                           TextButton.icon(
                             onPressed: _load,
-                            icon: const Icon(Icons.refresh),
+                            icon: const Icon(LucideIcons.refreshCw),
                             label: Text(context.tr('Qayta urinish')),
                           ),
                         ],
@@ -255,13 +256,9 @@ class _ReportsPageState extends State<ReportsPage> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: accent ? colors.primaryContainer : colors.surfaceContainerLow,
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(
-          color: accent
-              ? colors.primary.withValues(alpha: .2)
-              : colors.outlineVariant.withValues(alpha: .5),
-        ),
+        color: colors.surfaceContainerLowest,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: colors.outlineVariant),
       ),
       child: child,
     );
@@ -269,12 +266,20 @@ class _ReportsPageState extends State<ReportsPage> {
 
   Widget _heading(BuildContext context, String title, IconData icon) => Row(
     children: [
-      Icon(icon, size: 20, color: Theme.of(context).colorScheme.primary),
+      Icon(
+        icon,
+        size: 18,
+        color: Theme.of(context).colorScheme.onSurfaceVariant,
+      ),
       const SizedBox(width: 10),
       Expanded(
         child: Text(
           context.tr(title),
-          style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            letterSpacing: -.2,
+          ),
         ),
       ),
     ],
@@ -302,10 +307,14 @@ class _ReportsPageState extends State<ReportsPage> {
                 Expanded(
                   child: Text(
                     context.tr('Jami kaloriya'),
-                    style: TextStyle(color: colors.onPrimaryContainer),
+                    style: TextStyle(color: colors.onSurface),
                   ),
                 ),
-                Icon(Icons.insights_rounded, color: colors.primary),
+                Icon(
+                  LucideIcons.activity,
+                  size: 18,
+                  color: colors.onSurfaceVariant,
+                ),
               ],
             ),
             const SizedBox(height: 12),
@@ -321,14 +330,14 @@ class _ReportsPageState extends State<ReportsPage> {
                     height: 1.1,
                     letterSpacing: -1.5,
                     fontWeight: FontWeight.w700,
-                    color: colors.onPrimaryContainer,
+                    color: colors.onSurface,
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 5),
                   child: Text(
                     context.tr('kcal'),
-                    style: TextStyle(color: colors.onPrimaryContainer),
+                    style: TextStyle(color: colors.onSurface),
                   ),
                 ),
               ],
@@ -357,7 +366,7 @@ class _ReportsPageState extends State<ReportsPage> {
             const SizedBox(height: 16),
             Text(
               context.tr('O‘rtacha bugungacha bo‘lgan barcha kunlar bo‘yicha.'),
-              style: TextStyle(fontSize: 12, color: colors.onPrimaryContainer),
+              style: TextStyle(fontSize: 12, color: colors.onSurface),
             ),
           ],
         ),
@@ -370,7 +379,7 @@ class _ReportsPageState extends State<ReportsPage> {
           Column(
             children: [
               Icon(
-                Icons.restaurant_menu_rounded,
+                LucideIcons.utensilsCrossed,
                 size: 36,
                 color: colors.primary,
               ),
@@ -397,7 +406,7 @@ class _ReportsPageState extends State<ReportsPage> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _heading(context, 'Kaloriya dinamikasi', Icons.bar_chart_rounded),
+            _heading(context, 'Kaloriya dinamikasi', LucideIcons.chartColumn),
             const SizedBox(height: 8),
             Text(
               '${context.tr('Kunlik maqsad')}: ${_number(target)} ${context.tr('kcal')}',
@@ -421,7 +430,7 @@ class _ReportsPageState extends State<ReportsPage> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _heading(context, 'Makronutrientlar', Icons.donut_large_rounded),
+            _heading(context, 'Makronutrientlar', LucideIcons.chartPie),
             const SizedBox(height: 20),
             _macro(
               context,
@@ -439,7 +448,7 @@ class _ReportsPageState extends State<ReportsPage> {
               total,
               'carbohydrates',
               total.carbs,
-              const Color(0xFF7CA9D2),
+              const Color(0xFFC9892B),
               total.carbs * 4,
               total,
             ),
@@ -449,7 +458,7 @@ class _ReportsPageState extends State<ReportsPage> {
               total,
               'fat',
               total.fat,
-              const Color(0xFFD4AF72),
+              const Color(0xFFC2556B),
               total.fat * 9,
               total,
             ),
@@ -467,11 +476,7 @@ class _ReportsPageState extends State<ReportsPage> {
         context,
         Column(
           children: [
-            _heading(
-              context,
-              'Ovqatlanish taqsimoti',
-              Icons.restaurant_outlined,
-            ),
+            _heading(context, 'Ovqatlanish taqsimoti', LucideIcons.utensils),
             const SizedBox(height: 12),
             for (final meal in MealType.values) ...[
               Padding(
@@ -527,7 +532,7 @@ class _ReportsPageState extends State<ReportsPage> {
             _heading(
               context,
               'Iste’mol qilingan mahsulotlar',
-              Icons.receipt_long_outlined,
+              LucideIcons.receipt,
             ),
             const SizedBox(height: 10),
             for (final item in foods)
@@ -582,7 +587,7 @@ class _ReportsPageState extends State<ReportsPage> {
         context.tr(label),
         style: TextStyle(
           fontSize: 12,
-          color: Theme.of(context).colorScheme.onPrimaryContainer,
+          color: Theme.of(context).colorScheme.onSurface,
         ),
       ),
       const SizedBox(height: 5),
@@ -591,7 +596,7 @@ class _ReportsPageState extends State<ReportsPage> {
         style: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.w600,
-          color: Theme.of(context).colorScheme.onPrimaryContainer,
+          color: Theme.of(context).colorScheme.onSurface,
         ),
       ),
     ],

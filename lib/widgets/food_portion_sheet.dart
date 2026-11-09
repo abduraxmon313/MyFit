@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../l10n/app_localizations.dart';
 import '../models/food_nutrition.dart';
 import 'nutrition_facts.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 // Standard large-egg edible portions. Mixed dishes are deliberately excluded.
 // Whole egg: https://foods.fatsecret.com/calories-nutrition/usda/egg-(whole)
@@ -107,7 +108,7 @@ class FoodPortionSheet extends StatefulWidget {
     required this.title,
     required this.subtitle,
     this.actionLabel = 'Ovqatga qo\u2018shish',
-    this.actionIcon = Icons.add_rounded,
+    this.actionIcon = LucideIcons.plus,
   });
 
   final FoodNutrition food;
@@ -210,7 +211,7 @@ class _FoodPortionSheetState extends State<FoodPortionSheet> {
                     foregroundColor: colors.onSurface,
                     fixedSize: const Size(44, 44),
                   ),
-                  icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 18),
+                  icon: const Icon(LucideIcons.chevronLeft, size: 18),
                 ),
                 const SizedBox(width: 12),
                 Expanded(

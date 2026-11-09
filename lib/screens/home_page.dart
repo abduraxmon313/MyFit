@@ -1,4 +1,5 @@
 import '../theme/app_theme.dart';
+import '../widgets/app_ui.dart';
 import '../widgets/profile_avatar.dart';
 import 'package:flutter/material.dart';
 
@@ -22,6 +23,7 @@ import 'reports_page.dart';
 import 'national_food_picker_page.dart';
 import 'profile_page.dart';
 import 'workouts_page.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -44,8 +46,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  static const _navy = Color(0xFF10223C);
-
   final _visionService = FoodVisionService();
   final _foodDataService = FoodDataService();
   late final _foodLogService = widget.foodLogService ?? FoodLogService();
@@ -281,277 +281,190 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final Widget page = _navIndex == 4
+        ? ReportsPage(
+            uid: widget.authService.currentUser?.uid ?? '',
+            service: _foodLogService,
+            dailyTarget: _targetCalories,
+          )
+        : _loadingLog
+        ? const Center(child: CircularProgressIndicator())
+        : _logLoadFailed
+        ? Center(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(LucideIcons.cloudOff, size: 40),
+                  const SizedBox(height: 16),
+                  Text(
+                    context.tr('Kundalikni yuklab bo‘lmadi.'),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  FilledButton.icon(
+                    onPressed: _loadFoods,
+                    icon: const Icon(LucideIcons.refreshCw),
+                    label: Text(context.tr('Qayta urinish')),
+                  ),
+                ],
+              ),
+            ),
+          )
+        : _navIndex == 1
+        ? MealsPage(
+            onDateSelected: _openFoodHistory,
+            onMealSelected: _selectMeal,
+            dailyTarget: _targetCalories,
+            weekCalories: _weekCalories,
+            calories: _calories,
+            protein: _protein,
+            carbohydrates: _carbs,
+            fat: _fat,
+            fiber: _fiber,
+            foods: _foods,
+            onFoodRemoved: _removeMealFood,
+          )
+        : _navIndex == 2
+        ? WorkoutsPage(
+            weightKg: widget.profile.weightKg,
+            logs: _workouts,
+            onAdded: (workout) => setState(() => _workouts.add(workout)),
+            onRemoved: (index) => setState(() => _workouts.removeAt(index)),
+          )
+        : _navIndex == 3
+        ? ProfilePage(
+            profile: widget.profile,
+            phoneNumber: widget.authService.currentUser?.phoneNumber ?? '',
+            onSave: _saveProfile,
+            onPhotoUpload: (bytes) {
+              final uid = widget.authService.currentUser?.uid;
+              if (uid == null) {
+                throw StateError('Foydalanuvchi topilmadi');
+              }
+              return _profileService.uploadProfilePhoto(
+                uid: uid,
+                bytes: bytes,
+                fileName: 'avatar.png',
+              );
+            },
+            onPhotoRemove: () {
+              final uid = widget.authService.currentUser?.uid;
+              if (uid == null) {
+                throw StateError('Foydalanuvchi topilmadi');
+              }
+              return _profileService.removeProfilePhoto(uid);
+            },
+            onSignOut: widget.authService.signOut,
+            onLocaleChanged: widget.onLocaleChanged ?? (_) {},
+            onThemeChanged: widget.onThemeChanged,
+          )
+        : _Dashboard(
+            header: _HomeHeader(
+              greeting: _greeting(context),
+              profile: widget.profile,
+              onProfileTap: () => setState(() => _navIndex = 3),
+              onSignOut: widget.authService.signOut,
+            ),
+            profile: widget.profile,
+            calories: _calories,
+            target: _targetCalories,
+            protein: _protein,
+            carbs: _carbs,
+            fat: _fat,
+            actions: [
+              _ActionCard(
+                icon: LucideIcons.scanLine,
+                title: context.tr('Ovqatni skanerlash'),
+                onTap: _addFood,
+              ),
+              _ActionCard(
+                icon: LucideIcons.scanBarcode,
+                title: context.tr('Shtrix-kod skaneri'),
+                onTap: _scanBarcode,
+              ),
+              _ActionCard(
+                icon: LucideIcons.search,
+                title: context.tr('Ovqat qidirish'),
+                onTap: _searchFood,
+              ),
+              _ActionCard(
+                icon: LucideIcons.calculator,
+                title: context.tr('Kalkulyator'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (_) => const CalculatorPage(),
+                    ),
+                  );
+                },
+              ),
+              _ActionCard(
+                icon: LucideIcons.dumbbell,
+                title: context.tr('Mashq qo‘shish'),
+                onTap: () => setState(() => _navIndex = 2),
+              ),
+            ],
+          );
+    final destinations = [
+      (LucideIcons.house, context.tr('Bosh sahifa')),
+      (LucideIcons.utensils, context.tr('Ovqatlar')),
+      (LucideIcons.dumbbell, context.tr('Mashqlar')),
+      (LucideIcons.user, context.tr('Profil')),
+      (LucideIcons.chartColumn, context.tr('Hisobotlar')),
+    ];
+    final wide = MediaQuery.sizeOf(context).width >= 900;
+    final scheme = Theme.of(context).colorScheme;
+    void select(int index) => setState(() => _navIndex = index);
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: _navIndex == 4
-                  ? ReportsPage(
-                      uid: widget.authService.currentUser?.uid ?? '',
-                      service: _foodLogService,
-                      dailyTarget: _targetCalories,
-                    )
-                  : _loadingLog
-                  ? const Center(child: CircularProgressIndicator())
-                  : _logLoadFailed
-                  ? Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(24),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(Icons.cloud_off_outlined, size: 40),
-                            const SizedBox(height: 16),
-                            Text(
-                              context.tr('Kundalikni yuklab bo‘lmadi.'),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 16),
-                            FilledButton.icon(
-                              onPressed: _loadFoods,
-                              icon: const Icon(Icons.refresh_rounded),
-                              label: Text(context.tr('Qayta urinish')),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  : _navIndex == 1
-                  ? MealsPage(
-                      onDateSelected: _openFoodHistory,
-                      onMealSelected: _selectMeal,
-                      dailyTarget: _targetCalories,
-                      weekCalories: _weekCalories,
-                      calories: _calories,
-                      protein: _protein,
-                      carbohydrates: _carbs,
-                      fat: _fat,
-                      fiber: _fiber,
-                      foods: _foods,
-                      onFoodRemoved: _removeMealFood,
-                    )
-                  : _navIndex == 2
-                  ? WorkoutsPage(
-                      weightKg: widget.profile.weightKg,
-                      logs: _workouts,
-                      onAdded: (workout) =>
-                          setState(() => _workouts.add(workout)),
-                      onRemoved: (index) =>
-                          setState(() => _workouts.removeAt(index)),
-                    )
-                  : _navIndex == 3
-                  ? ProfilePage(
-                      profile: widget.profile,
-                      phoneNumber:
-                          widget.authService.currentUser?.phoneNumber ?? '',
-                      onSave: _saveProfile,
-                      onPhotoUpload: (bytes) {
-                        final uid = widget.authService.currentUser?.uid;
-                        if (uid == null) {
-                          throw StateError('Foydalanuvchi topilmadi');
-                        }
-                        return _profileService.uploadProfilePhoto(
-                          uid: uid,
-                          bytes: bytes,
-                          fileName: 'avatar.png',
-                        );
-                      },
-                      onPhotoRemove: () {
-                        final uid = widget.authService.currentUser?.uid;
-                        if (uid == null) {
-                          throw StateError('Foydalanuvchi topilmadi');
-                        }
-                        return _profileService.removeProfilePhoto(uid);
-                      },
-                      onSignOut: widget.authService.signOut,
-                      onLocaleChanged: widget.onLocaleChanged ?? (_) {},
-                      onThemeChanged: widget.onThemeChanged,
-                    )
-                  : SingleChildScrollView(
-                      padding: const EdgeInsets.fromLTRB(22, 14, 22, 28),
-                      child: Center(
-                        child: ConstrainedBox(
-                          constraints: const BoxConstraints(maxWidth: 440),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              _HomeHeader(
-                                greeting: _greeting(context),
-                                profile: widget.profile,
-                                onProfileTap: () {
-                                  setState(() => _navIndex = 3);
-                                },
-                                onSignOut: widget.authService.signOut,
-                              ),
-                              const SizedBox(height: 14),
-                              _BodyStatusCard(profile: widget.profile),
-                              const SizedBox(height: 24),
-                              Text(
-                                context.tr('Tezkor amallar'),
-                                style: TextStyle(
-                                  color: context.appColor(
-                                    _navy,
-                                    surface: false,
-                                  ),
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w700,
-                                  letterSpacing: -.2,
-                                ),
-                              ),
-                              const SizedBox(height: 12),
-                              GridView.count(
-                                crossAxisCount: 2,
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                mainAxisSpacing: 12,
-                                crossAxisSpacing: 12,
-                                mainAxisExtent:
-                                    164 +
-                                    (MediaQuery.textScalerOf(
-                                              context,
-                                            ).scale(15) -
-                                            15) *
-                                        4,
-                                children: [
-                                  _ActionCard(
-                                    asset: 'assets/quick_actions/food_scan.png',
-                                    title: context.tr('Ovqatni skanerlash'),
-                                    tint: context.appColor(
-                                      Color(0xFFE8F8EF),
-                                      surface: true,
-                                    ),
-                                    accent: context.appColor(
-                                      Color(0xFF0AA758),
-                                      surface: true,
-                                    ),
-                                    onTap: _addFood,
-                                  ),
-                                  _ActionCard(
-                                    asset:
-                                        'assets/quick_actions/barcode_scan.png',
-                                    title: context.tr('Shtrix-kod skaneri'),
-                                    tint: context.appColor(
-                                      Color(0xFFEAF7F1),
-                                      surface: true,
-                                    ),
-                                    accent: context.appColor(
-                                      Color(0xFF168D62),
-                                      surface: true,
-                                    ),
-                                    onTap: _scanBarcode,
-                                  ),
-                                  _ActionCard(
-                                    asset:
-                                        'assets/quick_actions/food_search.png',
-                                    title: context.tr('Ovqat qidirish'),
-                                    tint: context.appColor(
-                                      Color(0xFFEEF5E9),
-                                      surface: true,
-                                    ),
-                                    accent: context.appColor(
-                                      Color(0xFF668D3B),
-                                      surface: true,
-                                    ),
-                                    onTap: _searchFood,
-                                  ),
-                                  _ActionCard(
-                                    asset:
-                                        'assets/quick_actions/calculator.png',
-                                    title: context.tr('Kalkulyator'),
-                                    tint: context.appColor(
-                                      Color(0xFFF3F5E6),
-                                      surface: true,
-                                    ),
-                                    accent: context.appColor(
-                                      Color(0xFF809039),
-                                      surface: true,
-                                    ),
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute<void>(
-                                          builder: (_) =>
-                                              const CalculatorPage(),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 12),
-                              SizedBox(
-                                height: 104,
-                                child: _ActionCard(
-                                  asset: 'assets/quick_actions/workout.png',
-                                  title: context.tr('Mashq qo‘shish'),
-                                  tint: context.appColor(
-                                    Color(0xFFE9F7ED),
-                                    surface: true,
-                                  ),
-                                  accent: context.appColor(
-                                    Color(0xFF178C4F),
-                                    surface: true,
-                                  ),
-                                  horizontal: true,
-                                  onTap: () => setState(() => _navIndex = 2),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+        child: wide
+            ? Row(
+                children: [
+                  NavigationRail(
+                    selectedIndex: _navIndex,
+                    onDestinationSelected: select,
+                    labelType: NavigationRailLabelType.all,
+                    minWidth: 88,
+                    groupAlignment: -.9,
+                    leading: Padding(
+                      padding: const EdgeInsets.only(top: 8, bottom: 20),
+                      child: AppIconTile(
+                        icon: LucideIcons.activity,
+                        size: 40,
+                        color: scheme.onPrimary,
+                        background: scheme.primary,
                       ),
                     ),
-            ),
-            NavigationBar(
-              selectedIndex: _navIndex,
-              onDestinationSelected: (index) {
-                setState(() => _navIndex = index);
-              },
-              indicatorColor: Theme.of(context).colorScheme.primaryContainer,
-              destinations: [
-                NavigationDestination(
-                  icon: Icon(Icons.home_outlined),
-                  selectedIcon: Icon(
-                    Icons.home_outlined,
-                    color: Theme.of(context).colorScheme.primary,
+                    destinations: [
+                      for (final (icon, label) in destinations)
+                        NavigationRailDestination(
+                          icon: Icon(icon),
+                          label: Text(label),
+                        ),
+                    ],
                   ),
-                  label: context.tr('Bosh sahifa'),
-                ),
-                NavigationDestination(
-                  icon: Icon(Icons.restaurant_outlined),
-                  selectedIcon: Icon(
-                    Icons.restaurant_outlined,
-                    color: Theme.of(context).colorScheme.primary,
+                  VerticalDivider(width: 1, color: scheme.outlineVariant),
+                  Expanded(child: page),
+                ],
+              )
+            : Column(
+                children: [
+                  Expanded(child: page),
+                  Divider(height: 1, color: scheme.outlineVariant),
+                  NavigationBar(
+                    selectedIndex: _navIndex,
+                    onDestinationSelected: select,
+                    destinations: [
+                      for (final (icon, label) in destinations)
+                        NavigationDestination(icon: Icon(icon), label: label),
+                    ],
                   ),
-                  label: context.tr('Ovqatlar'),
-                ),
-                NavigationDestination(
-                  icon: Icon(Icons.fitness_center_outlined),
-                  selectedIcon: Icon(
-                    Icons.fitness_center_outlined,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  label: context.tr('Mashqlar'),
-                ),
-                NavigationDestination(
-                  icon: Icon(Icons.person_outline),
-                  selectedIcon: Icon(
-                    Icons.person_outline,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  label: context.tr('Profil'),
-                ),
-                NavigationDestination(
-                  icon: Icon(Icons.bar_chart_outlined),
-                  selectedIcon: Icon(Icons.bar_chart_rounded),
-                  label: context.tr('Hisobotlar'),
-                ),
-              ],
-            ),
-          ],
-        ),
+                ],
+              ),
       ),
     );
   }
@@ -572,225 +485,224 @@ class _HomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(10, 10, 8, 10),
-      decoration: BoxDecoration(
-        color: context.appColor(Colors.white, surface: true),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: context.appColor(Color(0xFFE4E9EE), surface: true),
+    final scheme = Theme.of(context).colorScheme;
+    final name = profile.firstName.trim().isEmpty
+        ? context.tr('Profil')
+        : profile.firstName.trim();
+    return Row(
+      children: [
+        Semantics(
+          button: true,
+          label: context.tr('Profil'),
+          child: InkWell(
+            onTap: onProfileTap,
+            customBorder: const CircleBorder(),
+            child: Container(
+              padding: const EdgeInsets.all(2),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: scheme.outlineVariant),
+              ),
+              child: ProfileAvatar(
+                name: profile.fullName,
+                photoUrl: profile.photoUrl,
+                size: 42,
+              ),
+            ),
+          ),
         ),
-        boxShadow: Theme.of(context).brightness == Brightness.dark
-            ? const []
-            : const [
-                BoxShadow(
-                  color: Color(0x0A0F1B2D),
-                  blurRadius: 18,
-                  offset: Offset(0, 6),
+        const SizedBox(width: 12),
+        Expanded(
+          child: InkWell(
+            onTap: onProfileTap,
+            borderRadius: BorderRadius.circular(AppRadius.sm),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  greeting.replaceAll(',', ''),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: scheme.onSurfaceVariant,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: scheme.onSurface,
+                    fontSize: 22,
+                    height: 1.15,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: -.5,
+                  ),
                 ),
               ],
-      ),
-      child: Row(
-        children: [
-          Semantics(
-            button: true,
-            label: context.tr('Profil'),
-            child: InkWell(
-              onTap: onProfileTap,
-              customBorder: const CircleBorder(),
-              child: Stack(
-                clipBehavior: Clip.none,
+            ),
+          ),
+        ),
+        PopupMenuButton<String>(
+          tooltip: MaterialLocalizations.of(context).showMenuTooltip,
+          position: PopupMenuPosition.under,
+          offset: const Offset(0, 6),
+          icon: Container(
+            width: 38,
+            height: 38,
+            decoration: BoxDecoration(
+              color: scheme.surfaceContainerLowest,
+              borderRadius: BorderRadius.circular(AppRadius.md),
+              border: Border.all(color: scheme.outlineVariant),
+            ),
+            child: Icon(
+              LucideIcons.ellipsis,
+              color: scheme.onSurfaceVariant,
+              size: 18,
+            ),
+          ),
+          itemBuilder: (_) => [
+            PopupMenuItem(
+              value: 'profile',
+              child: Row(
                 children: [
-                  Container(
-                    width: 58,
-                    height: 58,
-                    padding: const EdgeInsets.all(3),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: context.appPanelColors,
-                      ),
-                      boxShadow: Theme.of(context).brightness == Brightness.dark
-                          ? const []
-                          : const [
-                              BoxShadow(
-                                color: Color(0x3312B75A),
-                                blurRadius: 14,
-                                offset: Offset(0, 5),
-                              ),
-                            ],
-                    ),
-                    child: ProfileAvatar(
-                      name: profile.fullName,
-                      photoUrl: profile.photoUrl,
-                      size: 52,
-                    ),
-                  ),
-                  Positioned(
-                    right: 1,
-                    bottom: 1,
-                    child: Container(
-                      width: 14,
-                      height: 14,
-                      decoration: BoxDecoration(
-                        color: context.appColor(
-                          Color(0xFF19C968),
-                          surface: true,
-                        ),
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: context.appColor(Colors.white, surface: false),
-                          width: 2.5,
-                        ),
-                      ),
-                    ),
+                  Icon(LucideIcons.user, size: 18, color: scheme.onSurface),
+                  const SizedBox(width: 10),
+                  Text(context.tr('Profil')),
+                ],
+              ),
+            ),
+            PopupMenuItem(
+              value: 'logout',
+              child: Row(
+                children: [
+                  Icon(LucideIcons.logOut, size: 18, color: scheme.error),
+                  const SizedBox(width: 10),
+                  Text(
+                    context.tr('Chiqish'),
+                    style: TextStyle(color: scheme.error),
                   ),
                 ],
               ),
             ),
-          ),
-          const SizedBox(width: 13),
-          Expanded(
-            child: InkWell(
-              onTap: onProfileTap,
-              borderRadius: BorderRadius.circular(14),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      greeting.replaceAll(',', ''),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: context.appColor(
-                          Color(0xFF6F7D78),
-                          surface: false,
-                        ),
-                        fontSize: 13,
-                        height: 1.1,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: .1,
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      profile.firstName.trim().isEmpty
-                          ? context.tr('Profil')
-                          : profile.firstName.trim(),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: context.appColor(
-                          Color(0xFF10283A),
-                          surface: false,
-                        ),
-                        fontSize: 23,
-                        height: 1,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: -.35,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Theme(
-            data: Theme.of(context).copyWith(
-              splashColor: context.appColor(Color(0x1A0FA85A), surface: false),
-              highlightColor: context.appColor(
-                Color(0x0F0FA85A),
-                surface: false,
-              ),
-            ),
-            child: PopupMenuButton<String>(
-              tooltip: MaterialLocalizations.of(context).showMenuTooltip,
-              color: Theme.of(context).colorScheme.surfaceContainerLow,
-              elevation: 10,
-              position: PopupMenuPosition.under,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18),
-              ),
-              offset: const Offset(0, 7),
-              icon: Container(
-                width: 42,
-                height: 42,
-                decoration: BoxDecoration(
-                  color: context
-                      .appColor(Colors.white, surface: true)
-                      .withValues(alpha: .82),
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(
-                    color: context.appColor(Color(0xFFE4E9EE), surface: true),
-                  ),
-                ),
-                child: Icon(
-                  Icons.more_horiz_rounded,
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  size: 25,
-                ),
-              ),
-              itemBuilder: (_) => [
-                PopupMenuItem(
-                  value: 'profile',
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.person_outline_rounded,
-                        color: Color(0xFF118A50),
-                      ),
-                      const SizedBox(width: 11),
-                      Text(context.tr('Profil')),
-                    ],
-                  ),
-                ),
-                PopupMenuItem(
-                  value: 'logout',
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.logout_rounded,
-                        color: Color(0xFFD95252),
-                      ),
-                      const SizedBox(width: 11),
-                      Text(context.tr('Chiqish')),
-                    ],
-                  ),
-                ),
-              ],
-              onSelected: (value) {
-                if (value == 'profile') onProfileTap();
-                if (value == 'logout') onSignOut();
-              },
-            ),
-          ),
-        ],
-      ),
+          ],
+          onSelected: (value) {
+            if (value == 'profile') onProfileTap();
+            if (value == 'logout') onSignOut();
+          },
+        ),
+      ],
     );
   }
 }
 
-class _BodyStatusCard extends StatefulWidget {
+/// Home tab layout. Two columns on tablets/desktop, one column on phones.
+class _Dashboard extends StatelessWidget {
+  const _Dashboard({
+    required this.header,
+    required this.profile,
+    required this.calories,
+    required this.target,
+    required this.protein,
+    required this.carbs,
+    required this.fat,
+    required this.actions,
+  });
+
+  final Widget header;
+  final UserProfile profile;
+  final double calories;
+  final double target;
+  final double protein;
+  final double carbs;
+  final double fat;
+  final List<Widget> actions;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final wide = constraints.maxWidth >= 760;
+        final horizontal = constraints.maxWidth >= 1100 ? 40.0 : 20.0;
+        final body = _BodyStatusCard(profile: profile);
+        final today = _TodaySummaryCard(
+          calories: calories,
+          target: target,
+          protein: protein,
+          carbs: carbs,
+          fat: fat,
+        );
+        return SingleChildScrollView(
+          padding: EdgeInsets.fromLTRB(horizontal, 16, horizontal, 32),
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: wide ? 1080 : 520),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  header,
+                  const SizedBox(height: 20),
+                  if (wide)
+                    IntrinsicHeight(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(child: body),
+                          const SizedBox(width: 16),
+                          Expanded(child: today),
+                        ],
+                      ),
+                    )
+                  else ...[
+                    body,
+                    const SizedBox(height: 12),
+                    today,
+                  ],
+                  const SizedBox(height: 28),
+                  AppSectionHeader(title: context.tr('Tezkor amallar')),
+                  const SizedBox(height: 12),
+                  GridView.count(
+                    crossAxisCount: wide ? actions.length : 2,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    mainAxisSpacing: 12,
+                    crossAxisSpacing: 12,
+                    mainAxisExtent:
+                        118 +
+                        (MediaQuery.textScalerOf(context).scale(14) - 14) * 3,
+                    children: wide || actions.length.isEven
+                        ? actions
+                        : actions.sublist(0, actions.length - 1),
+                  ),
+                  // Toq sonli amallarning oxirgisi telefonda to'liq kenglikda.
+                  if (!wide && actions.length.isOdd) ...[
+                    const SizedBox(height: 12),
+                    actions.last,
+                  ],
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _BodyStatusCard extends StatelessWidget {
   const _BodyStatusCard({required this.profile});
 
   final UserProfile profile;
 
-  @override
-  State<_BodyStatusCard> createState() => _BodyStatusCardState();
-}
-
-class _BodyStatusCardState extends State<_BodyStatusCard> {
-  double _rotation = 0;
-
   double get _bmi {
-    final heightMeters = widget.profile.heightCm / 100;
+    final heightMeters = profile.heightCm / 100;
     if (heightMeters <= 0) return 0;
-    return widget.profile.weightKg / (heightMeters * heightMeters);
+    return profile.weightKg / (heightMeters * heightMeters);
   }
 
   String _bodyStatus(BuildContext context) {
@@ -803,296 +715,114 @@ class _BodyStatusCardState extends State<_BodyStatusCard> {
 
   @override
   Widget build(BuildContext context) {
-    if (Theme.of(context).brightness == Brightness.dark) {
-      return _buildCard(context, onLightPage: false);
-    }
-    // Yorug' sahifada gologramma to'q brend kartada ko'rsatiladi.
-    return Theme(
-      data: AppTheme.dark,
-      child: Builder(
-        builder: (context) => _buildCard(context, onLightPage: true),
+    final scheme = Theme.of(context).colorScheme;
+    final bmi = _bmi;
+    final statusColor = bmi <= 0
+        ? scheme.onSurfaceVariant
+        : bmi < 18.5 || bmi >= 25
+        ? AppPalette.warning
+        : AppPalette.success;
+    return AppCard(
+      padding: const EdgeInsets.all(20),
+      child: Semantics(
+        label:
+            'Bo‘y ${profile.heightCm.round()} santimetr, '
+            'vazn ${profile.weightKg.toStringAsFixed(1)} kilogramm, '
+            'BMI ${bmi.toStringAsFixed(1)}',
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AppOverline(context.tr('TANA DINAMIKASI')),
+                      const SizedBox(height: 6),
+                      Text(
+                        context.tr('Bugungi holatingiz'),
+                        style: TextStyle(
+                          color: scheme.onSurface,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: -.3,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                _StatusPill(label: _bodyStatus(context), color: statusColor),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                _Metric(
+                  label: context.tr('Vazn'),
+                  value: profile.weightKg.toStringAsFixed(1),
+                  unit: context.tr('kg'),
+                ),
+                _MetricDivider(),
+                _Metric(
+                  label: context.tr('Bo‘y'),
+                  value: profile.heightCm.round().toString(),
+                  unit: context.tr('cm'),
+                ),
+                _MetricDivider(),
+                _Metric(
+                  label: context.tr('BMI'),
+                  value: bmi.toStringAsFixed(1),
+                  unit: '',
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            _BmiScale(bmi: bmi),
+          ],
+        ),
       ),
     );
   }
+}
 
-  Widget _buildCard(BuildContext context, {required bool onLightPage}) {
-    final profile = widget.profile;
-    final bmi = _bmi;
-    final bodyFactor = ((bmi - 16) / 20).clamp(0.0, 1.0);
-    final heightFactor = ((profile.heightCm - 145) / 60).clamp(0.0, 1.0);
+class _StatusPill extends StatelessWidget {
+  const _StatusPill({required this.label, required this.color});
+
+  final String label;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    final dark = Theme.of(context).brightness == Brightness.dark;
-    final statusColor = bmi < 18.5 || bmi >= 25
-        ? (dark ? const Color(0xFFF0C078) : const Color(0xFF946015))
-        : scheme.primary;
-
     return Container(
-      height: 310,
-      clipBehavior: Clip.antiAlias,
+      constraints: const BoxConstraints(maxWidth: 150),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: onLightPage
-              ? const [Color(0xFF123A3C), Color(0xFF0C2A30), Color(0xFF081C24)]
-              : context.appPanelColors,
-          stops: const [0, .55, 1],
-        ),
-        borderRadius: BorderRadius.circular(onLightPage ? 24 : 16),
-        border: Border.all(
-          color: onLightPage ? const Color(0xFF1E4A4A) : scheme.outlineVariant,
-        ),
-        boxShadow: onLightPage
-            ? const [
-                BoxShadow(
-                  color: Color(0x2E0B2A2E),
-                  blurRadius: 32,
-                  offset: Offset(0, 14),
-                ),
-              ]
-            : const [],
+        color: scheme.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(AppRadius.xs),
+        border: Border.all(color: scheme.outlineVariant),
       ),
-      child: Stack(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Positioned(
-            right: -70,
-            top: -90,
-            child: Container(
-              width: 250,
-              height: 250,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: RadialGradient(
-                  colors: [
-                    context
-                        .appColor(Color(0xFF8CFFC1), surface: true)
-                        .withValues(alpha: .18),
-                    Colors.transparent,
-                  ],
-                ),
-              ),
-            ),
+          Container(
+            width: 6,
+            height: 6,
+            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
           ),
-          Positioned(
-            left: -80,
-            bottom: -105,
-            child: Container(
-              width: 230,
-              height: 230,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: RadialGradient(
-                  colors: [
-                    context
-                        .appColor(Color(0xFF62E9D1), surface: true)
-                        .withValues(alpha: .12),
-                    Colors.transparent,
-                  ],
-                ),
+          const SizedBox(width: 6),
+          Flexible(
+            child: Text(
+              label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: scheme.onSurface,
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
               ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 18, 18, 15),
-            child: Column(
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 38,
-                      height: 38,
-                      decoration: BoxDecoration(
-                        color: context
-                            .appColor(Colors.white, surface: true)
-                            .withValues(alpha: .10),
-                        borderRadius: BorderRadius.circular(13),
-                        border: Border.all(
-                          color: context
-                              .appColor(Colors.white, surface: true)
-                              .withValues(alpha: .10),
-                        ),
-                      ),
-                      child: Icon(
-                        Icons.accessibility_new_rounded,
-                        color: scheme.primary,
-                        size: 21,
-                      ),
-                    ),
-                    const SizedBox(width: 11),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            context.tr('TANA DINAMIKASI'),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: context.appColor(
-                                Color(0xFF9ACCB5),
-                                surface: false,
-                              ),
-                              fontSize: 9.5,
-                              letterSpacing: 1.5,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          const SizedBox(height: 3),
-                          Text(
-                            context.tr('Bugungi holatingiz'),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: context.appColor(
-                                Colors.white,
-                                surface: false,
-                              ),
-                              fontSize: 19,
-                              height: 1,
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: -.25,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      constraints: const BoxConstraints(maxWidth: 96),
-                      padding: const EdgeInsets.fromLTRB(9, 7, 11, 7),
-                      decoration: BoxDecoration(
-                        color: statusColor.withValues(alpha: dark ? .14 : .09),
-                        borderRadius: BorderRadius.circular(14),
-                        border: Border.all(
-                          color: statusColor.withValues(alpha: .16),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            width: 7,
-                            height: 7,
-                            decoration: BoxDecoration(
-                              color: statusColor,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                          const SizedBox(width: 6),
-                          Flexible(
-                            child: Text(
-                              _bodyStatus(context),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                color: statusColor,
-                                fontSize: 10,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 7),
-                Expanded(
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onHorizontalDragUpdate: (details) {
-                      setState(() {
-                        _rotation = (_rotation + details.delta.dx / 150).clamp(
-                          -1.0,
-                          1.0,
-                        );
-                      });
-                    },
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Positioned(
-                          left: 0,
-                          top: 20,
-                          width: 128,
-                          child: Column(
-                            children: [
-                              _ProfileMetric(
-                                icon: Icons.monitor_weight_outlined,
-                                label: context.tr('Vazn'),
-                                value: profile.weightKg.toStringAsFixed(1),
-                                unit: context.tr('kg'),
-                              ),
-                              const SizedBox(height: 9),
-                              _ProfileMetric(
-                                icon: Icons.height_rounded,
-                                label: context.tr('Bo‘y'),
-                                value: profile.heightCm.round().toString(),
-                                unit: context.tr('cm'),
-                              ),
-                              const SizedBox(height: 9),
-                              _ProfileMetric(
-                                icon: Icons.insights_rounded,
-                                label: context.tr('BMI'),
-                                value: bmi.toStringAsFixed(1),
-                                unit: '',
-                              ),
-                            ],
-                          ),
-                        ),
-                        Align(
-                          alignment: const Alignment(.53, .08),
-                          child: Semantics(
-                            label:
-                                'Aylantiriladigan tana modeli. '
-                                'Bo‘y ${profile.heightCm.round()} santimetr, '
-                                'vazn ${profile.weightKg.toStringAsFixed(1)} kilogramm, '
-                                'BMI ${bmi.toStringAsFixed(1)}',
-                            child: TweenAnimationBuilder<double>(
-                              tween: Tween(begin: .45, end: bodyFactor),
-                              duration: const Duration(milliseconds: 700),
-                              curve: Curves.easeOutCubic,
-                              builder: (context, animatedBody, _) {
-                                final bodyWidth = .94 + animatedBody * .30;
-                                final bodyHeight = .92 + heightFactor * .12;
-                                return Transform.translate(
-                                  offset: Offset(_rotation * 5, 0),
-                                  child: Transform(
-                                    alignment: Alignment.center,
-                                    transform: Matrix4.identity()
-                                      ..setEntry(3, 2, .0007)
-                                      ..rotateY(_rotation * .28)
-                                      ..scaleByDouble(
-                                        bodyWidth,
-                                        bodyHeight,
-                                        1,
-                                        1,
-                                      ),
-                                    child: ColorFiltered(
-                                      colorFilter: const ColorFilter.mode(
-                                        Color(0xFF9AFFC9),
-                                        BlendMode.modulate,
-                                      ),
-                                      child: Image.asset(
-                                        'assets/images/body_hologram_trimmed.png',
-                                        width: 190,
-                                        height: 226,
-                                        fit: BoxFit.contain,
-                                        filterQuality: FilterQuality.high,
-                                        gaplessPlayback: true,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
             ),
           ),
         ],
@@ -1101,100 +831,56 @@ class _BodyStatusCardState extends State<_BodyStatusCard> {
   }
 }
 
-class _ProfileMetric extends StatelessWidget {
-  const _ProfileMetric({
-    required this.icon,
-    required this.label,
-    required this.value,
-    required this.unit,
-  });
+class _Metric extends StatelessWidget {
+  const _Metric({required this.label, required this.value, required this.unit});
 
-  final IconData icon;
   final String label;
   final String value;
   final String unit;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(8, 7, 9, 7),
-      decoration: BoxDecoration(
-        color: context
-            .appColor(Colors.white, surface: true)
-            .withValues(alpha: .105),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: context
-              .appColor(Colors.white, surface: true)
-              .withValues(alpha: .11),
-        ),
-      ),
-      child: Row(
+    final scheme = Theme.of(context).colorScheme;
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 29,
-            height: 29,
-            decoration: BoxDecoration(
-              color: context
-                  .appColor(Color(0xFF8AF5B8), surface: true)
-                  .withValues(alpha: .13),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Icon(
-              icon,
-              size: 16,
-              color: Theme.of(context).colorScheme.primary,
+          Text(
+            label,
+            style: TextStyle(
+              color: scheme.onSurfaceVariant,
+              fontSize: 12.5,
+              fontWeight: FontWeight.w500,
             ),
           ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  label,
-                  maxLines: 1,
-                  style: TextStyle(
-                    color: context.appColor(Color(0xFF9ACCB5), surface: false),
-                    fontSize: 8.5,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                const SizedBox(height: 1),
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  alignment: Alignment.centerLeft,
-                  child: Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                          text: value,
-                          style: TextStyle(
-                            color: context.appColor(
-                              Colors.white,
-                              surface: false,
-                            ),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        if (unit.isNotEmpty)
-                          TextSpan(
-                            text: ' $unit',
-                            style: TextStyle(
-                              color: context.appColor(
-                                Color(0xFFC1E5D2),
-                                surface: false,
-                              ),
-                              fontSize: 9.5,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                      ],
+          const SizedBox(height: 4),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: value,
+                    style: TextStyle(
+                      color: scheme.onSurface,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: -.6,
+                      fontFeatures: const [FontFeature.tabularFigures()],
                     ),
                   ),
-                ),
-              ],
+                  if (unit.isNotEmpty)
+                    TextSpan(
+                      text: ' $unit',
+                      style: TextStyle(
+                        color: scheme.onSurfaceVariant,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                ],
+              ),
             ),
           ),
         ],
@@ -1203,430 +889,305 @@ class _ProfileMetric extends StatelessWidget {
   }
 }
 
-// Eski vektor renderer fallback sifatida saqlanadi.
-// ignore: unused_element
-class _BodySilhouettePainter extends CustomPainter {
-  const _BodySilhouettePainter({
-    required this.bodyFactor,
-    required this.heightFactor,
-    required this.isMale,
-    required this.rotation,
+class _MetricDivider extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) => Container(
+    width: 1,
+    height: 36,
+    margin: const EdgeInsets.symmetric(horizontal: 16),
+    color: Theme.of(context).colorScheme.outlineVariant,
+  );
+}
+
+/// WHO BMI bands (16–40 range) with a marker for the current value.
+class _BmiScale extends StatelessWidget {
+  const _BmiScale({required this.bmi});
+
+  final double bmi;
+
+  static const _min = 16.0;
+  static const _max = 40.0;
+  static const _bands = [
+    (18.5, Color(0xFF8FB3F5)),
+    (25.0, AppPalette.success),
+    (30.0, AppPalette.warning),
+    (_max, AppPalette.danger),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final position = ((bmi - _min) / (_max - _min)).clamp(0.0, 1.0);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        SizedBox(
+          height: 18,
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: Row(
+                  children: [
+                    for (var i = 0; i < _bands.length; i++)
+                      Expanded(
+                        flex:
+                            ((_bands[i].$1 -
+                                        (i == 0 ? _min : _bands[i - 1].$1)) *
+                                    10)
+                                .round(),
+                        child: Container(
+                          height: 6,
+                          margin: const EdgeInsets.symmetric(horizontal: 1),
+                          decoration: BoxDecoration(
+                            color: _bands[i].$2.withValues(alpha: .85),
+                            borderRadius: BorderRadius.circular(3),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              if (bmi > 0)
+                AnimatedAlign(
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeOutCubic,
+                  alignment: Alignment(position * 2 - 1, 0),
+                  child: Container(
+                    width: 14,
+                    height: 14,
+                    decoration: BoxDecoration(
+                      color: scheme.surfaceContainerLowest,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: scheme.onSurface, width: 3),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            for (final label in ['16', '18.5', '25', '30', '40'])
+              Text(
+                label,
+                style: TextStyle(
+                  color: scheme.onSurfaceVariant,
+                  fontSize: 11,
+                  fontFeatures: const [FontFeature.tabularFigures()],
+                ),
+              ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _TodaySummaryCard extends StatelessWidget {
+  const _TodaySummaryCard({
+    required this.calories,
+    required this.target,
+    required this.protein,
+    required this.carbs,
+    required this.fat,
   });
 
-  final double bodyFactor;
-  final double heightFactor;
-  final bool isMale;
-  final double rotation;
+  final double calories;
+  final double target;
+  final double protein;
+  final double carbs;
+  final double fat;
 
   @override
-  void paint(Canvas canvas, Size size) {
-    final centerX = size.width / 2;
-    final verticalScale = .9 + heightFactor * .1;
-    final topOffset = (size.height * (1 - verticalScale)) / 2;
-    final sideAmount = rotation.abs().clamp(0.0, 1.0);
-    final perspective = 1 - sideAmount * .58;
-    final direction = rotation >= 0 ? 1.0 : -1.0;
-    canvas.save();
-    canvas.translate(centerX + direction * sideAmount * 4, topOffset);
-    canvas.scale(perspective, verticalScale);
-    canvas.translate(-centerX, 0);
-
-    final glow = Paint()
-      ..color = const Color(0xFF00DDF5).withValues(alpha: .16)
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 20);
-    canvas.drawOval(
-      Rect.fromCenter(
-        center: Offset(centerX, size.height * .52),
-        width: 82 + bodyFactor * 18,
-        height: 145,
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final safeTarget = target <= 0 ? 1.0 : target;
+    final progress = (calories / safeTarget).clamp(0.0, 1.0);
+    final remaining = (target - calories).clamp(0, double.infinity);
+    Widget macro(String label, double value, Color color) => Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 8,
+                height: 8,
+                decoration: BoxDecoration(
+                  color: color,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(width: 6),
+              Flexible(
+                child: Text(
+                  context.tr(label),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: scheme.onSurfaceVariant,
+                    fontSize: 12.5,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Text(
+            '${value.toStringAsFixed(value < 10 ? 1 : 0)} ${context.tr('g')}',
+            style: TextStyle(
+              color: scheme.onSurface,
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
+              fontFeatures: const [FontFeature.tabularFigures()],
+            ),
+          ),
+        ],
       ),
-      glow,
     );
-
-    final platformGlow = Paint()
-      ..color = const Color(0xFF00DDF5).withValues(alpha: .24)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 7
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8);
-    final platformLine = Paint()
-      ..color = const Color(0xFF57F1FF).withValues(alpha: .75)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1;
-    final platformCenter = Offset(centerX, size.height - 10);
-    canvas.drawOval(
-      Rect.fromCenter(center: platformCenter, width: 112, height: 19),
-      platformGlow,
-    );
-    for (final ring in [1.0, .72, .43]) {
-      canvas.drawOval(
-        Rect.fromCenter(
-          center: platformCenter,
-          width: 112 * ring,
-          height: 19 * ring,
-        ),
-        platformLine,
-      );
-    }
-
-    final bodyPaint = Paint()
-      ..shader = LinearGradient(
-        begin: rotation >= 0 ? Alignment.topLeft : Alignment.topRight,
-        end: rotation >= 0 ? Alignment.bottomRight : Alignment.bottomLeft,
-        colors: const [Color(0xFFE9FDFF), Color(0xFF43E9FA), Color(0xFF0089B6)],
-        stops: const [0, .55, 1],
-      ).createShader(Rect.fromLTWH(0, 10, size.width, size.height - 10))
-      ..style = PaintingStyle.fill;
-    final outlinePaint = Paint()
-      ..color = const Color(0xFF77F5FF)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.35
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 1.5);
-
-    final headRadius = 10.5 + bodyFactor * 1.7;
-    canvas.drawCircle(Offset(centerX, 20), headRadius, bodyPaint);
-    canvas.drawCircle(Offset(centerX, 20), headRadius, outlinePaint);
-    if (sideAmount < .72) {
-      final facePaint = Paint()
-        ..color = const Color(
-          0xFF006B88,
-        ).withValues(alpha: (1 - sideAmount / .72) * .6)
-        ..strokeCap = StrokeCap.round
-        ..strokeWidth = 1.7;
-      final faceShift = rotation * 4;
-      canvas.drawCircle(Offset(centerX - 3 + faceShift, 19), 1.1, facePaint);
-      canvas.drawCircle(Offset(centerX + 3 + faceShift, 19), 1.1, facePaint);
-      canvas.drawLine(
-        Offset(centerX - 2 + faceShift, 24),
-        Offset(centerX + 2 + faceShift, 24),
-        facePaint,
-      );
-    }
-
-    final shoulderHalf = (isMale ? 18.5 : 16.5) + bodyFactor * 9;
-    final waistHalf = 10.5 + bodyFactor * 11;
-    final hipHalf = (isMale ? 13.5 : 16) + bodyFactor * 10;
-    final torso = Path()
-      ..moveTo(centerX - shoulderHalf, 42)
-      ..quadraticBezierTo(centerX - waistHalf, 69, centerX - hipHalf, 96)
-      ..quadraticBezierTo(centerX, 108, centerX + hipHalf, 96)
-      ..quadraticBezierTo(centerX + waistHalf, 69, centerX + shoulderHalf, 42)
-      ..quadraticBezierTo(centerX, 34, centerX - shoulderHalf, 42)
-      ..close();
-    canvas.drawPath(torso, bodyPaint);
-    canvas.drawPath(torso, outlinePaint);
-
-    final anatomyPaint = Paint()
-      ..color = const Color(0xFFCBFCFF).withValues(alpha: .5)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = .8;
-    canvas.drawLine(Offset(centerX, 42), Offset(centerX, 97), anatomyPaint);
-    canvas.drawLine(
-      Offset(centerX - shoulderHalf * .72, 49),
-      Offset(centerX + shoulderHalf * .72, 49),
-      anatomyPaint,
-    );
-    for (final y in [58.0, 67.0, 77.0]) {
-      final ribWidth = waistHalf + (77 - y) * .25;
-      final rib = Path()
-        ..moveTo(centerX - ribWidth, y)
-        ..quadraticBezierTo(centerX, y + 5, centerX + ribWidth, y);
-      canvas.drawPath(rib, anatomyPaint);
-    }
-    canvas.drawOval(
-      Rect.fromCenter(
-        center: Offset(centerX, 88),
-        width: waistHalf * 1.15,
-        height: 10,
+    return AppCard(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AppOverline(context.tr('Kaloriya')),
+          const SizedBox(height: 6),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                calories.round().toString(),
+                style: TextStyle(
+                  color: scheme.onSurface,
+                  fontSize: 30,
+                  height: 1,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: -1,
+                  fontFeatures: const [FontFeature.tabularFigures()],
+                ),
+              ),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 3),
+                  child: Text(
+                    '/ ${target.round()} ${context.tr('kcal')}',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: scheme.onSurfaceVariant,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+              Text(
+                '${(progress * 100).round()}%',
+                style: TextStyle(
+                  color: scheme.primary,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(3),
+            child: TweenAnimationBuilder<double>(
+              tween: Tween(begin: 0, end: progress),
+              duration: const Duration(milliseconds: 600),
+              curve: Curves.easeOutCubic,
+              builder: (_, value, _) =>
+                  LinearProgressIndicator(value: value, minHeight: 6),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '${context.tr('Qoldi')}: ${remaining.round()} ${context.tr('kcal')}',
+            style: TextStyle(color: scheme.onSurfaceVariant, fontSize: 12.5),
+          ),
+          const SizedBox(height: 18),
+          Divider(height: 1, color: scheme.outlineVariant),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              macro('Oqsil', protein, AppPalette.protein),
+              macro('Uglevod', carbs, AppPalette.carbs),
+              macro('Yog‘', fat, AppPalette.fat),
+            ],
+          ),
+        ],
       ),
-      anatomyPaint,
     );
-
-    canvas.save();
-    canvas.clipPath(torso);
-    final scanPaint = Paint()
-      ..color = const Color(0xFFD4FDFF).withValues(alpha: .15)
-      ..strokeWidth = .7;
-    for (double y = 43; y < 98; y += 5) {
-      canvas.drawLine(
-        Offset(centerX - shoulderHalf, y),
-        Offset(centerX + shoulderHalf, y),
-        scanPaint,
-      );
-    }
-    canvas.restore();
-
-    final limbPaint = Paint()
-      ..shader = bodyPaint.shader
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round
-      ..strokeWidth = 7.5 + bodyFactor * 5;
-    canvas.drawLine(
-      Offset(centerX - shoulderHalf + 3, 47),
-      Offset(centerX - shoulderHalf - 7, 101),
-      limbPaint,
-    );
-    canvas.drawLine(
-      Offset(centerX + shoulderHalf - 3, 47),
-      Offset(centerX + shoulderHalf + 7, 101),
-      limbPaint,
-    );
-    final limbOutline = Paint()
-      ..color = const Color(0xFF77F5FF).withValues(alpha: .88)
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round
-      ..strokeWidth = 1.2;
-    canvas.drawLine(
-      Offset(centerX - shoulderHalf + 3, 47),
-      Offset(centerX - shoulderHalf - 7, 101),
-      limbOutline,
-    );
-    canvas.drawLine(
-      Offset(centerX + shoulderHalf - 3, 47),
-      Offset(centerX + shoulderHalf + 7, 101),
-      limbOutline,
-    );
-
-    limbPaint.strokeWidth = 9 + bodyFactor * 5;
-    canvas.drawLine(
-      Offset(centerX - hipHalf * .48, 99),
-      Offset(centerX - 13 - bodyFactor * 3, 146),
-      limbPaint,
-    );
-    canvas.drawLine(
-      Offset(centerX + hipHalf * .48, 99),
-      Offset(centerX + 13 + bodyFactor * 3, 146),
-      limbPaint,
-    );
-    canvas.drawLine(
-      Offset(centerX - hipHalf * .48, 99),
-      Offset(centerX - 13 - bodyFactor * 3, 146),
-      limbOutline,
-    );
-    canvas.drawLine(
-      Offset(centerX + hipHalf * .48, 99),
-      Offset(centerX + 13 + bodyFactor * 3, 146),
-      limbOutline,
-    );
-
-    final basePaint = Paint()
-      ..color = const Color(0xFF00DDF5).withValues(alpha: .35)
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5);
-    canvas.drawOval(
-      Rect.fromCenter(
-        center: Offset(centerX, 154),
-        width: 55 + bodyFactor * 15,
-        height: 7,
-      ),
-      basePaint,
-    );
-    canvas.restore();
-  }
-
-  @override
-  bool shouldRepaint(covariant _BodySilhouettePainter oldDelegate) {
-    return bodyFactor != oldDelegate.bodyFactor ||
-        heightFactor != oldDelegate.heightFactor ||
-        isMale != oldDelegate.isMale ||
-        rotation != oldDelegate.rotation;
   }
 }
 
 class _ActionCard extends StatelessWidget {
-  // Yorug' rejim uchun bir xil to'yinganlikdagi uyg'un palitra.
-  Color get _accent => switch (asset.split('/').last) {
-    'food_scan.png' => const Color(0xFF0F9D72),
-    'barcode_scan.png' => const Color(0xFF0E8AA6),
-    'food_search.png' => const Color(0xFF4F5FD8),
-    'calculator.png' => const Color(0xFFE08A1E),
-    _ => const Color(0xFFE5536B),
-  };
-
-  static const _cardBorder = Color(0xFFE4E9EE);
-  static const _title = Color(0xFF0F1B2D);
-  static const _arrowBg = Color(0xFFF1F4F8);
-  static const _arrowFg = Color(0xFF64748B);
-
   const _ActionCard({
-    required this.asset,
+    required this.icon,
     required this.title,
-    required this.tint,
-    required this.accent,
     required this.onTap,
-    this.horizontal = false,
   });
 
-  final String asset;
+  final IconData icon;
   final String title;
-  final Color tint;
-  final Color accent;
   final VoidCallback onTap;
-  final bool horizontal;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final dark = theme.brightness == Brightness.dark;
-    final scheme = theme.colorScheme;
-    final radius = BorderRadius.circular(20);
-    return Material(
-      color: scheme.surfaceContainerLowest,
-      borderRadius: radius,
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: radius,
-        splashColor: scheme.primary.withValues(alpha: .09),
-        highlightColor: scheme.primary.withValues(alpha: .04),
-        child: Ink(
-          padding: EdgeInsets.all(horizontal ? 14 : 16),
-          decoration: BoxDecoration(
-            color: dark ? scheme.surfaceContainerLowest : Colors.white,
-            borderRadius: radius,
-            border: Border.all(
-              color: dark
-                  ? scheme.outlineVariant.withValues(alpha: .65)
-                  : _cardBorder,
-            ),
-            boxShadow: dark
-                ? const []
-                : const [
-                    BoxShadow(
-                      color: Color(0x0A0F1B2D),
-                      blurRadius: 18,
-                      offset: Offset(0, 6),
-                    ),
-                    BoxShadow(
-                      color: Color(0x050F1B2D),
-                      blurRadius: 2,
-                      offset: Offset(0, 1),
-                    ),
-                  ],
-          ),
-          child: horizontal
-              ? _horizontalContent(context)
-              : _verticalContent(context),
-        ),
+    final scheme = Theme.of(context).colorScheme;
+    final titleText = Text(
+      title,
+      maxLines: 2,
+      overflow: TextOverflow.ellipsis,
+      style: TextStyle(
+        color: scheme.onSurface,
+        fontSize: 14,
+        height: 1.25,
+        fontWeight: FontWeight.w600,
+        letterSpacing: -.1,
       ),
     );
-  }
-
-  Widget _image(BuildContext context, {required double size}) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
-    return Container(
-      width: size,
-      height: size,
-      padding: const EdgeInsets.all(3),
-      decoration: BoxDecoration(
-        color: dark
-            ? Theme.of(context).colorScheme.primary.withValues(alpha: .10)
-            : null,
-        gradient: dark
-            ? null
-            : LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color.alphaBlend(
-                    Colors.white.withValues(alpha: .18),
-                    _accent,
-                  ),
-                  _accent,
-                ],
-              ),
-        borderRadius: BorderRadius.circular(size * .28),
-        boxShadow: dark
-            ? null
-            : [
-                BoxShadow(
-                  color: _accent.withValues(alpha: .28),
-                  blurRadius: 12,
-                  offset: const Offset(0, 5),
-                ),
+    final arrow = Icon(
+      LucideIcons.arrowUpRight,
+      size: 16,
+      color: scheme.onSurfaceVariant,
+    );
+    final tile = AppIconTile(icon: icon, size: 38, color: scheme.onSurface);
+    return AppCard(
+      onTap: onTap,
+      padding: const EdgeInsets.all(16),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // Grid cells have a bounded height; the standalone row does not.
+          if (!constraints.hasBoundedHeight) {
+            return Row(
+              children: [
+                tile,
+                const SizedBox(width: 14),
+                Expanded(child: titleText),
+                arrow,
               ],
+            );
+          }
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [tile, const Spacer(), arrow],
+              ),
+              const Spacer(),
+              titleText,
+            ],
+          );
+        },
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(size * .24),
-        child: Icon(
-          switch (asset.split('/').last) {
-            'food_scan.png' => Icons.document_scanner_outlined,
-            'barcode_scan.png' => Icons.qr_code_scanner_outlined,
-            'food_search.png' => Icons.search_outlined,
-            'calculator.png' => Icons.calculate_outlined,
-            _ => Icons.fitness_center_outlined,
-          },
-          size: size * .44,
-          color: dark ? Theme.of(context).colorScheme.primary : Colors.white,
-        ),
-      ),
-    );
-  }
-
-  Widget _arrow(BuildContext context) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
-    final color = dark ? Theme.of(context).colorScheme.primary : _arrowFg;
-    return Container(
-      width: 30,
-      height: 30,
-      decoration: BoxDecoration(
-        color: dark ? color.withValues(alpha: .08) : _arrowBg,
-        shape: BoxShape.circle,
-      ),
-      child: Icon(Icons.arrow_outward_rounded, color: color, size: 16),
-    );
-  }
-
-  Widget _verticalContent(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _image(context, size: 56),
-            const Spacer(),
-            _arrow(context),
-          ],
-        ),
-        const Spacer(),
-        Text(
-          title,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            color: context.appColor(_title, surface: false),
-            fontSize: 15,
-            height: 1.15,
-            fontWeight: FontWeight.w700,
-            letterSpacing: -.15,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _horizontalContent(BuildContext context) {
-    return Row(
-      children: [
-        _image(context, size: 62),
-        const SizedBox(width: 14),
-        Expanded(
-          child: Text(
-            title,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              color: context.appColor(_title, surface: false),
-              fontSize: 17,
-              height: 1.15,
-              fontWeight: FontWeight.w700,
-              letterSpacing: -.2,
-            ),
-          ),
-        ),
-        const SizedBox(width: 10),
-        _arrow(context),
-        const SizedBox(width: 5),
-      ],
     );
   }
 }
@@ -1644,42 +1205,28 @@ class _FoodAddedToast extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     return Container(
-      constraints: const BoxConstraints(minHeight: 76),
-      padding: const EdgeInsets.fromLTRB(12, 11, 8, 11),
+      padding: const EdgeInsets.fromLTRB(14, 12, 6, 12),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: context.appPanelColors,
-        ),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: context.appColor(Color(0x3D8CFFC0), surface: true),
-        ),
-        boxShadow: Theme.of(context).brightness == Brightness.dark
-            ? const []
-            : const [
-                BoxShadow(
-                  color: Color(0x40104732),
-                  blurRadius: 24,
-                  offset: Offset(0, 11),
-                ),
-              ],
+        color: scheme.surfaceContainerLowest,
+        borderRadius: BorderRadius.circular(AppRadius.lg),
+        border: Border.all(color: scheme.outlineVariant),
+        boxShadow: AppShadows.raised,
       ),
       child: Row(
         children: [
           Container(
-            width: 48,
-            height: 48,
+            width: 32,
+            height: 32,
             decoration: BoxDecoration(
-              color: context.appColor(Color(0xFFECFFF4), surface: true),
-              borderRadius: BorderRadius.circular(16),
+              color: AppPalette.success.withValues(alpha: .12),
+              borderRadius: BorderRadius.circular(AppRadius.sm),
             ),
             child: const Icon(
-              Icons.check_rounded,
-              color: Color(0xFF0AA758),
-              size: 29,
+              LucideIcons.check,
+              color: AppPalette.success,
+              size: 18,
             ),
           ),
           const SizedBox(width: 12),
@@ -1693,42 +1240,28 @@ class _FoodAddedToast extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    color: context.appColor(Colors.white, surface: false),
+                    color: scheme.onSurface,
                     fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: -.1,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 2),
                 Text(
-                  '$foodName  •  $details',
+                  '$foodName  ·  $details',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    color: context.appColor(Color(0xFFD2F5E2), surface: false),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
+                    color: scheme.onSurfaceVariant,
+                    fontSize: 12.5,
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(width: 4),
           IconButton(
             onPressed: onClose,
             tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
-            style: IconButton.styleFrom(
-              foregroundColor: context.appColor(
-                Color(0xFFD2F5E2),
-                surface: false,
-              ),
-              backgroundColor: context.appColor(
-                Color(0x1FFFFFFF),
-                surface: true,
-              ),
-              minimumSize: const Size(38, 38),
-            ),
-            icon: const Icon(Icons.close_rounded, size: 19),
+            icon: const Icon(LucideIcons.x, size: 18),
           ),
         ],
       ),

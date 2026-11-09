@@ -25,6 +25,7 @@ import 'package:myfit/services/food_data_service.dart';
 import 'package:myfit/widgets/food_portion_sheet.dart';
 import 'package:myfit/screens/home_page.dart';
 import 'package:myfit/theme/app_theme.dart';
+import 'package:myfit/widgets/app_ui.dart';
 import 'package:myfit/models/food_nutrition.dart';
 import 'package:myfit/services/food_log_service.dart';
 
@@ -357,10 +358,11 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.byType(NavigationDestination).at(2));
     await tester.pumpAndSettle();
-    expect(find.byType(Card), findsWidgets);
-    for (final card in tester.widgetList<Card>(find.byType(Card))) {
+    expect(find.byType(AppCard), findsWidgets);
+    for (final card in tester.widgetList<AppCard>(find.byType(AppCard))) {
       final context = tester.element(find.byWidget(card));
-      final color = card.color ?? Theme.of(context).cardTheme.color!;
+      final color =
+          card.color ?? Theme.of(context).colorScheme.surfaceContainerLowest;
       expect(color.computeLuminance(), lessThan(.08));
       expect(
         (Theme.of(context).colorScheme.onSurface.computeLuminance() + .05) /

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../services/appearance_store.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class AppearanceSelector extends StatefulWidget {
   const AppearanceSelector({
@@ -82,12 +83,12 @@ class _AppearanceSelectorState extends State<AppearanceSelector> {
       segments: [
         ButtonSegment(
           value: 'light',
-          icon: const Icon(Icons.light_mode_outlined),
+          icon: const Icon(LucideIcons.sun),
           label: Text(context.tr('Oq rejim')),
         ),
         ButtonSegment(
           value: 'dark',
-          icon: const Icon(Icons.dark_mode_outlined),
+          icon: const Icon(LucideIcons.moon),
           label: Text(context.tr('Qora rejim')),
         ),
       ],

@@ -15,6 +15,7 @@ import 'package:myfit/screens/meals_page.dart';
 import 'package:myfit/screens/profile_page.dart';
 import 'package:myfit/screens/workouts_page.dart';
 import 'package:myfit/theme/app_theme.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 void main() {
   test('existing appearance choices persist across profile versions', () {
@@ -148,32 +149,25 @@ void main() {
                 selectedIndex: 1,
                 destinations: const [
                   NavigationDestination(
-                    icon: Icon(Icons.home_outlined),
+                    icon: Icon(LucideIcons.house),
                     label: 'Bosh sahifa',
                   ),
                   NavigationDestination(
-                    icon: Icon(Icons.restaurant_outlined),
+                    icon: Icon(LucideIcons.utensils),
                     label: 'Ovqatlar',
                   ),
                   NavigationDestination(
-                    icon: Icon(Icons.fitness_center_outlined),
+                    icon: Icon(LucideIcons.dumbbell),
                     label: 'Mashqlar',
                   ),
                   NavigationDestination(
-                    icon: Icon(Icons.person_outline),
+                    icon: Icon(LucideIcons.user),
                     label: 'Profil',
                   ),
                 ],
               ),
             ),
           ),
-        ),
-      );
-      await tester.pumpAndSettle();
-      await tester.runAsync(
-        () => precacheImage(
-          const AssetImage('assets/images/meal_photography.png'),
-          boundary.currentContext!,
         ),
       );
       await tester.pumpAndSettle();

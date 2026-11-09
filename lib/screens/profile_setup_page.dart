@@ -1,5 +1,6 @@
 import '../theme/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:flutter/services.dart';
 
 import '../l10n/app_localizations.dart';
@@ -21,7 +22,7 @@ class ProfileSetupPage extends StatefulWidget {
 }
 
 class _ProfileSetupPageState extends State<ProfileSetupPage> {
-  static const _green = Color(0xFF18B85A);
+  static const _green = Color(0xFF2F5BEA);
   static const _navy = Color(0xFF10223C);
 
   final _formKey = GlobalKey<FormState>();
@@ -156,7 +157,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                       children: [
                         Expanded(
                           child: _ChoiceButton(
-                            label: '♂ ${context.tr('Erkak')}',
+                            label: context.tr('Erkak'),
                             selected: _gender == 'male',
                             onTap: () => setState(() => _gender = 'male'),
                           ),
@@ -164,7 +165,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                         const SizedBox(width: 12),
                         Expanded(
                           child: _ChoiceButton(
-                            label: '♀ ${context.tr('Ayol')}',
+                            label: context.tr('Ayol'),
                             selected: _gender == 'female',
                             onTap: () => setState(() => _gender = 'female'),
                           ),
@@ -238,21 +239,21 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                     const SizedBox(height: 8),
                     _GoalButton(
                       label: context.tr('Vazn kamaytirish'),
-                      icon: '🔥',
+                      icon: LucideIcons.trendingDown,
                       selected: _goal == 'lose',
                       onTap: () => setState(() => _goal = 'lose'),
                     ),
                     const SizedBox(height: 10),
                     _GoalButton(
                       label: context.tr('Vazn oshirish'),
-                      icon: '💪',
+                      icon: LucideIcons.trendingUp,
                       selected: _goal == 'gain',
                       onTap: () => setState(() => _goal = 'gain'),
                     ),
                     const SizedBox(height: 10),
                     _GoalButton(
                       label: context.tr('Vazn saqlash'),
-                      icon: '⚖️',
+                      icon: LucideIcons.scale,
                       selected: _goal == 'maintain',
                       onTap: () => setState(() => _goal = 'maintain'),
                     ),
@@ -277,7 +278,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                           ).colorScheme.primary,
                           disabledBackgroundColor: _green.withValues(alpha: .6),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18),
+                            borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                         child: _saving
@@ -348,11 +349,11 @@ class _Input extends StatelessWidget {
           vertical: 18,
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(17),
+          borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: Color(0xFFE8EBEF)),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(17),
+          borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: Color(0xFFE8EBEF)),
         ),
       ),
@@ -381,14 +382,14 @@ class _ChoiceButton extends StatelessWidget {
             ? _ProfileColors.green
             : context.appColor(Color(0xFF737E90), surface: false),
         backgroundColor: selected
-            ? context.appColor(Color(0xFFF2FFF7), surface: true)
+            ? context.appColor(Color(0xFFF1F3F6), surface: true)
             : context.appColor(Colors.white, surface: true),
         side: BorderSide(
           color: selected
               ? _ProfileColors.green
               : context.appColor(Color(0xFFE8EBEF), surface: true),
         ),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
       child: Text(label, style: const TextStyle(fontWeight: FontWeight.w700)),
     );
@@ -414,11 +415,11 @@ class _SmallChoice extends StatelessWidget {
       onSelected: (_) => onTap(),
       showCheckmark: false,
       side: BorderSide.none,
-      selectedColor: context.appColor(Color(0xFFE6FAED), surface: true),
+      selectedColor: context.appColor(Color(0xFFF1F3F6), surface: true),
       backgroundColor: context.appColor(Color(0xFFF6F7F9), surface: true),
       labelStyle: TextStyle(
         color: selected
-            ? context.appColor(Color(0xFF09843B), surface: false)
+            ? context.appColor(Color(0xFF2F5BEA), surface: false)
             : context.appColor(Color(0xFF687386), surface: false),
         fontWeight: FontWeight.w700,
       ),
@@ -435,7 +436,7 @@ class _GoalButton extends StatelessWidget {
   });
 
   final String label;
-  final String icon;
+  final IconData icon;
   final bool selected;
   final VoidCallback onTap;
 
@@ -443,28 +444,20 @@ class _GoalButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(12),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 180),
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
         decoration: BoxDecoration(
           color: selected
-              ? context.appColor(Color(0xFFF0FFF5), surface: true)
+              ? context.appColor(Color(0xFFF1F3F6), surface: true)
               : context.appColor(Colors.white, surface: true),
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: selected
                 ? _ProfileColors.green
                 : context.appColor(Color(0xFFE8EBEF), surface: true),
           ),
-          boxShadow: [
-            if (!selected)
-              const BoxShadow(
-                color: Color(0x0D000000),
-                blurRadius: 16,
-                offset: Offset(0, 6),
-              ),
-          ],
         ),
         child: Row(
           children: [
@@ -473,14 +466,20 @@ class _GoalButton extends StatelessWidget {
                 label,
                 style: TextStyle(
                   color: selected
-                      ? context.appColor(Color(0xFF087A36), surface: false)
+                      ? context.appColor(Color(0xFF2F5BEA), surface: false)
                       : context.appColor(Color(0xFF15243B), surface: false),
                   fontWeight: FontWeight.w600,
                   fontSize: 16,
                 ),
               ),
             ),
-            Text(icon, style: const TextStyle(fontSize: 21)),
+            Icon(
+              icon,
+              size: 20,
+              color: selected
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ],
         ),
       ),
@@ -506,5 +505,5 @@ class _SectionTitle extends StatelessWidget {
 }
 
 abstract final class _ProfileColors {
-  static const green = Color(0xFF18B85A);
+  static const green = Color(0xFF2F5BEA);
 }

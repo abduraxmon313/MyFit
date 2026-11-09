@@ -20,6 +20,7 @@ import 'package:myfit/services/body_fat_calculator.dart';
 import 'package:myfit/services/food_data_service.dart';
 import 'package:myfit/services/food_query_translator.dart';
 import 'package:myfit/services/open_food_facts_service.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 void main() {
   test('58 ta mol qismi katalogga to‘liq va takrorsiz qo‘shilgan', () {
@@ -1005,7 +1006,7 @@ void main() {
 
     expect(find.text('HAFTALIK MAQSAD'), findsOneWidget);
     expect(find.text('2100 / 2100'), findsOneWidget);
-    expect(find.byIcon(Icons.check_rounded), findsOneWidget);
+    expect(find.byIcon(LucideIcons.check), findsOneWidget);
     expect(find.text('Kletchatka'), findsOneWidget);
     expect(find.text('Bugungi ovqatlanish rejasi'), findsNothing);
     expect(find.text('Nonushta'), findsOneWidget);
@@ -1054,7 +1055,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Tovuq shashlik'), findsOneWidget);
     expect(find.text('180 kcal'), findsOneWidget);
-    expect(find.byIcon(Icons.delete_outline_rounded), findsOneWidget);
+    expect(find.byIcon(LucideIcons.trash2), findsOneWidget);
     await tester.tap(find.byKey(const ValueKey('meal-toggle-breakfast')));
     await tester.pumpAndSettle();
     expect(find.text('Tovuq shashlik'), findsNothing);

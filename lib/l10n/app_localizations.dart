@@ -366,7 +366,7 @@ class AppLocalizations {
       'Suratga olish': 'Сделать снимок',
       'Galereya': 'Галерея',
       'Qayta olish': 'Переснять',
-      '✓ AI aniqlandi': '✓ Распознано ИИ',
+      'AI aniqlandi': 'Распознано ИИ',
       'Og‘irlik (g)': 'Вес (г)',
       'Bu mahsulot Open Food Facts bazasida topilmadi.':
           'Продукт не найден в базе Open Food Facts.',
@@ -449,6 +449,7 @@ class AppLocalizations {
       'Saqlangan {count} ta mahsulot menyuga qo‘shilmaydi. Chiqasizmi?':
           'Сохранённые продукты ({count}) не будут добавлены в меню. Выйти?',
       'Qolish': 'Остаться',
+      'Qoldi': 'Осталось',
       'Chiqib ketish': 'Выйти',
       'Ro‘yxatni ochish': 'Показать список',
       'Ro‘yxatni yopish': 'Скрыть список',
@@ -782,7 +783,7 @@ class AppLocalizations {
       'Suratga olish': 'Take a photo',
       'Galereya': 'Gallery',
       'Qayta olish': 'Retake',
-      '✓ AI aniqlandi': '✓ Identified by AI',
+      'AI aniqlandi': 'Identified by AI',
       'Og‘irlik (g)': 'Weight (g)',
       'Bu mahsulot Open Food Facts bazasida topilmadi.':
           'This product was not found in Open Food Facts.',
@@ -862,6 +863,7 @@ class AppLocalizations {
       'Saqlangan {count} ta mahsulot menyuga qo‘shilmaydi. Chiqasizmi?':
           '{count} saved items will not be added to the meal. Leave?',
       'Qolish': 'Stay',
+      'Qoldi': 'Remaining',
       'Chiqib ketish': 'Leave',
       'Ro‘yxatni ochish': 'Show list',
       'Ro‘yxatni yopish': 'Hide list',
