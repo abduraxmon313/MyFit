@@ -8,6 +8,7 @@ import '../services/search_history_store.dart';
 import '../widgets/search_history_panel.dart';
 import '../data/uzbek_food_catalog.dart';
 import 'custom_food_page.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class FoodSearchPage extends StatefulWidget {
   const FoodSearchPage({super.key, required this.service});
@@ -144,7 +145,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(context.tr('Ovqat qidirish')), actions: [
-        IconButton(tooltip: context.tr('Yorliqdan mahsulot qo‘shish'), icon: const Icon(Icons.add), onPressed: () async {
+        IconButton(tooltip: context.tr('Yorliqdan mahsulot qo‘shish'), icon: const Icon(LucideIcons.plus), onPressed: () async {
           final food = await Navigator.push<FoodNutrition>(context, MaterialPageRoute(builder: (_) => const CustomFoodPage()));
           if (food != null && mounted) { await _select(food); }
         }),
@@ -175,7 +176,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                 if (_query.text.isNotEmpty)
                   IconButton(
                     tooltip: context.tr('Tozalash'),
-                    icon: const Icon(Icons.close_rounded),
+                    icon: const Icon(LucideIcons.x),
                     onPressed: () {
                       _query.clear();
                       ++_searchId;
@@ -189,7 +190,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                   ),
                 IconButton(
                   onPressed: _loading ? null : _search,
-                  icon: const Icon(Icons.search),
+                  icon: const Icon(LucideIcons.search),
                 ),
               ],
             ),
@@ -256,7 +257,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                                       '${context.tr('Suv')} ${food.hasWaterData ? food.water.toStringAsFixed(1) : '—'} ${context.tr('g')}',
                           ),
                           isThreeLine: true,
-                          trailing: const Icon(Icons.add_circle_outline),
+                          trailing: const Icon(LucideIcons.circlePlus),
                           onTap: () => _select(food),
                         ),
                       );

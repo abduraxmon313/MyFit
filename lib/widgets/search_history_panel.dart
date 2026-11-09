@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../services/search_history_store.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class SearchHistoryPanel extends StatelessWidget {
   const SearchHistoryPanel({
@@ -68,7 +69,7 @@ class SearchHistoryPanel extends StatelessWidget {
               clipBehavior: Clip.antiAlias,
               decoration: BoxDecoration(
                 color: colors.surfaceContainerLowest,
-                borderRadius: BorderRadius.circular(18),
+                borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: border),
               ),
               child: Column(
@@ -95,7 +96,7 @@ class SearchHistoryPanel extends StatelessWidget {
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
-                  Icons.manage_search_rounded,
+                  LucideIcons.search,
                   size: 34,
                   color: colors.primary,
                 ),
@@ -155,7 +156,7 @@ class _HistoryRow extends StatelessWidget {
                 shape: BoxShape.circle,
               ),
               child: Icon(
-                Icons.history_rounded,
+                LucideIcons.history,
                 size: 19,
                 color: colors.onSurfaceVariant,
               ),
@@ -178,7 +179,7 @@ class _HistoryRow extends StatelessWidget {
               onPressed: onRemove,
               visualDensity: VisualDensity.compact,
               icon: Icon(
-                Icons.close_rounded,
+                LucideIcons.x,
                 size: 18,
                 color: colors.onSurfaceVariant,
               ),

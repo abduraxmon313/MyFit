@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../services/body_fat_calculator.dart';
 import '../services/calorie_needs_calculator.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class BodyFatCalculatorPage extends StatefulWidget {
   const BodyFatCalculatorPage({super.key});
@@ -63,7 +64,7 @@ class _BodyFatCalculatorPageState extends State<BodyFatCalculatorPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: context.appColor(Color(0xFFFAFCFA), surface: true),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text(
@@ -84,19 +85,19 @@ class _BodyFatCalculatorPageState extends State<BodyFatCalculatorPage> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
             decoration: BoxDecoration(
-              color: context.appColor(Color(0xFFEAF7EF), surface: true),
-              borderRadius: BorderRadius.circular(14),
+              color: context.appColor(Color(0xFFF1F3F6), surface: true),
+              borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
               children: [
-                Icon(Icons.straighten_rounded, color: Color(0xFF08753D)),
+                Icon(LucideIcons.ruler, color: Color(0xFF2F5BEA)),
                 SizedBox(width: 9),
                 Expanded(
                   child: Text(
                     context.tr('O‘lchov birligi: kilogramm va santimetr'),
                     style: TextStyle(
                       color: context.appColor(
-                        Color(0xFF08753D),
+                        Color(0xFF2F5BEA),
                         surface: false,
                       ),
                       fontWeight: FontWeight.w700,
@@ -225,10 +226,10 @@ class _BodyFatCalculatorPageState extends State<BodyFatCalculatorPage> {
           end: Alignment.bottomRight,
           colors: context.appPanelColors,
         ),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
         boxShadow: const [
           BoxShadow(
-            color: Color(0x3013B957),
+            color: Color(0x302F5BEA),
             blurRadius: 24,
             offset: Offset(0, 12),
           ),
@@ -288,7 +289,7 @@ class _BodyFatRingPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 11;
     final foreground = Paint()
-      ..color = const Color(0xFFB9FFCF)
+      ..color = const Color(0xFFF1F3F6)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 11
       ..strokeCap = StrokeCap.round;

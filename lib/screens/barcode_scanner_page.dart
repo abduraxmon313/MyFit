@@ -6,6 +6,7 @@ import '../l10n/app_localizations.dart';
 import '../models/food_nutrition.dart';
 import '../services/open_food_facts_service.dart';
 import 'custom_food_page.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class BarcodeScannerPage extends StatefulWidget {
   const BarcodeScannerPage({super.key, required this.service});
@@ -17,7 +18,7 @@ class BarcodeScannerPage extends StatefulWidget {
 }
 
 class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
-  static const _green = Color(0xFF19C565);
+  static const _green = Color(0xFF2F5BEA);
   static const _navy = Color(0xFF10223C);
 
   final _controller = MobileScannerController(
@@ -141,7 +142,7 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
                       ),
                       foregroundColor: Colors.white,
                     ),
-                    icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                    icon: const Icon(LucideIcons.chevronLeft),
                   ),
                 ),
                 Positioned(
@@ -158,7 +159,7 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
                           ),
                           foregroundColor: Colors.white,
                         ),
-                        icon: const Icon(Icons.flashlight_on_rounded),
+                        icon: const Icon(LucideIcons.flashlight),
                       ),
                       const SizedBox(width: 8),
                       IconButton.filled(
@@ -170,7 +171,7 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
                           ),
                           foregroundColor: Colors.white,
                         ),
-                        icon: const Icon(Icons.cameraswitch_rounded),
+                        icon: const Icon(LucideIcons.switchCamera),
                       ),
                     ],
                   ),
@@ -180,10 +181,10 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
                     width: MediaQuery.sizeOf(context).width * .82,
                     height: 190,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(12),
                       border: Border.all(color: _green, width: 3),
                       boxShadow: const [
-                        BoxShadow(color: Color(0x6619C565), blurRadius: 20),
+                        BoxShadow(color: Color(0x662F5BEA), blurRadius: 20),
                       ],
                     ),
                     child: Stack(
@@ -216,7 +217,7 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
                                 Colors.black87,
                                 surface: true,
                               ),
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(12),
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -283,7 +284,7 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
                               Color(0xFFE34848),
                               surface: true,
                             ),
-                            borderRadius: BorderRadius.circular(14),
+                            borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
                             _error!,
@@ -299,7 +300,7 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
                         const SizedBox(height: 10),
                         FilledButton.icon(
                           onPressed: _scanAgain,
-                          icon: const Icon(Icons.refresh_rounded),
+                          icon: const Icon(LucideIcons.refreshCw),
                           label: Text(context.tr('Qayta skanerlash')),
                         ),
                         TextButton(onPressed: () async {
@@ -321,16 +322,16 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
   Widget _result() {
     final calculated = _food!.forGrams(_weight > 0 ? _weight : 100);
     return Scaffold(
-      backgroundColor: context.appColor(Color(0xFFF4FAF6), surface: true),
+      backgroundColor: context.appColor(Color(0xFFF1F3F6), surface: true),
       appBar: AppBar(
-        backgroundColor: context.appColor(Color(0xFFF4FAF6), surface: true),
+        backgroundColor: context.appColor(Color(0xFFF1F3F6), surface: true),
         title: Text(
           context.tr('Mahsulot aniqlandi'),
           style: TextStyle(fontWeight: FontWeight.w700),
         ),
         leading: IconButton(
           onPressed: _scanAgain,
-          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          icon: const Icon(LucideIcons.chevronLeft),
         ),
       ),
       body: SafeArea(
@@ -348,7 +349,7 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
                       color: Theme.of(
                         context,
                       ).colorScheme.surfaceContainerLowest,
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(12),
                       boxShadow: const [
                         BoxShadow(
                           color: Color(0x1210223C),
@@ -363,7 +364,7 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
                         Row(
                           children: [
                             Icon(
-                              Icons.verified_rounded,
+                              LucideIcons.badgeCheck,
                               color: _green,
                               size: 18,
                             ),
@@ -418,7 +419,7 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
                               surface: true,
                             ),
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(12),
                               borderSide: BorderSide.none,
                             ),
                           ),
@@ -484,14 +485,14 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
                   const SizedBox(height: 16),
                   FilledButton.icon(
                     onPressed: _addFood,
-                    icon: const Icon(Icons.add_rounded),
+                    icon: const Icon(LucideIcons.plus),
                     label: Text(context.tr('Hisoblash va qo‘shish')),
                     style: FilledButton.styleFrom(
                       backgroundColor: Theme.of(context).colorScheme.primary,
                       foregroundColor: Theme.of(context).colorScheme.onPrimary,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(17),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                   ),
@@ -517,7 +518,7 @@ class _NutrientTile extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: context.appColor(Color(0xFFF3F7F5), surface: true),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

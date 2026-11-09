@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../l10n/app_localizations.dart';
 import '../services/calorie_needs_calculator.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class CalorieCalculatorPage extends StatefulWidget {
   const CalorieCalculatorPage({super.key});
@@ -12,7 +13,7 @@ class CalorieCalculatorPage extends StatefulWidget {
 }
 
 class _CalorieCalculatorPageState extends State<CalorieCalculatorPage> {
-  static const _green = Color(0xFF13B957);
+  static const _green = Color(0xFF2F5BEA);
   final _age = TextEditingController(text: '25');
   final _height = TextEditingController(text: '175');
   final _weight = TextEditingController(text: '70');
@@ -74,7 +75,7 @@ class _CalorieCalculatorPageState extends State<CalorieCalculatorPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: context.appColor(Color(0xFFFAFCFA), surface: true),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text(
@@ -238,7 +239,7 @@ class _CalorieCalculatorPageState extends State<CalorieCalculatorPage> {
 
   Widget _bmrOnlyResult(CalorieNeedsResult result) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(12),
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
@@ -274,11 +275,11 @@ class _CalorieCalculatorPageState extends State<CalorieCalculatorPage> {
                           color: context
                               .appColor(Colors.white, surface: true)
                               .withValues(alpha: .15),
-                          borderRadius: BorderRadius.circular(15),
+                          borderRadius: BorderRadius.circular(12),
                         ),
                         child: const Icon(
-                          Icons.local_fire_department_rounded,
-                          color: Color(0xFFC8FFD9),
+                          LucideIcons.flame,
+                          color: Color(0xFFF1F3F6),
                           size: 27,
                         ),
                       ),
@@ -290,7 +291,7 @@ class _CalorieCalculatorPageState extends State<CalorieCalculatorPage> {
                             context.tr('BAZAL METABOLIZM'),
                             style: TextStyle(
                               color: context.appColor(
-                                Color(0xFFC8FFD9),
+                                Color(0xFFF1F3F6),
                                 surface: false,
                               ),
                               fontSize: 11,
@@ -376,16 +377,16 @@ class _CalorieCalculatorPageState extends State<CalorieCalculatorPage> {
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
                       color: context
-                          .appColor(Color(0xFF043D29), surface: true)
+                          .appColor(Color(0xFF16213A), surface: true)
                           .withValues(alpha: .28),
-                      borderRadius: BorderRadius.circular(17),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Icon(
-                          Icons.bedtime_outlined,
-                          color: Color(0xFFC8FFD9),
+                          LucideIcons.moon,
+                          color: Color(0xFFF1F3F6),
                           size: 20,
                         ),
                         SizedBox(width: 9),
@@ -472,7 +473,7 @@ class _CalorieCalculatorPageState extends State<CalorieCalculatorPage> {
           color: Colors.transparent,
           child: InkWell(
             key: const Key('toggle-gain-info'),
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(12),
             onTap: () => setState(() => _showGainInfo = !_showGainInfo),
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 220),
@@ -480,13 +481,13 @@ class _CalorieCalculatorPageState extends State<CalorieCalculatorPage> {
               padding: const EdgeInsets.all(15),
               decoration: BoxDecoration(
                 color: _showGainInfo
-                    ? context.appColor(Color(0xFF08753D), surface: true)
-                    : context.appColor(Color(0xFFEAF7EF), surface: true),
-                borderRadius: BorderRadius.circular(16),
+                    ? context.appColor(Color(0xFF2F5BEA), surface: true)
+                    : context.appColor(Color(0xFFF1F3F6), surface: true),
+                borderRadius: BorderRadius.circular(12),
                 border: Border.all(
                   color: _showGainInfo
-                      ? context.appColor(Color(0xFF08753D), surface: true)
-                      : context.appColor(Color(0xFFCDEED9), surface: true),
+                      ? context.appColor(Color(0xFF2F5BEA), surface: true)
+                      : context.appColor(Color(0xFFA9C1FF), surface: true),
                 ),
               ),
               child: Row(
@@ -500,15 +501,15 @@ class _CalorieCalculatorPageState extends State<CalorieCalculatorPage> {
                                 .appColor(Colors.white, surface: true)
                                 .withValues(alpha: .15)
                           : context.appColor(Colors.white, surface: true),
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                     child: Icon(
                       _showGainInfo
-                          ? Icons.close_rounded
-                          : Icons.trending_up_rounded,
+                          ? LucideIcons.x
+                          : LucideIcons.trendingUp,
                       color: _showGainInfo
                           ? context.appColor(Colors.white, surface: true)
-                          : context.appColor(Color(0xFF13B957), surface: true),
+                          : context.appColor(Color(0xFF2F5BEA), surface: true),
                       size: 25,
                     ),
                   ),
@@ -525,7 +526,7 @@ class _CalorieCalculatorPageState extends State<CalorieCalculatorPage> {
                             color: _showGainInfo
                                 ? context.appColor(Colors.white, surface: false)
                                 : context.appColor(
-                                    Color(0xFF08753D),
+                                    Color(0xFF2F5BEA),
                                     surface: false,
                                   ),
                             fontSize: 15,
@@ -555,11 +556,11 @@ class _CalorieCalculatorPageState extends State<CalorieCalculatorPage> {
                   ),
                   Icon(
                     _showGainInfo
-                        ? Icons.keyboard_arrow_up_rounded
-                        : Icons.chevron_right_rounded,
+                        ? LucideIcons.chevronUp
+                        : LucideIcons.chevronRight,
                     color: _showGainInfo
                         ? context.appColor(Colors.white, surface: true)
-                        : context.appColor(Color(0xFF08753D), surface: true),
+                        : context.appColor(Color(0xFF2F5BEA), surface: true),
                   ),
                 ],
               ),
@@ -585,7 +586,7 @@ class _CalorieCalculatorPageState extends State<CalorieCalculatorPage> {
         color: highlighted
             ? null
             : context.appColor(Colors.white, surface: true),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
         border: highlighted
             ? null
             : Border.all(
@@ -594,7 +595,7 @@ class _CalorieCalculatorPageState extends State<CalorieCalculatorPage> {
         boxShadow: [
           BoxShadow(
             color: highlighted
-                ? context.appColor(Color(0x2413B957), surface: true)
+                ? context.appColor(Color(0x242F5BEA), surface: true)
                 : context.appColor(Color(0x0D10223C), surface: true),
             blurRadius: 18,
             offset: const Offset(0, 7),
@@ -611,13 +612,13 @@ class _CalorieCalculatorPageState extends State<CalorieCalculatorPage> {
                   ? context
                         .appColor(Colors.white, surface: true)
                         .withValues(alpha: .17)
-                  : context.appColor(Color(0xFFEAF7EF), surface: true),
-              borderRadius: BorderRadius.circular(14),
+                  : context.appColor(Color(0xFFF1F3F6), surface: true),
+              borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(
               highlighted
-                  ? Icons.balance_rounded
-                  : Icons.local_fire_department_rounded,
+                  ? LucideIcons.scale
+                  : LucideIcons.flame,
               color: highlighted
                   ? context.appColor(Colors.white, surface: true)
                   : _green,
@@ -658,11 +659,11 @@ class _CalorieCalculatorPageState extends State<CalorieCalculatorPage> {
                       vertical: 6,
                     ),
                     decoration: BoxDecoration(
-                      color: context.appColor(Color(0xFFEAF7EF), surface: true),
+                      color: context.appColor(Color(0xFFF1F3F6), surface: true),
                       borderRadius: BorderRadius.circular(99),
                       border: Border.all(
                         color: context.appColor(
-                          Color(0xFFCDEED9),
+                          Color(0xFFA9C1FF),
                           surface: true,
                         ),
                       ),
@@ -671,16 +672,16 @@ class _CalorieCalculatorPageState extends State<CalorieCalculatorPage> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         const Icon(
-                          Icons.trending_flat_rounded,
+                          LucideIcons.minus,
                           size: 17,
-                          color: Color(0xFF08753D),
+                          color: Color(0xFF2F5BEA),
                         ),
                         const SizedBox(width: 5),
                         Text(
                           row.$3!,
                           style: TextStyle(
                             color: context.appColor(
-                              Color(0xFF08753D),
+                              Color(0xFF2F5BEA),
                               surface: false,
                             ),
                             fontSize: 12,

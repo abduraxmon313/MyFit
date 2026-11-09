@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 
 import '../data/workout_catalog.dart';
 import '../models/workout.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+
+import '../widgets/app_ui.dart';
 
 class WorkoutsPage extends StatefulWidget {
   const WorkoutsPage({
@@ -80,7 +83,7 @@ class _WorkoutsPageState extends State<WorkoutsPage> {
                   ),
                   FilledButton.icon(
                     onPressed: () => Navigator.pop(context, minutes.round()),
-                    icon: const Icon(Icons.add_rounded),
+                    icon: const Icon(LucideIcons.plus),
                     label: const Text('Mashqni qo‘shish'),
                   ),
                 ],
@@ -128,15 +131,18 @@ class _WorkoutsPageState extends State<WorkoutsPage> {
                 Text(
                   'Mashqlar',
                   style: TextStyle(
-                    color: context.appColor(Color(0xFF10223C), surface: false),
-                    fontSize: 28,
-                    fontWeight: FontWeight.w700,
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: -.6,
                   ),
                 ),
+                const SizedBox(height: 4),
                 Text(
                   'Harakatni kuzating, maqsadingizga yaqinlashing',
                   style: TextStyle(
-                    color: context.appColor(Color(0xFF718079), surface: false),
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    fontSize: 13.5,
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -146,7 +152,7 @@ class _WorkoutsPageState extends State<WorkoutsPage> {
                       child: _Summary(
                         value: '$totalMinutes',
                         label: 'daqiqa',
-                        icon: Icons.timer_outlined,
+                        icon: LucideIcons.timer,
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -154,7 +160,7 @@ class _WorkoutsPageState extends State<WorkoutsPage> {
                       child: _Summary(
                         value: '${totalCalories.round()}',
                         label: 'kcal',
-                        icon: Icons.local_fire_department_outlined,
+                        icon: LucideIcons.flame,
                       ),
                     ),
                   ],
@@ -162,15 +168,9 @@ class _WorkoutsPageState extends State<WorkoutsPage> {
                 const SizedBox(height: 16),
                 TextField(
                   onChanged: (v) => setState(() => _query = v),
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Mashqni qidiring',
-                    prefixIcon: const Icon(Icons.search),
-                    filled: true,
-                    fillColor: context.appColor(Colors.white, surface: true),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide.none,
-                    ),
+                    prefixIcon: Icon(LucideIcons.search, size: 18),
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -199,48 +199,33 @@ class _WorkoutsPageState extends State<WorkoutsPage> {
                 ),
                 if (widget.logs.isNotEmpty) ...[
                   const SizedBox(height: 18),
-                  const Text(
-                    'Bugungi mashqlar',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
-                  ),
+                  const AppSectionHeader(title: 'Bugungi mashqlar'),
+                  const SizedBox(height: 8),
                   ...widget.logs.asMap().entries.map(
                     (e) => ListTile(
                       contentPadding: EdgeInsets.zero,
-                      leading: CircleAvatar(
-                        backgroundColor: context.appColor(
-                          Color(0xFFE1F8EA),
-                          surface: true,
-                        ),
-                        child: Icon(
-                          e.value.workout.icon,
-                          color: context.appColor(
-                            Color(0xFF0B9A4E),
-                            surface: true,
-                          ),
-                        ),
-                      ),
-                      title: Text(
-                        e.value.workout.name,
-                        style: const TextStyle(fontWeight: FontWeight.w700),
-                      ),
+                      leading: AppIconTile(icon: e.value.workout.icon),
+                      title: Text(e.value.workout.name),
                       subtitle: Text(
                         '${e.value.minutes} daqiqa · ${e.value.calories.round()} kcal',
                       ),
                       trailing: IconButton(
-                        icon: const Icon(Icons.delete_outline),
+                        tooltip: MaterialLocalizations.of(
+                          context,
+                        ).deleteButtonTooltip,
+                        icon: Icon(
+                          LucideIcons.trash2,
+                          size: 19,
+                          color: Theme.of(context).colorScheme.error,
+                        ),
                         onPressed: () => widget.onRemoved(e.key),
                       ),
                     ),
                   ),
                 ],
                 const SizedBox(height: 16),
-                Text(
-                  '${filtered.length} ta mashq',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
+                AppSectionHeader(title: '${filtered.length} ta mashq'),
+                const SizedBox(height: 4),
               ],
             ),
           ),
@@ -248,58 +233,61 @@ class _WorkoutsPageState extends State<WorkoutsPage> {
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 28),
             sliver: SliverGrid.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount:
-                    MediaQuery.sizeOf(context).width < 360 &&
-                        MediaQuery.textScalerOf(context).scale(14) > 18
+                crossAxisCount: MediaQuery.sizeOf(context).width >= 1100
+                    ? 4
+                    : MediaQuery.sizeOf(context).width >= 700
+                    ? 3
+                    : MediaQuery.sizeOf(context).width < 360 &&
+                          MediaQuery.textScalerOf(context).scale(14) > 18
                     ? 1
                     : 2,
                 mainAxisExtent:
-                    156 + MediaQuery.textScalerOf(context).scale(48) - 48,
+                    124 + (MediaQuery.textScalerOf(context).scale(14) - 14) * 6,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
               ),
               itemCount: filtered.length,
               itemBuilder: (_, i) {
                 final w = filtered[i];
-                return Card(
-                  elevation: 0,
-                  color: Theme.of(context).colorScheme.surfaceContainerLowest,
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(12),
-                    onTap: () => _add(w),
-                    child: Padding(
-                      padding: const EdgeInsets.all(14),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                return AppCard(
+                  onTap: () => _add(w),
+                  padding: const EdgeInsets.all(14),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
                         children: [
-                          Icon(
-                            w.icon,
-                            color: context.appColor(
-                              Color(0xFF10A957),
-                              surface: true,
-                            ),
-                            size: 28,
-                          ),
+                          AppIconTile(icon: w.icon, size: 36),
                           const Spacer(),
-                          Text(
-                            w.name,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(fontWeight: FontWeight.w600),
-                          ),
-                          Text(
-                            _categoryName(w.category),
-                            style: TextStyle(
-                              color: context.appColor(
-                                Color(0xFF718079),
-                                surface: false,
-                              ),
-                              fontSize: 12,
-                            ),
+                          Icon(
+                            LucideIcons.plus,
+                            size: 16,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
                           ),
                         ],
                       ),
-                    ),
+                      const Spacer(),
+                      Text(
+                        w.name,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurface,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        _categoryName(w.category),
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
                   ),
                 );
               },
@@ -321,37 +309,40 @@ class _Summary extends StatelessWidget {
   final String label;
   final IconData icon;
   @override
-  Widget build(BuildContext context) => Container(
-    padding: const EdgeInsets.all(16),
-    decoration: BoxDecoration(
-      color: Theme.of(context).colorScheme.surfaceContainerLowest,
-      borderRadius: BorderRadius.circular(18),
-    ),
-    child: Row(
-      children: [
-        Icon(icon, color: context.appColor(Color(0xFF10A957), surface: true)),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                value,
-                style: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w700,
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return AppCard(
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: [
+          AppIconTile(icon: icon, size: 36),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  value,
+                  style: TextStyle(
+                    color: scheme.onSurface,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: -.4,
+                    fontFeatures: const [FontFeature.tabularFigures()],
+                  ),
                 ),
-              ),
-              Text(
-                label,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                Text(
+                  label,
+                  style: TextStyle(
+                    color: scheme.onSurfaceVariant,
+                    fontSize: 12.5,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
-    ),
-  );
+        ],
+      ),
+    );
+  }
 }

@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 
 import '../l10n/app_localizations.dart';
 import '../models/food_nutrition.dart';
+import '../widgets/app_ui.dart';
 import '../widgets/food_thumbnail.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 enum MealType { breakfast, lunch, dinner, fifthSnack, snack }
 
@@ -20,14 +22,20 @@ extension MealTypeDetails on MealType {
   String localizedDescription(BuildContext context) => context.tr(description);
   String localizedTime(BuildContext context) => context.tr(time);
 
+  /// Muted, single-hue accents (navy → blue) so meals read as one family.
   Color accent(BuildContext context) {
-    if (Theme.of(context).brightness == Brightness.dark) return color;
+    final dark = Theme.of(context).brightness == Brightness.dark;
     return switch (this) {
-      MealType.breakfast => const Color(0xFF8A5B14),
-      MealType.lunch => const Color(0xFF13765E),
-      MealType.dinner => const Color(0xFF2E6893),
-      MealType.snack => const Color(0xFF9B4146),
-      MealType.fifthSnack => const Color(0xFF6A548D),
+      MealType.breakfast =>
+        dark ? const Color(0xFFB9C7E6) : const Color(0xFF34466B),
+      MealType.lunch =>
+        dark ? const Color(0xFF8FB0FF) : const Color(0xFF2F5BEA),
+      MealType.dinner =>
+        dark ? const Color(0xFF9DB4D9) : const Color(0xFF1F3A6E),
+      MealType.snack =>
+        dark ? const Color(0xFFA9B8D6) : const Color(0xFF4B5D82),
+      MealType.fifthSnack =>
+        dark ? const Color(0xFFB4BFD9) : const Color(0xFF5B6475),
     };
   }
 
@@ -48,28 +56,22 @@ extension MealTypeDetails on MealType {
   };
 
   IconData get icon => switch (this) {
-    MealType.breakfast => Icons.coffee_outlined,
-    MealType.lunch => Icons.restaurant_outlined,
-    MealType.dinner => Icons.dinner_dining_outlined,
-    MealType.snack => Icons.apple_outlined,
-    MealType.fifthSnack => Icons.nightlight_outlined,
+    MealType.breakfast => LucideIcons.coffee,
+    MealType.lunch => LucideIcons.utensils,
+    MealType.dinner => LucideIcons.soup,
+    MealType.snack => LucideIcons.apple,
+    MealType.fifthSnack => LucideIcons.moon,
   };
 
   Color get color => switch (this) {
-    MealType.breakfast => const Color(0xFFD4AF72),
-    MealType.lunch => const Color(0xFF43CBA8),
-    MealType.dinner => const Color(0xFF7CA9D2),
-    MealType.snack => const Color(0xFFCF8C8C),
-    MealType.fifthSnack => const Color(0xFFA69AC7),
+    MealType.breakfast => const Color(0xFF34466B),
+    MealType.lunch => const Color(0xFF2F5BEA),
+    MealType.dinner => const Color(0xFF1F3A6E),
+    MealType.snack => const Color(0xFF4B5D82),
+    MealType.fifthSnack => const Color(0xFF5B6475),
   };
 
-  Color get background => switch (this) {
-    MealType.breakfast => const Color(0xFFFFF6E7),
-    MealType.lunch => const Color(0xFFEAF9F0),
-    MealType.dinner => const Color(0xFFEEF0FF),
-    MealType.snack => const Color(0xFFFFEEF0),
-    MealType.fifthSnack => const Color(0xFFF4EDFC),
-  };
+  Color get background => const Color(0xFFF3F4F6);
 }
 
 class MealsPage extends StatelessWidget {
@@ -100,19 +102,16 @@ class MealsPage extends StatelessWidget {
   final ValueChanged<FoodNutrition>? onFoodRemoved;
   final ValueChanged<DateTime>? onDateSelected;
 
-  static const _navy = Color(0xFF10223C);
-
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
-      ),
+    final scheme = Theme.of(context).colorScheme;
+    return ColoredBox(
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(20, 18, 20, 34),
+        padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
         child: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 440),
+            constraints: const BoxConstraints(maxWidth: 760),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -120,9 +119,7 @@ class MealsPage extends StatelessWidget {
                   children: [
                     const Expanded(child: _PageHeader()),
                     if (onDateSelected != null)
-                      IconButton.filledTonal(
-                        tooltip: context.tr('Kalendar'),
-                        icon: const Icon(Icons.calendar_month_rounded),
+                      OutlinedButton.icon(
                         onPressed: () async {
                           final now = DateTime.now();
                           final day = await showDatePicker(
@@ -135,16 +132,21 @@ class MealsPage extends StatelessWidget {
                             onDateSelected!(day);
                           }
                         },
+                        icon: Tooltip(
+                          message: context.tr('Kalendar'),
+                          child: const Icon(LucideIcons.calendarDays, size: 16),
+                        ),
+                        label: Text(context.tr('Kalendar')),
                       ),
                   ],
                 ),
-                const SizedBox(height: 22),
+                const SizedBox(height: 20),
                 _WeeklyCalorieProgress(
                   dailyTarget: dailyTarget,
                   weekCalories: weekCalories,
                   onDateSelected: onDateSelected,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 12),
                 _DailyNutritionSummary(
                   fat: fat,
                   carbohydrates: carbohydrates,
@@ -152,36 +154,19 @@ class MealsPage extends StatelessWidget {
                   fiber: fiber,
                   calories: calories,
                 ),
-                const SizedBox(height: 26),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        context.tr('Bugungi menyu'),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: context.appColor(_navy, surface: false),
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
+                const SizedBox(height: 28),
+                AppSectionHeader(
+                  title: context.tr('Bugungi menyu'),
+                  trailing: Text(
+                    context.tr('5 mahal'),
+                    style: TextStyle(
+                      color: scheme.onSurfaceVariant,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
                     ),
-                    const SizedBox(width: 12),
-                    Text(
-                      context.tr('5 mahal'),
-                      style: TextStyle(
-                        color: context.appColor(
-                          Color(0xFF718079),
-                          surface: false,
-                        ),
-                        fontSize: 13,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-                const SizedBox(height: 14),
+                const SizedBox(height: 12),
                 ...MealType.values.indexed.map((entry) {
                   final mealFoods = foods
                       .where(
@@ -213,55 +198,24 @@ class _PageHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    final scheme = Theme.of(context).colorScheme;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          width: 52,
-          height: 52,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(colors: context.appPanelColors),
-            borderRadius: BorderRadius.circular(18),
-            boxShadow: Theme.of(context).brightness == Brightness.dark
-                ? const []
-                : const [
-                    BoxShadow(
-                      color: Color(0x3513B957),
-                      blurRadius: 18,
-                      offset: Offset(0, 8),
-                    ),
-                  ],
-          ),
-          child: Icon(
-            Icons.restaurant_menu_rounded,
-            color: context.appColor(Colors.white, surface: false),
-            size: 27,
+        Text(
+          context.tr('Ovqatlanish'),
+          style: TextStyle(
+            color: scheme.onSurface,
+            fontSize: 24,
+            height: 1.15,
+            fontWeight: FontWeight.w600,
+            letterSpacing: -.6,
           ),
         ),
-        const SizedBox(width: 14),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                context.tr('Ovqatlanish'),
-                style: TextStyle(
-                  color: context.appColor(Color(0xFF10223C), surface: false),
-                  fontSize: 27,
-                  height: 1.05,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              const SizedBox(height: 5),
-              Text(
-                context.tr('Sog‘lom kuningiz shu yerdan boshlanadi'),
-                style: TextStyle(
-                  color: context.appColor(Color(0xFF718079), surface: false),
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
+        const SizedBox(height: 4),
+        Text(
+          context.tr('Sog‘lom kuningiz shu yerdan boshlanadi'),
+          style: TextStyle(color: scheme.onSurfaceVariant, fontSize: 13.5),
         ),
       ],
     );
@@ -281,6 +235,7 @@ class _WeeklyCalorieProgress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final monday = today.subtract(Duration(days: today.weekday - 1));
@@ -288,52 +243,29 @@ class _WeeklyCalorieProgress extends StatelessWidget {
     final todayCalories = weekCalories[today] ?? 0;
     final safeTarget = dailyTarget <= 0 ? 1.0 : dailyTarget;
 
-    return Container(
-      padding: const EdgeInsets.fromLTRB(18, 18, 18, 16),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: context.appPanelColors,
-        ),
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: Theme.of(context).brightness == Brightness.dark
-            ? const []
-            : const [
-                BoxShadow(
-                  color: Color(0x30114335),
-                  blurRadius: 28,
-                  offset: Offset(0, 13),
-                ),
-              ],
-      ),
+    return AppCard(
+      padding: const EdgeInsets.fromLTRB(20, 18, 20, 18),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      context.tr('HAFTALIK MAQSAD'),
-                      style: TextStyle(
-                        color: context.appColor(Colors.white60, surface: false),
-                        fontSize: 10,
-                        letterSpacing: 1.3,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
+                    AppOverline(context.tr('HAFTALIK MAQSAD')),
+                    const SizedBox(height: 6),
                     Text(
                       context.tr('Bugun {calories} kcal', {
                         'calories': todayCalories.round(),
                       }),
                       style: TextStyle(
-                        color: context.appColor(Colors.white, surface: false),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
+                        color: scheme.onSurface,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: -.3,
                       ),
                     ),
                   ],
@@ -341,32 +273,28 @@ class _WeeklyCalorieProgress extends StatelessWidget {
               ),
               Container(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 11,
-                  vertical: 7,
+                  horizontal: 10,
+                  vertical: 5,
                 ),
                 decoration: BoxDecoration(
-                  color: context
-                      .appColor(Colors.white, surface: true)
-                      .withValues(alpha: .12),
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(
-                    color: context.appColor(Colors.white12, surface: true),
-                  ),
+                  color: scheme.surfaceContainerLow,
+                  borderRadius: BorderRadius.circular(AppRadius.xs),
+                  border: Border.all(color: scheme.outlineVariant),
                 ),
                 child: Text(
                   '${todayCalories.round()} / ${dailyTarget.round()}',
                   style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
+                    color: scheme.onSurface,
+                    fontSize: 12.5,
+                    fontWeight: FontWeight.w600,
+                    fontFeatures: const [FontFeature.tabularFigures()],
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 19),
+          const SizedBox(height: 18),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(7, (index) {
               final day = days[index];
               final calories = weekCalories[day] ?? 0;
@@ -377,12 +305,12 @@ class _WeeklyCalorieProgress extends StatelessWidget {
                   label: MaterialLocalizations.of(context).formatFullDate(day),
                   child: InkWell(
                     key: ValueKey('week-day-$index'),
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(AppRadius.sm),
                     onTap: onDateSelected == null || day.isAfter(today)
                         ? null
                         : () => onDateSelected!(day),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
                       child: _DayProgress(
                         label: _localizedWeekday(context, index),
                         date: day.day,
@@ -411,6 +339,7 @@ class _WeeklyCalorieProgress extends StatelessWidget {
   }
 }
 
+/// One weekday column: label, date and a vertical fill bar.
 class _DayProgress extends StatelessWidget {
   const _DayProgress({
     required this.label,
@@ -428,63 +357,72 @@ class _DayProgress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final barColor = isComplete ? AppPalette.success : scheme.primary;
     return Column(
       children: [
-        SizedBox.square(
-          dimension: 36,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              SizedBox.square(
-                dimension: 36,
-                child: CircularProgressIndicator(
-                  value: progress,
-                  strokeWidth: isToday ? 4 : 3,
-                  strokeCap: StrokeCap.round,
-                  backgroundColor: Theme.of(context).colorScheme.outlineVariant,
-                  valueColor: AlwaysStoppedAnimation(
-                    Theme.of(context).colorScheme.primary,
+        Text(
+          label,
+          maxLines: 1,
+          style: TextStyle(
+            color: isToday ? scheme.onSurface : scheme.onSurfaceVariant,
+            fontSize: 11.5,
+            fontWeight: isToday ? FontWeight.w600 : FontWeight.w500,
+          ),
+        ),
+        const SizedBox(height: 8),
+        SizedBox(
+          width: 22,
+          height: 44,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: scheme.surfaceContainerHigh,
+              borderRadius: BorderRadius.circular(AppRadius.xs),
+            ),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: TweenAnimationBuilder<double>(
+                tween: Tween(begin: 0, end: progress),
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeOutCubic,
+                builder: (_, value, _) => FractionallySizedBox(
+                  heightFactor: value,
+                  widthFactor: 1,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: barColor,
+                      borderRadius: BorderRadius.circular(AppRadius.xs),
+                    ),
                   ),
                 ),
               ),
-              if (isComplete)
-                Container(
-                  width: 30,
-                  height: 30,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.check_rounded,
-                    color: Color(0xFF0B3B2D),
-                    size: 20,
-                  ),
-                )
-              else
-                Text(
-                  '$date',
-                  style: TextStyle(
-                    color: isToday
-                        ? Theme.of(context).colorScheme.primary
-                        : context.appColor(Colors.white70, surface: false),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-            ],
+            ),
           ),
         ),
-        const SizedBox(height: 6),
-        Text(
-          label,
-          style: TextStyle(
-            color: isToday
-                ? Theme.of(context).colorScheme.primary
-                : context.appColor(Colors.white60, surface: false),
-            fontSize: 11,
-            fontWeight: isToday ? FontWeight.w600 : FontWeight.w600,
+        const SizedBox(height: 8),
+        Container(
+          width: 26,
+          height: 22,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: isToday ? scheme.onSurface : Colors.transparent,
+            borderRadius: BorderRadius.circular(AppRadius.xs),
           ),
+          child: isComplete
+              ? Icon(
+                  LucideIcons.check,
+                  size: 13,
+                  color: isToday ? scheme.surface : AppPalette.success,
+                )
+              : Text(
+                  '$date',
+                  style: TextStyle(
+                    color: isToday ? scheme.surface : scheme.onSurfaceVariant,
+                    fontSize: 11.5,
+                    fontWeight: FontWeight.w600,
+                    fontFeatures: const [FontFeature.tabularFigures()],
+                  ),
+                ),
         ),
       ],
     );
@@ -511,53 +449,32 @@ class _DailyNutritionSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainerLowest,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: context.appColor(Color(0xFFC8DED1), surface: true),
+    final scheme = Theme.of(context).colorScheme;
+    final items = [
+      (context.tr('Kaloriya'), '${calories.round()}', scheme.onSurface),
+      (context.tr('Oqsil'), _grams(protein), AppPalette.protein),
+      (context.tr('Uglevod'), _grams(carbohydrates), AppPalette.carbs),
+      (context.tr('Yog‘'), _grams(fat), AppPalette.fat),
+      (context.tr('Kletchatka'), _grams(fiber), AppPalette.fiber),
+    ];
+    return AppCard(
+      padding: EdgeInsets.zero,
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            for (var i = 0; i < items.length; i++) ...[
+              if (i > 0)
+                VerticalDivider(width: 1, color: scheme.outlineVariant),
+              _NutritionValue(
+                label: items[i].$1,
+                value: items[i].$2,
+                color: items[i].$3,
+                emphasized: i == 0,
+              ),
+            ],
+          ],
         ),
-        boxShadow: Theme.of(context).brightness == Brightness.dark
-            ? const []
-            : const [
-                BoxShadow(
-                  color: Color(0x1A0C603F),
-                  blurRadius: 20,
-                  offset: Offset(0, 8),
-                ),
-              ],
-      ),
-      child: Row(
-        children: [
-          _NutritionValue(
-            label: context.tr('Kaloriya'),
-            value: '${calories.round()}',
-            color: context.appColor(Color(0xFF10A96A), surface: true),
-            emphasized: true,
-          ),
-          _NutritionValue(
-            label: context.tr('Oqsil'),
-            value: _grams(protein),
-            color: context.appColor(Color(0xFF5368D9), surface: true),
-          ),
-          _NutritionValue(
-            label: context.tr('Uglevod'),
-            value: _grams(carbohydrates),
-            color: context.appColor(Color(0xFFF0A128), surface: true),
-          ),
-          _NutritionValue(
-            label: context.tr('Yog‘'),
-            value: _grams(fat),
-            color: context.appColor(Color(0xFFE06475), surface: true),
-          ),
-          _NutritionValue(
-            label: context.tr('Kletchatka'),
-            value: _grams(fiber),
-            color: context.appColor(Color(0xFF10A96A), surface: true),
-          ),
-        ],
       ),
     );
   }
@@ -578,56 +495,54 @@ class _NutritionValue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     return Expanded(
-      child: Container(
-        height: 67 + MediaQuery.textScalerOf(context).scale(28) - 28,
-        margin: const EdgeInsets.symmetric(horizontal: 2),
-        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 9),
-        decoration: BoxDecoration(
-          gradient: emphasized
-              ? LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: context.appPanelColors,
-                )
-              : null,
-          color: emphasized
-              ? null
-              : Theme.of(context).colorScheme.surfaceContainerLow,
-          borderRadius: BorderRadius.circular(15),
-          border: emphasized
-              ? null
-              : Border.all(color: color.withValues(alpha: .16)),
-        ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 14),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                label,
-                maxLines: 1,
-                style: TextStyle(
-                  color: emphasized
-                      ? context.appColor(Colors.white70, surface: false)
-                      : context.appColor(Color(0xFF7A8392), surface: false),
-                  fontSize: 10,
-                  fontWeight: FontWeight.w700,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (!emphasized) ...[
+                  Container(
+                    width: 6,
+                    height: 6,
+                    decoration: BoxDecoration(
+                      color: color,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                ],
+                Flexible(
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      label,
+                      maxLines: 1,
+                      style: TextStyle(
+                        color: scheme.onSurfaceVariant,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-            const SizedBox(height: 5),
+            const SizedBox(height: 6),
             FittedBox(
               fit: BoxFit.scaleDown,
               child: Text(
                 value,
                 maxLines: 1,
                 style: TextStyle(
-                  color: emphasized
-                      ? context.appColor(Colors.white, surface: false)
-                      : Theme.of(context).colorScheme.onSurface,
-                  fontSize: emphasized ? 17 : 13,
-                  fontWeight: FontWeight.w700,
+                  color: scheme.onSurface,
+                  fontSize: emphasized ? 17 : 14,
+                  fontWeight: FontWeight.w600,
+                  fontFeatures: const [FontFeature.tabularFigures()],
                 ),
               ),
             ),
@@ -677,9 +592,8 @@ class _ExpandableMealTimelineItemState
     final expanded = _expanded && hasFoods;
     final colors = Theme.of(context).colorScheme;
     final dark = Theme.of(context).brightness == Brightness.dark;
-    final accent = meal.accent(context);
-    final border = dark ? colors.outlineVariant : const Color(0xFFE4E9EE);
-    final radius = BorderRadius.circular(20);
+    final border = colors.outlineVariant;
+    final radius = BorderRadius.circular(AppRadius.lg);
     final languageCode = Localizations.localeOf(context).languageCode;
     return Padding(
       padding: EdgeInsets.only(bottom: widget.isLast ? 0 : 12),
@@ -689,15 +603,7 @@ class _ExpandableMealTimelineItemState
           color: colors.surfaceContainerLowest,
           borderRadius: radius,
           border: Border.all(color: border),
-          boxShadow: dark
-              ? const []
-              : const [
-                  BoxShadow(
-                    color: Color(0x0A0F1B2D),
-                    blurRadius: 18,
-                    offset: Offset(0, 6),
-                  ),
-                ],
+          boxShadow: dark ? null : AppShadows.card,
         ),
         child: Material(
           color: Colors.transparent,
@@ -755,27 +661,33 @@ class _ExpandableMealTimelineItemState
                             turns: expanded ? .5 : 0,
                             duration: const Duration(milliseconds: 200),
                             child: Icon(
-                              Icons.keyboard_arrow_down_rounded,
+                              LucideIcons.chevronDown,
                               color: colors.onSurfaceVariant,
                             ),
                           ),
                         ),
                       const SizedBox(width: 4),
-                      Semantics(
-                        button: true,
-                        label: context.tr('Ovqat qo‘shish'),
-                        child: Material(
-                          color: accent,
-                          shape: const CircleBorder(),
-                          child: InkWell(
-                            customBorder: const CircleBorder(),
-                            onTap: widget.onAdd,
-                            child: SizedBox.square(
-                              dimension: 38,
-                              child: Icon(
-                                Icons.add_rounded,
-                                color: dark ? colors.surface : Colors.white,
-                                size: 22,
+                      Tooltip(
+                        message: context.tr('Ovqat qo‘shish'),
+                        child: Semantics(
+                          button: true,
+                          label: context.tr('Ovqat qo‘shish'),
+                          child: Material(
+                            color: colors.surfaceContainerLowest,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(AppRadius.sm),
+                              side: BorderSide(color: colors.outline),
+                            ),
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(AppRadius.sm),
+                              onTap: widget.onAdd,
+                              child: SizedBox.square(
+                                dimension: 34,
+                                child: Icon(
+                                  LucideIcons.plus,
+                                  color: colors.onSurface,
+                                  size: 18,
+                                ),
                               ),
                             ),
                           ),
@@ -825,45 +737,20 @@ class _ExpandableMealTimelineItemState
   }
 }
 
-/// `meal_photography.png` beshta vertikal suratdan iborat; har bir mahal o'z
-/// suratining markaziy kvadrat qismini ko'rsatadi.
+/// Neutral icon representing each meal of the day.
 class _MealPhoto extends StatelessWidget {
   const _MealPhoto({required this.meal});
 
   final MealType meal;
-  static const _size = 56.0;
 
   @override
-  Widget build(BuildContext context) {
-    final index = switch (meal) {
-      MealType.breakfast => 0,
-      MealType.lunch => 1,
-      MealType.dinner => 2,
-      MealType.fifthSnack => 3,
-      MealType.snack => 4,
-    };
-    return ExcludeSemantics(
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
-        child: SizedBox.square(
-          dimension: _size,
-          child: OverflowBox(
-            minWidth: _size * 5,
-            maxWidth: _size * 5,
-            minHeight: _size * 5 * 724 / 2172,
-            maxHeight: _size * 5 * 724 / 2172,
-            alignment: Alignment(-1 + index * .5, .1),
-            child: Image.asset(
-              'assets/images/meal_photography.png',
-              fit: BoxFit.cover,
-              cacheWidth: 900,
-              filterQuality: FilterQuality.medium,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => ExcludeSemantics(
+    child: AppIconTile(
+      icon: meal.icon,
+      size: 44,
+      color: Theme.of(context).colorScheme.onSurface,
+    ),
+  );
 }
 
 class _MealFoodRow extends StatelessWidget {
@@ -885,7 +772,7 @@ class _MealFoodRow extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(14, 10, onRemove == null ? 16 : 4, 10),
       child: Row(
         children: [
-          FoodThumbnail(asset: foodThumbnailAsset(food), size: 40),
+          FoodThumbnail(icon: foodCategoryIcon(food), size: 40),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -927,11 +814,7 @@ class _MealFoodRow extends StatelessWidget {
               onPressed: onRemove,
               visualDensity: VisualDensity.compact,
               tooltip: MaterialLocalizations.of(context).deleteButtonTooltip,
-              icon: Icon(
-                Icons.delete_outline_rounded,
-                color: colors.error,
-                size: 21,
-              ),
+              icon: Icon(LucideIcons.trash2, color: colors.error, size: 21),
             ),
         ],
       ),

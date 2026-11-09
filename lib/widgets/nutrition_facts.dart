@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../models/food_nutrition.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Displays the already-scaled portion. Never rounds before scaling.
 class NutritionFacts extends StatelessWidget {
@@ -97,7 +98,7 @@ class NutritionFacts extends StatelessWidget {
         margin: const EdgeInsets.all(4),
         decoration: BoxDecoration(
           color: dark ? colors.surfaceContainerLow : const Color(0xFFF1F5F8),
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
           children: [
@@ -127,14 +128,9 @@ class NutritionFacts extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
           decoration: BoxDecoration(
             color: dark ? colors.surfaceContainerLow : const Color(0xFFEDF2F6),
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(12),
           ),
-          child: row(
-            'Porsiya',
-            portion,
-            bold: true,
-            icon: Icons.scale_outlined,
-          ),
+          child: row('Porsiya', portion, bold: true, icon: LucideIcons.scale),
         ),
         const SizedBox(height: 8),
         Row(

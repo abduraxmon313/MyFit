@@ -8,10 +8,13 @@ import '../l10n/app_localizations.dart';
 import '../models/food_nutrition.dart';
 import '../services/food_data_service.dart';
 import '../services/search_history_store.dart';
+import '../theme/app_theme.dart';
+import '../widgets/app_ui.dart';
 import '../widgets/food_thumbnail.dart';
 import '../widgets/search_history_panel.dart';
 import 'meals_page.dart';
 import 'custom_food_page.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 bool showsDetailedCompositionInPicker(FoodNutrition food) {
   final type = food.productType?.toUpperCase() ?? '';
@@ -35,7 +38,6 @@ class NationalFoodPickerPage extends StatefulWidget {
 }
 
 class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
-  static const _border = Color(0xFFE4E9EE);
   final _search = TextEditingController();
   late final FoodDataService _foodDataService;
   Timer? _debounce;
@@ -231,7 +233,7 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
         title: displayName,
         subtitle: subtitle,
         actionLabel: 'Saqlash',
-        actionIcon: Icons.bookmark_add_outlined,
+        actionIcon: LucideIcons.bookmarkPlus,
       ),
     );
     if (grams == null || !mounted) return;
@@ -369,7 +371,7 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
                         final food = _basket[index];
                         return ListTile(
                           leading: FoodThumbnail(
-                            asset: foodThumbnailAsset(food),
+                            icon: foodCategoryIcon(food),
                             size: 40,
                           ),
                           title: Text(
@@ -384,10 +386,7 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
                             tooltip: MaterialLocalizations.of(
                               context,
                             ).deleteButtonTooltip,
-                            icon: Icon(
-                              Icons.delete_outline_rounded,
-                              color: colors.error,
-                            ),
+                            icon: Icon(LucideIcons.trash2, color: colors.error),
                             onPressed: () {
                               _removeFromBasket(index);
                               if (_basket.isEmpty) {
@@ -416,9 +415,7 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
     return Container(
       decoration: BoxDecoration(
         color: colors.surfaceContainerLowest,
-        border: Border(
-          top: BorderSide(color: dark ? colors.outlineVariant : _border),
-        ),
+        border: Border(top: BorderSide(color: colors.outlineVariant)),
         boxShadow: dark
             ? null
             : const [
@@ -439,7 +436,7 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
                 child: InkWell(
                   key: const Key('basket-open'),
                   onTap: _showBasket,
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(12),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 6,
@@ -456,10 +453,10 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
                             height: 42,
                             decoration: BoxDecoration(
                               color: colors.primaryContainer,
-                              borderRadius: BorderRadius.circular(13),
+                              borderRadius: BorderRadius.circular(12),
                             ),
                             child: Icon(
-                              Icons.shopping_basket_outlined,
+                              LucideIcons.shoppingBasket,
                               color: colors.primary,
                               size: 22,
                             ),
@@ -509,7 +506,7 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
                   minimumSize: const Size(0, 48),
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                 ),
-                icon: const Icon(Icons.check_rounded, size: 20),
+                icon: const Icon(LucideIcons.check, size: 20),
                 label: Text(context.tr('Qo‘shish')),
               ),
             ],
@@ -526,12 +523,7 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
     final globalFoods = _globalFoods;
     final totalResults = dishes.length + globalFoods.length;
     final colors = Theme.of(context).colorScheme;
-    final dark = Theme.of(context).brightness == Brightness.dark;
     final showResults = _query.trim().isNotEmpty;
-    final fieldBorder = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(16),
-      borderSide: BorderSide(color: dark ? colors.outlineVariant : _border),
-    );
     return PopScope(
       canPop: _basket.isEmpty || _finishing,
       onPopInvokedWithResult: (didPop, _) {
@@ -559,7 +551,7 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
                   backgroundColor: colors.primaryContainer,
                   foregroundColor: colors.primary,
                 ),
-                icon: const Icon(Icons.add_rounded),
+                icon: const Icon(LucideIcons.plus),
                 onPressed: () async {
                   final food = await Navigator.push<FoodNutrition>(
                     context,
@@ -584,14 +576,7 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
                 style: TextStyle(color: colors.onSurface, fontSize: 16),
                 decoration: InputDecoration(
                   hintText: context.tr('Taom yoki mahsulotni qidiring'),
-                  hintStyle: TextStyle(
-                    color: colors.onSurfaceVariant.withValues(alpha: .8),
-                    fontSize: 15.5,
-                  ),
-                  prefixIcon: Icon(
-                    Icons.search_rounded,
-                    color: colors.onSurfaceVariant,
-                  ),
+                  prefixIcon: const Icon(LucideIcons.search, size: 18),
                   suffixIcon: _query.isEmpty
                       ? null
                       : IconButton(
@@ -602,30 +587,8 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
                             _search.clear();
                             _onSearchChanged('');
                           },
-                          icon: Container(
-                            width: 22,
-                            height: 22,
-                            decoration: BoxDecoration(
-                              color: colors.onSurfaceVariant.withValues(
-                                alpha: .18,
-                              ),
-                              shape: BoxShape.circle,
-                            ),
-                            child: Icon(
-                              Icons.close_rounded,
-                              size: 14,
-                              color: colors.onSurface,
-                            ),
-                          ),
+                          icon: const Icon(LucideIcons.x, size: 18),
                         ),
-                  filled: true,
-                  fillColor: colors.surfaceContainerLowest,
-                  contentPadding: const EdgeInsets.symmetric(vertical: 16),
-                  border: fieldBorder,
-                  enabledBorder: fieldBorder,
-                  focusedBorder: fieldBorder.copyWith(
-                    borderSide: BorderSide(color: colors.primary, width: 1.6),
-                  ),
                 ),
               ),
             ),
@@ -641,8 +604,8 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           color: colors.onSurface,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
                           letterSpacing: -.2,
                         ),
                       ),
@@ -654,15 +617,15 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
                         vertical: 3,
                       ),
                       decoration: BoxDecoration(
-                        color: colors.primaryContainer,
-                        borderRadius: BorderRadius.circular(20),
+                        color: colors.surfaceContainerHigh,
+                        borderRadius: BorderRadius.circular(AppRadius.xs),
                       ),
                       child: Text(
                         '$totalResults',
                         style: TextStyle(
-                          color: colors.primary,
-                          fontSize: 12.5,
-                          fontWeight: FontWeight.w700,
+                          color: colors.onSurfaceVariant,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
@@ -716,7 +679,7 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
                             subtitle: dish.region == 'Umumiy'
                                 ? '100 ${context.tr(dish.nutrition.basisUnit)}'
                                 : '${dish.localizedRegion(languageCode)} · 100 ${context.tr(dish.nutrition.basisUnit)}',
-                            asset: foodThumbnailAsset(
+                            icon: foodCategoryIcon(
                               dish.nutrition,
                               region: dish.region,
                             ),
@@ -732,8 +695,7 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
                             title: food.displayNameFor(languageCode),
                             subtitle:
                                 '${context.tr('Internet bazasi')} · 100 ${context.tr(food.basisUnit)}',
-                            asset: foodThumbnailAsset(food),
-                            fallbackIcon: Icons.public_rounded,
+                            icon: foodCategoryIcon(food),
                             selected: _basketCounts[_foodKey(food)] ?? 0,
                             onTap: () => _chooseGlobal(food),
                           ),
@@ -753,7 +715,7 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
                             padding: const EdgeInsets.only(top: 4),
                             child: OutlinedButton.icon(
                               onPressed: _loadMore,
-                              icon: const Icon(Icons.expand_more_rounded),
+                              icon: const Icon(LucideIcons.chevronDown),
                               label: Text(context.tr('Yana ko‘rsatish')),
                             ),
                           ),
@@ -781,9 +743,8 @@ class _FoodResultCard extends StatelessWidget {
     required this.food,
     required this.title,
     required this.subtitle,
-    required this.asset,
+    required this.icon,
     required this.onTap,
-    this.fallbackIcon = Icons.restaurant_rounded,
     this.selected = 0,
   });
 
@@ -793,19 +754,12 @@ class _FoodResultCard extends StatelessWidget {
   final FoodNutrition food;
   final String title;
   final String subtitle;
-  final String? asset;
-  final IconData fallbackIcon;
+  final IconData icon;
   final VoidCallback onTap;
-
-  static const _protein = Color(0xFF4F5FD8);
-  static const _carbs = Color(0xFFE08A1E);
-  static const _fat = Color(0xFFE5536B);
 
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    final dark = Theme.of(context).brightness == Brightness.dark;
-    final radius = BorderRadius.circular(18);
     String g(double value) => '${value.toStringAsFixed(1)} ${context.tr('g')}';
     Widget stat(String value, String label, Color color) => Expanded(
       child: Column(
@@ -819,19 +773,22 @@ class _FoodResultCard extends StatelessWidget {
             style: TextStyle(
               color: colors.onSurface,
               fontSize: 13.5,
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w600,
               fontFeatures: const [FontFeature.tabularFigures()],
             ),
           ),
-          const SizedBox(height: 2),
+          const SizedBox(height: 3),
           Row(
             children: [
               Container(
                 width: 6,
                 height: 6,
-                decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+                decoration: BoxDecoration(
+                  color: color,
+                  borderRadius: BorderRadius.circular(2),
+                ),
               ),
-              const SizedBox(width: 4),
+              const SizedBox(width: 5),
               Flexible(
                 child: Text(
                   context.tr(label),
@@ -839,7 +796,7 @@ class _FoodResultCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: colors.onSurfaceVariant,
-                    fontSize: 10.5,
+                    fontSize: 11,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -849,104 +806,92 @@ class _FoodResultCard extends StatelessWidget {
         ],
       ),
     );
-    return Material(
-      color: colors.surfaceContainerLowest,
-      borderRadius: radius,
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onTap,
-        child: Ink(
-          decoration: BoxDecoration(
-            borderRadius: radius,
-            border: Border.all(
-              color: dark ? colors.outlineVariant : const Color(0xFFE4E9EE),
+    final isSelected = selected > 0;
+    return AppCard(
+      onTap: onTap,
+      padding: const EdgeInsets.fromLTRB(14, 14, 12, 14),
+      child: Row(
+        children: [
+          FoodThumbnail(icon: icon),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: colors.onSurface,
+                    fontSize: 15,
+                    height: 1.25,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: -.15,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  subtitle,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: colors.onSurfaceVariant,
+                    fontSize: 12.5,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                if (food.missingNutrients.isNotEmpty)
+                  Text(
+                    context.tr(
+                      'Asosiy oziq qiymatlari to‘liq emas. Boshqa yozuvni tanlang.',
+                    ),
+                    style: TextStyle(
+                      color: colors.onSurfaceVariant,
+                      fontSize: 12,
+                    ),
+                  )
+                else
+                  Row(
+                    children: [
+                      stat(
+                        '${food.calories.round()}',
+                        'kcal',
+                        colors.onSurface,
+                      ),
+                      stat(g(food.protein), 'Oqsil', AppPalette.protein),
+                      stat(g(food.carbohydrates), 'Uglevod', AppPalette.carbs),
+                      stat(g(food.fat), 'Yog‘', AppPalette.fat),
+                    ],
+                  ),
+              ],
             ),
           ),
-          padding: const EdgeInsets.all(12),
-          child: Row(
-            children: [
-              FoodThumbnail(asset: asset, fallbackIcon: fallbackIcon),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: colors.onSurface,
-                        fontSize: 15,
-                        height: 1.2,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: -.1,
-                      ),
-                    ),
-                    const SizedBox(height: 3),
-                    Text(
-                      subtitle,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: colors.onSurfaceVariant,
-                        fontSize: 12,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    if (food.missingNutrients.isNotEmpty)
-                      Text(
-                        context.tr(
-                          'Asosiy oziq qiymatlari to‘liq emas. Boshqa yozuvni tanlang.',
-                        ),
-                        style: TextStyle(
-                          color: colors.onSurfaceVariant,
-                          fontSize: 12,
-                        ),
-                      )
-                    else
-                      Row(
-                        children: [
-                          stat(
-                            '${food.calories.round()}',
-                            'kcal',
-                            colors.primary,
-                          ),
-                          stat(g(food.protein), 'Oqsil', _protein),
-                          stat(g(food.carbohydrates), 'Uglevod', _carbs),
-                          stat(g(food.fat), 'Yog‘', _fat),
-                        ],
-                      ),
-                  ],
+          const SizedBox(width: 10),
+          Badge(
+            isLabelVisible: selected > 1,
+            label: Text('$selected'),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 160),
+              width: 34,
+              height: 34,
+              decoration: BoxDecoration(
+                color: isSelected
+                    ? colors.primary
+                    : colors.surfaceContainerLowest,
+                borderRadius: BorderRadius.circular(AppRadius.sm),
+                border: Border.all(
+                  color: isSelected ? colors.primary : colors.outline,
                 ),
               ),
-              const SizedBox(width: 8),
-              Badge(
-                isLabelVisible: selected > 1,
-                label: Text('$selected'),
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 180),
-                  width: 34,
-                  height: 34,
-                  decoration: BoxDecoration(
-                    color: selected > 0
-                        ? colors.primaryContainer
-                        : colors.primary,
-                    shape: BoxShape.circle,
-                    border: selected > 0
-                        ? Border.all(color: colors.primary, width: 1.5)
-                        : null,
-                  ),
-                  child: Icon(
-                    selected > 0 ? Icons.check_rounded : Icons.add_rounded,
-                    color: selected > 0 ? colors.primary : colors.onPrimary,
-                    size: 21,
-                  ),
-                ),
+              child: Icon(
+                isSelected ? LucideIcons.check : LucideIcons.plus,
+                color: isSelected ? colors.onPrimary : colors.onSurface,
+                size: 18,
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -960,43 +905,32 @@ class _SearchEmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 34),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              width: 76,
-              height: 76,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primaryContainer,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.manage_search_rounded,
-                color: Theme.of(context).colorScheme.primary,
-                size: 38,
-              ),
-            ),
-            const SizedBox(height: 18),
+            const AppIconTile(icon: LucideIcons.searchX, size: 52),
+            const SizedBox(height: 16),
             Text(
               title,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurface,
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
+                color: colors.onSurface,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
               ),
             ),
-            const SizedBox(height: 7),
+            const SizedBox(height: 6),
             Text(
               subtitle,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-                fontSize: 13,
-                height: 1.4,
+                color: colors.onSurfaceVariant,
+                fontSize: 13.5,
+                height: 1.45,
               ),
             ),
           ],

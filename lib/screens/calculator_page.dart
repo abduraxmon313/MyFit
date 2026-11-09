@@ -5,6 +5,7 @@ import '../l10n/app_localizations.dart';
 import 'body_fat_calculator_page.dart';
 import 'calorie_calculator_page.dart';
 import 'water_calculator_page.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class CalculatorPage extends StatelessWidget {
   const CalculatorPage({super.key});
@@ -12,7 +13,7 @@ class CalculatorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: context.appColor(Color(0xFFFAFCFA), surface: true),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text(
@@ -32,8 +33,8 @@ class CalculatorPage extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           _CalculatorCard(
-            icon: Icons.local_fire_department_rounded,
-            color: Color(0xFFFF6B35),
+            icon: LucideIcons.flame,
+            color: Color(0xFF2F5BEA),
             title: context.tr('Kunlik kaloriya va BMR'),
             description: context.tr(
               'Vazn saqlash, tashlash yoki olish uchun kaloriya miqdori.',
@@ -46,8 +47,8 @@ class CalculatorPage extends StatelessWidget {
             ),
           ),
           _CalculatorCard(
-            icon: Icons.accessibility_new_rounded,
-            color: Color(0xFF9B51E0),
+            icon: LucideIcons.personStanding,
+            color: Color(0xFF2F5BEA),
             title: context.tr('Tana yog‘i foizi'),
             description: context.tr(
               'Bo‘yin, qorin/bel va son o‘lchovlari orqali yog‘ foizini hisoblash.',
@@ -60,8 +61,8 @@ class CalculatorPage extends StatelessWidget {
             ),
           ),
           _CalculatorCard(
-            icon: Icons.water_drop_rounded,
-            color: Color(0xFF1597E5),
+            icon: LucideIcons.droplet,
+            color: Color(0xFF2F5BEA),
             title: context.tr('Kunlik suv ehtiyoji'),
             description: context.tr(
               'Vazn, mashq davomiyligi va ob-havoga qarab suv miqdori.',
@@ -111,7 +112,7 @@ class _CalculatorCard extends StatelessWidget {
                 height: 56,
                 decoration: BoxDecoration(
                   color: color.withValues(alpha: .12),
-                  borderRadius: BorderRadius.circular(17),
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(icon, color: color, size: 30),
               ),
@@ -141,7 +142,7 @@ class _CalculatorCard extends StatelessWidget {
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right_rounded),
+              const Icon(LucideIcons.chevronRight),
             ],
           ),
         ),

@@ -4,6 +4,7 @@ import '../models/food_nutrition.dart';
 import '../services/food_log_service.dart';
 import '../widgets/nutrition_facts.dart';
 import 'meals_page.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class FoodHistoryPage extends StatefulWidget {
   const FoodHistoryPage({
@@ -92,7 +93,7 @@ class _FoodHistoryPageState extends State<FoodHistoryPage> {
           IconButton(
             tooltip: context.tr('Kalendar'),
             onPressed: _calendar,
-            icon: const Icon(Icons.calendar_month_rounded),
+            icon: const Icon(LucideIcons.calendarDays),
           ),
         ],
       ),
@@ -108,7 +109,7 @@ class _FoodHistoryPageState extends State<FoodHistoryPage> {
                       ? () =>
                             _load(DateTime(_day.year, _day.month, _day.day - 1))
                       : null,
-                  icon: const Icon(Icons.chevron_left),
+                  icon: const Icon(LucideIcons.chevronLeft),
                 ),
                 Expanded(
                   child: TextButton(
@@ -125,7 +126,7 @@ class _FoodHistoryPageState extends State<FoodHistoryPage> {
                       ? () =>
                             _load(DateTime(_day.year, _day.month, _day.day + 1))
                       : null,
-                  icon: const Icon(Icons.chevron_right),
+                  icon: const Icon(LucideIcons.chevronRight),
                 ),
                 TextButton(
                   onPressed: () => _load(_today),
@@ -151,12 +152,12 @@ class _FoodHistoryPageState extends State<FoodHistoryPage> {
                     child: InkWell(
                       key: ValueKey('history-day-$index'),
                       onTap: date.isAfter(_today) ? null : () => _load(date),
-                      borderRadius: BorderRadius.circular(18),
+                      borderRadius: BorderRadius.circular(12),
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         decoration: BoxDecoration(
                           color: selected ? colors.primaryContainer : null,
-                          borderRadius: BorderRadius.circular(18),
+                          borderRadius: BorderRadius.circular(12),
                         ),
                         child: Column(
                           children: [
@@ -272,7 +273,7 @@ class _FoodHistoryPageState extends State<FoodHistoryPage> {
                                 subtitle: Text(
                                   '${food.grams.toStringAsFixed(1)} ${context.tr(food.basisUnit)} · ${food.calories.round()} ${context.tr('kcal')}',
                                 ),
-                                trailing: const Icon(Icons.chevron_right),
+                                trailing: const Icon(LucideIcons.chevronRight),
                                 onTap: () => showModalBottomSheet<void>(
                                   context: context,
                                   isScrollControlled: true,
