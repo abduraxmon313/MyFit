@@ -1197,7 +1197,21 @@ void main() {
     await tester.enterText(find.byType(TextField).last, '150');
     await tester.tap(find.text('Saqlash'));
     await tester.pumpAndSettle();
-    expect(find.text('1 ta mahsulot'), findsOneWidget);
+    // Savat boshqaruvi pastda emas, tepadagi AppBar ichida.
+    expect(
+      find.descendant(
+        of: find.byType(AppBar),
+        matching: find.byKey(const Key('basket-add')),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('basket-open')),
+        matching: find.text('1'),
+      ),
+      findsOneWidget,
+    );
     await tester.tap(find.byKey(const Key('basket-add')));
     await tester.pumpAndSettle();
 
@@ -1253,7 +1267,13 @@ void main() {
         await tester.pumpAndSettle();
         expect(tester.takeException(), isNull);
       }
-      expect(find.text('3 ta mahsulot'), findsOneWidget);
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('basket-open')),
+          matching: find.text('3'),
+        ),
+        findsOneWidget,
+      );
       await tester.tap(find.byKey(const Key('basket-add')));
       await tester.pumpAndSettle();
 

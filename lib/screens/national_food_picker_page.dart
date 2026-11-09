@@ -413,110 +413,86 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
     );
   }
 
-  Widget _basketBar(BuildContext context) {
+  /// Compact basket controls shown in the app bar (FatSecret-style):
+  /// a count chip that opens the saved list and an "Add" button.
+  Widget _basketActions(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    final dark = Theme.of(context).brightness == Brightness.dark;
-    return Container(
-      decoration: BoxDecoration(
-        color: colors.surfaceContainerLowest,
-        border: Border(top: BorderSide(color: colors.outlineVariant)),
-        boxShadow: dark
-            ? null
-            : const [
-                BoxShadow(
-                  color: Color(0x140F1B2D),
-                  blurRadius: 20,
-                  offset: Offset(0, -6),
-                ),
-              ],
-      ),
-      child: SafeArea(
-        top: false,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(12, 10, 16, 10),
-          child: Row(
-            children: [
-              Expanded(
-                child: InkWell(
-                  key: const Key('basket-open'),
-                  onTap: _showBasket,
-                  borderRadius: BorderRadius.circular(12),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 6,
-                      vertical: 4,
-                    ),
-                    child: Row(
-                      children: [
-                        Badge.count(
-                          count: _basket.length,
-                          backgroundColor: colors.primary,
-                          textColor: colors.onPrimary,
-                          child: Container(
-                            width: 42,
-                            height: 42,
-                            decoration: BoxDecoration(
-                              color: colors.primaryContainer,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Icon(
-                              LucideIcons.shoppingBasket,
-                              color: colors.primary,
-                              size: 22,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                context.tr('{count} ta mahsulot', {
-                                  'count': _basket.length,
-                                }),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  color: colors.onSurface,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              const SizedBox(height: 2),
-                              Text(
-                                '${_basketCalories.round()} ${context.tr('kcal')}',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  color: colors.onSurfaceVariant,
-                                  fontSize: 12.5,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+    return Row(
+      key: const ValueKey('basket-actions'),
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Tooltip(
+          message: context.tr('Saqlanganlar'),
+          child: InkWell(
+            key: const Key('basket-open'),
+            onTap: _showBasket,
+            borderRadius: BorderRadius.circular(AppRadius.sm),
+            child: Container(
+              height: 36,
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                color: colors.surfaceContainerLowest,
+                borderRadius: BorderRadius.circular(AppRadius.sm),
+                border: Border.all(color: colors.outlineVariant),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    LucideIcons.shoppingBasket,
+                    size: 16,
+                    color: colors.onSurfaceVariant,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    '${_basket.length}',
+                    style: TextStyle(
+                      color: colors.onSurface,
+                      fontSize: 13.5,
+                      fontWeight: FontWeight.w600,
+                      fontFeatures: const [FontFeature.tabularFigures()],
                     ),
                   ),
-                ),
+                  // Tor ekranda sarlavhaga joy qolishi uchun kcal yashiriladi.
+                  if (MediaQuery.sizeOf(context).width >= 380) ...[
+                    const SizedBox(width: 6),
+                    Text(
+                      '${_basketCalories.round()} ${context.tr('kcal')}',
+                      style: TextStyle(
+                        color: colors.onSurfaceVariant,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ],
               ),
-              const SizedBox(width: 10),
-              FilledButton.icon(
-                key: const Key('basket-add'),
-                onPressed: _finish,
-                style: FilledButton.styleFrom(
-                  minimumSize: const Size(0, 48),
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                ),
-                icon: const Icon(LucideIcons.check, size: 20),
-                label: Text(context.tr('Qo‘shish')),
-              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: 6),
+        FilledButton(
+          key: const Key('basket-add'),
+          onPressed: _finish,
+          style: FilledButton.styleFrom(
+            minimumSize: const Size(0, 36),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            textStyle: const TextStyle(
+              fontFamily: AppTheme.fontFamily,
+              fontSize: 13.5,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(LucideIcons.check, size: 16),
+              const SizedBox(width: 4),
+              Text(context.tr('Qo‘shish')),
             ],
           ),
         ),
-      ),
+      ],
     );
   }
 
@@ -534,7 +510,6 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
         if (!didPop) _confirmLeave();
       },
       child: Scaffold(
-        bottomNavigationBar: _basket.isEmpty ? null : _basketBar(context),
         appBar: AppBar(
           titleSpacing: 4,
           title: Text(
@@ -547,15 +522,25 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
             ),
           ),
           actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 12),
-              child: IconButton.filledTonal(
-                tooltip: context.tr('Yorliqdan mahsulot qo‘shish'),
-                style: IconButton.styleFrom(
-                  backgroundColor: colors.primaryContainer,
-                  foregroundColor: colors.primary,
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 180),
+              transitionBuilder: (child, animation) => FadeTransition(
+                opacity: animation,
+                child: SizeTransition(
+                  sizeFactor: animation,
+                  axis: Axis.horizontal,
+                  child: child,
                 ),
-                icon: const Icon(LucideIcons.plus),
+              ),
+              child: _basket.isEmpty
+                  ? const SizedBox.shrink(key: ValueKey('basket-empty'))
+                  : Center(child: _basketActions(context)),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 4, right: 8),
+              child: IconButton(
+                tooltip: context.tr('Yorliqdan mahsulot qo‘shish'),
+                icon: const Icon(LucideIcons.plus, size: 20),
                 onPressed: () async {
                   final food = await Navigator.push<FoodNutrition>(
                     context,
