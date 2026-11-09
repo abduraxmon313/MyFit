@@ -1,0 +1,36 @@
+workflows:
+  # main'ga har push bo'lganda va har bir PR uchun sinov APK yig'iladi.
+  # Debug APK imzo kalitisiz ishlaydi; Android telefonga to'g'ridan-to'g'ri o'rnatiladi.
+  android-test-apk:
+    name: Android sinov APK
+    instance_type: mac_mini_m2
+    max_build_duration: 40
+    environment:
+      flutter: stable
+    triggering:
+      events:
+        - push
+        - pull_request
+      branch_patterns:
+        - pattern: main
+          include: true
+          source: true
+      cancel_previous_builds: true
+    scripts:
+      - name: Paketlarni yuklash
+        script: flutter pub get
+      - name: Kod tahlili
+        script: flutter analyze
+      - name: Testlar
+        script: flutter test
+      - name: APK yig'ish
+        script: flutter build apk --debug --build-number=$BUILD_NUMBER
+    artifacts:
+      - build/app/outputs/flutter-apk/*.apk
+    publishing:
+      email:
+        recipients:
+          - a.xakimjonov@student.pdp.university
+        notify:
+          success: true
+          failure: true
