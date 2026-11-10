@@ -12,5 +12,26 @@ service cloud.firestore {
           && request.auth.uid == userId;
       }
     }
+
+    // Video admins are added in the Firebase Console only. A user may read
+    // just their own entry (to show the upload button); clients never write.
+    match /admins/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow write: if false;
+    }
+
+    // Lesson videos: any signed-in user can watch. Only the
+    // finalizeVideoUpload Cloud Function (Admin SDK) creates lessons.
+    match /courses/{courseId}/lessons/{lessonId} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+
+    // Lesson counts on the "Darslar" tab use a collection-group query.
+    match /{path=**}/lessons/{lessonId} {
+      allow read: if request.auth != null;
+    }
+
+    // video_uploads/* (upload sessions) has no rule: clients have no access.
   }
 }

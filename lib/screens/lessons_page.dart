@@ -4,8 +4,11 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../data/trainer_course.dart';
 import '../l10n/app_localizations.dart';
 import '../models/trainer_course.dart';
+import '../services/lesson_video_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_ui.dart';
+import '../widgets/lesson_video_player.dart';
+import 'video_upload_page.dart';
 
 /// Icon and muted accent per category id.
 const _categoryStyles = <String, (IconData, Color)>{
@@ -29,13 +32,36 @@ const _categoryStyles = <String, (IconData, Color)>{
     (LucideIcons.graduationCap, AppPalette.accentSlate);
 
 /// "Darslar" tab: lesson categories; each opens its ordered video list.
-class LessonsPage extends StatelessWidget {
-  const LessonsPage({super.key, this.categories = kLessonCategories});
+class LessonsPage extends StatefulWidget {
+  const LessonsPage({
+    super.key,
+    this.categories = kLessonCategories,
+    this.repository,
+  });
 
   final List<TrainerCourse> categories;
 
+  /// Lesson source; defaults to Firestore when Firebase is initialised.
+  final LessonRepository? repository;
+
   @override
-  Widget build(BuildContext context) {
+  State<LessonsPage> createState() => _LessonsPageState();
+}
+
+class _LessonsPageState extends State<LessonsPage> {
+  late final LessonRepository _repository =
+      widget.repository ?? defaultLessonRepository();
+  late final Stream<Map<String, int>> _counts = _repository.watchLessonCounts();
+
+  @override
+  Widget build(BuildContext context) => StreamBuilder<Map<String, int>>(
+    stream: _counts,
+    builder: (context, snapshot) =>
+        _buildList(context, snapshot.data ?? const {}),
+  );
+
+  Widget _buildList(BuildContext context, Map<String, int> counts) {
+    final categories = widget.categories;
     final scheme = Theme.of(context).colorScheme;
     return ColoredBox(
       color: Theme.of(context).scaffoldBackgroundColor,
@@ -90,11 +116,16 @@ class LessonsPage extends StatelessWidget {
                             ),
                           _CategoryRow(
                             course: categories[i],
+                            count:
+                                categories[i].lessons.length +
+                                (counts[categories[i].id] ?? 0),
                             onTap: () => Navigator.push(
                               context,
                               MaterialPageRoute<void>(
-                                builder: (_) =>
-                                    LessonCategoryPage(course: categories[i]),
+                                builder: (_) => LessonCategoryPage(
+                                  course: categories[i],
+                                  repository: _repository,
+                                ),
                               ),
                             ),
                           ),
@@ -113,16 +144,20 @@ class LessonsPage extends StatelessWidget {
 }
 
 class _CategoryRow extends StatelessWidget {
-  const _CategoryRow({required this.course, required this.onTap});
+  const _CategoryRow({
+    required this.course,
+    required this.count,
+    required this.onTap,
+  });
 
   final TrainerCourse course;
+  final int count;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final (icon, accent) = _styleFor(course);
-    final count = course.lessons.length;
     return InkWell(
       key: Key('category-${course.id}'),
       onTap: onTap,
@@ -173,13 +208,78 @@ class _CategoryRow extends StatelessWidget {
 }
 
 /// One category: its videos in order; any of them can be opened.
-class LessonCategoryPage extends StatelessWidget {
-  const LessonCategoryPage({super.key, required this.course});
+/// Admins (`admins/{uid}`) also get an upload button.
+class LessonCategoryPage extends StatefulWidget {
+  const LessonCategoryPage({
+    super.key,
+    required this.course,
+    this.repository,
+    this.uploader,
+  });
 
   final TrainerCourse course;
+  final LessonRepository? repository;
+  final LessonVideoUploader? uploader;
 
   @override
-  Widget build(BuildContext context) {
+  State<LessonCategoryPage> createState() => _LessonCategoryPageState();
+}
+
+class _LessonCategoryPageState extends State<LessonCategoryPage> {
+  late final LessonRepository _repository =
+      widget.repository ?? defaultLessonRepository();
+  late final Stream<List<CourseLesson>> _lessons = _repository.watchLessons(
+    widget.course.id,
+  );
+  bool _isAdmin = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _repository.isAdmin().then((value) {
+      if (mounted && value) setState(() => _isAdmin = true);
+    });
+  }
+
+  Future<void> _openUpload() async {
+    final uploaded = await Navigator.push<bool>(
+      context,
+      MaterialPageRoute(
+        builder: (_) =>
+            VideoUploadPage(category: widget.course, uploader: widget.uploader),
+      ),
+    );
+    if (uploaded == true && mounted) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(context.tr('Video yuklandi'))));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => StreamBuilder<List<CourseLesson>>(
+    stream: _lessons,
+    builder: (context, snapshot) {
+      // Built-in lessons (none today) plus uploaded ones from Firestore.
+      final course = widget.course.withLessons([
+        ...widget.course.lessons,
+        ...?snapshot.data,
+      ]);
+      return _buildPage(
+        context,
+        course,
+        loading: !snapshot.hasData && !snapshot.hasError,
+        failed: snapshot.hasError,
+      );
+    },
+  );
+
+  Widget _buildPage(
+    BuildContext context,
+    TrainerCourse course, {
+    required bool loading,
+    required bool failed,
+  }) {
     final scheme = Theme.of(context).colorScheme;
     final (icon, accent) = _styleFor(course);
     final lessons = course.orderedLessons;
@@ -192,6 +292,16 @@ class LessonCategoryPage extends StatelessWidget {
           onPressed: () => Navigator.maybePop(context),
         ),
         title: Text(context.tr('Darslar')),
+        actions: [
+          if (_isAdmin)
+            IconButton(
+              key: const Key('category-upload'),
+              tooltip: context.tr('Video yuklash'),
+              icon: const Icon(LucideIcons.cloudUpload),
+              onPressed: _openUpload,
+            ),
+          const SizedBox(width: 4),
+        ],
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 4, 20, 32),
@@ -252,7 +362,20 @@ class LessonCategoryPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  if (lessons.isEmpty)
+                  if (lessons.isEmpty && loading)
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 32),
+                      child: Center(
+                        child: SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: CircularProgressIndicator(strokeWidth: 2.5),
+                        ),
+                      ),
+                    )
+                  else if (lessons.isEmpty && failed)
+                    const _LessonsError()
+                  else if (lessons.isEmpty)
                     const _EmptyVideos()
                   else
                     AppCard(
@@ -285,6 +408,24 @@ class LessonCategoryPage extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _LessonsError extends StatelessWidget {
+  const _LessonsError();
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return AppCard(
+      key: const Key('category-error'),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+      child: Text(
+        context.tr('Darslarni yuklab bo‘lmadi. Internetni tekshiring.'),
+        textAlign: TextAlign.center,
+        style: TextStyle(color: scheme.onSurfaceVariant, fontSize: 13.5),
       ),
     );
   }
@@ -417,10 +558,18 @@ class _LessonRow extends StatelessWidget {
 /// Lesson detail with a video area (playback is added with the backend).
 /// [index] points into [TrainerCourse.orderedLessons].
 class LessonPage extends StatelessWidget {
-  const LessonPage({super.key, required this.course, required this.index});
+  const LessonPage({
+    super.key,
+    required this.course,
+    required this.index,
+    this.playerBuilder,
+  });
 
   final TrainerCourse course;
   final int index;
+
+  /// Overrides the video player (tests).
+  final Widget Function(CourseLesson lesson)? playerBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -430,7 +579,11 @@ class LessonPage extends StatelessWidget {
     void go(int target) => Navigator.pushReplacement(
       context,
       MaterialPageRoute<void>(
-        builder: (_) => LessonPage(course: course, index: target),
+        builder: (_) => LessonPage(
+          course: course,
+          index: target,
+          playerBuilder: playerBuilder,
+        ),
       ),
     );
     return Scaffold(
@@ -438,39 +591,41 @@ class LessonPage extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 4, 20, 32),
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(AppRadius.lg),
-            child: AspectRatio(
-              aspectRatio: 16 / 9,
-              child: ColoredBox(
-                color: AppPalette.navy,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      lesson.hasVideo
-                          ? LucideIcons.circlePlay
-                          : LucideIcons.clapperboard,
-                      size: 40,
-                      color: Colors.white.withValues(alpha: .85),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      context.tr(
-                        lesson.hasVideo
-                            ? 'Video tez orada ijro etiladi'
-                            : 'Video hali yuklanmagan',
+          if (lesson.hasVideo)
+            KeyedSubtree(
+              key: ValueKey('player-${lesson.id}'),
+              child:
+                  playerBuilder?.call(lesson) ??
+                  LessonVideoPlayer(url: lesson.videoUrl!),
+            )
+          else
+            ClipRRect(
+              borderRadius: BorderRadius.circular(AppRadius.lg),
+              child: AspectRatio(
+                aspectRatio: 16 / 9,
+                child: ColoredBox(
+                  color: AppPalette.navy,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        LucideIcons.clapperboard,
+                        size: 40,
+                        color: Colors.white.withValues(alpha: .85),
                       ),
-                      style: TextStyle(
-                        color: Colors.white.withValues(alpha: .75),
-                        fontSize: 13.5,
+                      const SizedBox(height: 10),
+                      Text(
+                        context.tr('Video hali yuklanmagan'),
+                        style: TextStyle(
+                          color: Colors.white.withValues(alpha: .75),
+                          fontSize: 13.5,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
           const SizedBox(height: 20),
           Text(
             context.tr(lesson.title),
