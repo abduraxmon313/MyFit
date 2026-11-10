@@ -26,6 +26,9 @@ String lessonVideoErrorText(
   'object-missing' ||
   'size-mismatch' => 'Video to‘liq yuklanmadi. Qayta urinib ko‘ring.',
   'storage-unavailable' => 'Video ombori vaqtincha ishlamayapti.',
+  'database-unavailable' || 'auth-unavailable' =>
+    'Server vaqtincha ishlamayapti. Keyinroq urinib ko‘ring.',
+  'not-configured' => 'Video xizmati hali sozlanmagan.',
   'invalid-title' => 'Dars nomini kiriting (2–120 belgi).',
   _ => 'Videoni yuklab bo‘lmadi. Qayta urinib ko‘ring.',
 });

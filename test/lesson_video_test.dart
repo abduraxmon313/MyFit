@@ -83,6 +83,8 @@ Mp4ReadAt _reader(Uint8List bytes) =>
 
 // ------------------------------------------------------------------ fakes
 
+class _RealHttp extends HttpOverrides {}
+
 class FakeLessonRepository implements LessonRepository {
   FakeLessonRepository({this.admin = false, this.lessons = const {}});
 
@@ -284,8 +286,204 @@ void main() {
     });
   });
 
+  group('Worker API client', () {
+    const api = 'https://myfit-video.example.workers.dev';
+
+    test('sends the ID token as Bearer JSON and returns the body', () async {
+      late http.Request seen;
+      final client = MockClient((request) async {
+        seen = request;
+        return http.Response('{"uploadId":"u1"}', 200);
+      });
+      final uploader = LessonVideoUploader(
+        apiBase: '$api/',
+        idToken: ({bool forceRefresh = false}) async => 'id-token',
+      );
+      final result = await uploader.callApi(client, '/createVideoUpload', {
+        'a': 1,
+      });
+      expect(result, {'uploadId': 'u1'});
+      expect(seen.method, 'POST');
+      expect(seen.url.toString(), '$api/createVideoUpload');
+      expect(seen.headers['Authorization'], 'Bearer id-token');
+      expect(jsonDecode(seen.body), {'a': 1});
+    });
+
+    test('refreshes an expired token once', () async {
+      final tokens = <bool>[];
+      var calls = 0;
+      final client = MockClient((request) async {
+        calls++;
+        return calls == 1
+            ? http.Response(
+                '{"error":{"reason":"token-expired","message":"x"}}',
+                401,
+              )
+            : http.Response('{"ok":true}', 200);
+      });
+      final uploader = LessonVideoUploader(
+        apiBase: api,
+        idToken: ({bool forceRefresh = false}) async {
+          tokens.add(forceRefresh);
+          return forceRefresh ? 'fresh' : 'stale';
+        },
+      );
+      expect(await uploader.callApi(client, '/x', {}), {'ok': true});
+      expect(tokens, [false, true]);
+    });
+
+    test('maps Worker errors, outages and missing config', () async {
+      Future<String> reason(
+        http.Response response, {
+        String base = api,
+        String? token = 't',
+      }) async {
+        try {
+          await LessonVideoUploader(
+            apiBase: base,
+            idToken: ({bool forceRefresh = false}) async => token,
+          ).callApi(MockClient((_) async => response), '/x', {});
+          return 'ok';
+        } on LessonVideoException catch (error) {
+          return error.reason;
+        }
+      }
+
+      final ok = http.Response('{}', 200);
+      expect(
+        await reason(
+          http.Response('{"error":{"reason":"not-admin","message":"m"}}', 403),
+        ),
+        'not-admin',
+      );
+      expect(
+        await reason(
+          http.Response('{"error":{"reason":"not-h264","message":"m"}}', 400),
+        ),
+        'not-h264',
+      );
+      expect(
+        await reason(
+          http.Response(
+            '{"error":{"reason":"invalid-token","message":"m"}}',
+            401,
+          ),
+        ),
+        'sign-in-required',
+      );
+      expect(await reason(http.Response('<html>', 502)), 'network');
+      expect(await reason(ok, base: ''), 'not-configured');
+      expect(
+        await reason(ok, base: 'http://insecure.example'),
+        'not-configured',
+      );
+      expect(await reason(ok, token: null), 'sign-in-required');
+    });
+
+    test(
+      'full upload: create → direct PUT → finalize, token never sent to R2',
+      () async {
+        final bytes = mp4Bytes();
+        final log = <String>[];
+        final client = MockClient.streaming((request, body) async {
+          final data = await body.toBytes();
+          log.add('${request.method} ${request.url.host}${request.url.path}');
+          if (request.url.host == 'r2.example') {
+            expect(request.headers.containsKey('Authorization'), isFalse);
+            expect(request.headers['Content-Type'], 'video/mp4');
+            expect(request.contentLength, bytes.length);
+            expect(data, bytes);
+            return http.StreamedResponse(const Stream.empty(), 200);
+          }
+          expect(request.headers['Authorization'], 'Bearer tok');
+          final json = jsonDecode(utf8.decode(data)) as Map;
+          final reply = request.url.path == '/createVideoUpload'
+              ? {
+                  'uploadId': 'up1',
+                  'uploadUrl':
+                      'https://r2.example/myfit-videos/k.mp4?X-Amz-Signature=s',
+                  'headers': {'Content-Type': 'video/mp4'},
+                  'sizeEcho': json['sizeBytes'],
+                }
+              : {'lessonId': 'l9', 'videoUrl': 'https://pub.r2.dev/k.mp4'};
+          if (request.url.path == '/createVideoUpload') {
+            expect(json['sizeBytes'], bytes.length);
+            expect(json['categoryId'], 'cardio');
+            expect(json.containsKey('uid'), isFalse);
+          } else {
+            expect(json, {'uploadId': 'up1'});
+          }
+          return http.StreamedResponse(
+            Stream.value(utf8.encode(jsonEncode(reply))),
+            200,
+          );
+        });
+        final phases = <LessonUploadPhase>[];
+        var lastProgress = 0;
+        final result =
+            await LessonVideoUploader(
+              client: client,
+              apiBase: api,
+              idToken: ({bool forceRefresh = false}) async => 'tok',
+            ).upload(
+              categoryId: 'cardio',
+              title: ' Isinish ',
+              file: XFile.fromData(bytes, name: 'a.mp4', path: '/x/a.mp4'),
+              onPhase: phases.add,
+              onProgress: (sent, total) => lastProgress = sent,
+            );
+        expect(result.lessonId, 'l9');
+        expect(log, [
+          'POST myfit-video.example.workers.dev/createVideoUpload',
+          'PUT r2.example/myfit-videos/k.mp4',
+          'POST myfit-video.example.workers.dev/finalizeVideoUpload',
+        ]);
+        expect(phases, LessonUploadPhase.values);
+        expect(lastProgress, bytes.length);
+      },
+    );
+
+    test('dart:io client sends the exact Content-Length, not chunked', () {
+      // flutter_test blocks real HTTP; this zone restores dart:io's client,
+      // which is what package:http uses on Android and iOS.
+      return HttpOverrides.runWithHttpOverrides(() async {
+        final server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
+        final seen = Completer<HttpHeaders>();
+        var received = 0;
+        server.listen((request) async {
+          await request.forEach((chunk) => received += chunk.length);
+          seen.complete(request.headers);
+          request.response.statusCode = 200;
+          await request.response.close();
+        });
+        const size = 3 * 1024 * 1024 + 7;
+        final client = http.Client();
+        try {
+          await putLessonVideo(
+            client: client,
+            url: Uri.parse('http://127.0.0.1:${server.port}/k.mp4'),
+            headers: const {'Content-Type': 'video/mp4'},
+            body: Stream.fromIterable([
+              for (var i = 0; i < size; i += 65536)
+                Uint8List(i + 65536 > size ? size - i : 65536),
+            ]),
+            length: size,
+          );
+          final headers = await seen.future;
+          expect(headers.value('content-length'), '$size');
+          expect(headers.value('transfer-encoding'), isNull);
+          expect(headers.contentType?.mimeType, 'video/mp4');
+          expect(received, size);
+        } finally {
+          client.close();
+          await server.close(force: true);
+        }
+      }, _RealHttp());
+    });
+  });
+
   test('backend category ids match the app categories', () {
-    final source = File('functions/r2_video.js').readAsStringSync();
+    final source = File('workers/video/src/uploads.ts').readAsStringSync();
     final block = RegExp(
       r'LESSON_CATEGORY_IDS = Object\.freeze\(\[([\s\S]*?)\]\)',
     ).firstMatch(source)!.group(1)!;

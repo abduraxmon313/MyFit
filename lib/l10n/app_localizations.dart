@@ -461,6 +461,9 @@ class AppLocalizations {
       'Saqlangan {count} ta mahsulot menyuga qo‘shilmaydi. Chiqasizmi?':
           'Сохранённые продукты ({count}) не будут добавлены в меню. Выйти?',
       'Qolish': 'Остаться',
+      'Server vaqtincha ishlamayapti. Keyinroq urinib ko‘ring.':
+          'Сервер временно недоступен. Попробуйте позже.',
+      'Video xizmati hali sozlanmagan.': 'Видеосервис ещё не настроен.',
       'Dars nomi': 'Название урока',
       'Dars nomini kiriting (2–120 belgi).':
           'Введите название урока (2–120 символов).',
@@ -1063,6 +1066,10 @@ class AppLocalizations {
       'Saqlangan {count} ta mahsulot menyuga qo‘shilmaydi. Chiqasizmi?':
           '{count} saved items will not be added to the meal. Leave?',
       'Qolish': 'Stay',
+      'Server vaqtincha ishlamayapti. Keyinroq urinib ko‘ring.':
+          'The server is temporarily unavailable. Please try again later.',
+      'Video xizmati hali sozlanmagan.':
+          'The video service is not configured yet.',
       'Dars nomi': 'Lesson title',
       'Dars nomini kiriting (2–120 belgi).':
           'Enter a lesson title (2–120 characters).',

@@ -1,12 +1,9 @@
 const {onCall, HttpsError} = require("firebase-functions/v2/https");
-const {defineSecret, defineString} = require("firebase-functions/params");
+const {defineSecret} = require("firebase-functions/params");
 // `firebase-functions/v2` also loads the Realtime Database provider, which
 // needs the optional `@firebase/app` peer and crashes on load.
 const {setGlobalOptions} = require("firebase-functions/v2/options");
-const {initializeApp, getApps} = require("firebase-admin/app");
-const {getFirestore} = require("firebase-admin/firestore");
 const {asList, number, normalizeFood} = require("./fatsecret_helpers");
-const r2Video = require("./r2_video");
 
 const fatSecretClientId = defineSecret("FATSECRET_CLIENT_ID");
 const fatSecretClientSecret = defineSecret("FATSECRET_CLIENT_SECRET");
@@ -123,75 +120,4 @@ exports.fatSecretBarcode = onCall(
       throw new HttpsError("unavailable", "Barcode lookup unavailable");
     }
   },
-);
-
-// ---------------------------------------------------------------------------
-// Lesson videos on Cloudflare R2 (see docs/R2_VIDEO.md).
-// Credentials live only in Firebase Functions Secrets.
-// ---------------------------------------------------------------------------
-
-const r2AccessKeyId = defineSecret("R2_ACCESS_KEY_ID");
-const r2SecretAccessKey = defineSecret("R2_SECRET_ACCESS_KEY");
-const r2Endpoint = defineString("R2_ENDPOINT", {
-  default: "https://7d6c72f2d7ccf971e52c251086f2bfa1.r2.cloudflarestorage.com",
-});
-const r2Bucket = defineString("R2_BUCKET", {default: "myfit-videos"});
-// Switch to a custom domain later without code changes.
-const r2PublicBaseUrl = defineString("R2_PUBLIC_BASE_URL", {
-  default: "https://pub-32dc4a48be774882aaf3dd1d07697a5b.r2.dev",
-});
-
-let r2Client = null;
-let r2ClientKey = null;
-
-function r2() {
-  const config = {
-    endpoint: r2Endpoint.value(),
-    accessKeyId: r2AccessKeyId.value(),
-    secretAccessKey: r2SecretAccessKey.value(),
-  };
-  const key = `${config.endpoint}|${config.accessKeyId}`;
-  if (!r2Client || r2ClientKey !== key) {
-    r2Client = r2Video.createR2Client(config);
-    r2ClientKey = key;
-  }
-  return r2Client;
-}
-
-function firestore() {
-  if (getApps().length === 0) initializeApp();
-  return getFirestore();
-}
-
-async function videoCall(label, run) {
-  try {
-    return await run();
-  } catch (error) {
-    if (error instanceof HttpsError) throw error;
-    console.error(`${label} failed`, error?.name, error?.message);
-    throw new HttpsError("internal", "Video upload failed", {reason: "internal"});
-  }
-}
-
-exports.createVideoUploadUrl = onCall(
-  {secrets: [r2AccessKeyId, r2SecretAccessKey], timeoutSeconds: 30, memory: "256MiB"},
-  (request) => videoCall("createVideoUploadUrl", () => r2Video.createUploadSession({
-    db: firestore(),
-    s3: r2(),
-    bucket: r2Bucket.value(),
-    auth: request.auth,
-    data: request.data,
-  })),
-);
-
-exports.finalizeVideoUpload = onCall(
-  {secrets: [r2AccessKeyId, r2SecretAccessKey], timeoutSeconds: 120, memory: "512MiB"},
-  (request) => videoCall("finalizeVideoUpload", () => r2Video.finalizeUpload({
-    db: firestore(),
-    s3: r2(),
-    bucket: r2Bucket.value(),
-    publicBaseUrl: r2PublicBaseUrl.value(),
-    auth: request.auth,
-    data: request.data,
-  })),
 );
