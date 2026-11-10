@@ -28,7 +28,9 @@ void main() {
       'light',
     );
     final profile = UserProfile.fromMap({});
-    expect(UserProfile.fromMap(profile.toMap()).themeMode, 'dark');
+    // Yangi foydalanuvchi uchun standart ko'rinish — yorug'.
+    expect(UserProfile.fromMap(profile.toMap()).themeMode, 'light');
+    expect(UserProfile.fromMap({'themeMode': 'dark'}).themeMode, 'dark');
   });
   testWidgets('both appearances fit narrow screens and enlarged text', (
     tester,
@@ -54,12 +56,7 @@ void main() {
         onSave: (_) async {},
         onSignOut: () async {},
       ),
-      WorkoutsPage(
-        weightKg: 75,
-        logs: const [],
-        onAdded: (_) {},
-        onRemoved: (_) {},
-      ),
+      const WorkoutsPage(),
       const CalculatorPage(),
       const CalorieCalculatorPage(),
       const BodyFatCalculatorPage(),

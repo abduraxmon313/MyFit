@@ -10,7 +10,7 @@ class UserProfile {
     required this.goal,
     this.photoUrl,
     this.languageCode = 'uz',
-    this.themeMode = 'dark',
+    this.themeMode = 'light',
   });
 
   final String firstName;
@@ -53,7 +53,7 @@ class UserProfile {
       activityLevel: map['activityLevel'] as String? ?? '',
       goal: map['goal'] as String? ?? '',
       photoUrl: map['photoUrl'] as String?,
-      themeMode: map['themeMode'] == 'light' ? 'light' : 'dark',
+      themeMode: map['themeMode'] == 'dark' ? 'dark' : 'light',
       languageCode: switch (map['languageCode']) {
         'ru' => 'ru',
         'en' => 'en',

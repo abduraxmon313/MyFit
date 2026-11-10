@@ -11,23 +11,32 @@ import 'screens/auth_gate.dart';
 import 'services/auth_service.dart';
 import 'services/profile_service.dart';
 import 'services/appearance_store.dart';
+import 'services/locale_store.dart';
+import 'screens/language_picker_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final appearanceStore = AppearanceStore();
   final initialAppearance = await appearanceStore.load();
+  final localeStore = LocaleStore();
+  final initialLocale = await localeStore.load();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   SystemChrome.setSystemUIOverlayStyle(
     AppTheme.systemOverlay(
-      initialAppearance == 'light' ? AppTheme.light : AppTheme.dark,
+      initialAppearance == 'dark' ? AppTheme.dark : AppTheme.light,
     ),
   );
+  final authService = AuthService();
   runApp(
     MyFitApp(
-      authService: AuthService(),
+      authService: authService,
       profileService: ProfileService(),
       initialAppearance: initialAppearance,
       appearanceStore: appearanceStore,
+      initialLocale: initialLocale,
+      localeStore: localeStore,
+      // Til faqat birinchi ochilishda, hali hech kim kirmagan bo'lsa so'raladi.
+      askLanguage: initialLocale == null && authService.currentUser == null,
     ),
   );
 }
@@ -39,12 +48,18 @@ class MyFitApp extends StatefulWidget {
     required this.profileService,
     this.initialAppearance,
     this.appearanceStore,
+    this.initialLocale,
+    this.localeStore,
+    this.askLanguage = false,
   });
 
   final AuthService authService;
   final ProfileService profileService;
   final String? initialAppearance;
   final AppearanceStore? appearanceStore;
+  final String? initialLocale;
+  final LocaleStore? localeStore;
+  final bool askLanguage;
 
   @override
   State<MyFitApp> createState() => _MyFitAppState();
@@ -54,14 +69,19 @@ class _MyFitAppState extends State<MyFitApp> {
   Locale? _locale;
   late ThemeMode _themeMode;
   late bool _hasLocalPreference;
+  late bool _askLanguage;
 
   @override
   void initState() {
     super.initState();
     _hasLocalPreference = widget.initialAppearance != null;
-    _themeMode = widget.initialAppearance == 'light'
-        ? ThemeMode.light
-        : ThemeMode.dark;
+    // Birinchi ochilishda yorug' rejim; foydalanuvchi keyin o'zgartiradi.
+    _themeMode = widget.initialAppearance == 'dark'
+        ? ThemeMode.dark
+        : ThemeMode.light;
+    final initial = widget.initialLocale;
+    if (initial != null) _locale = Locale(initial);
+    _askLanguage = widget.askLanguage;
   }
 
   void _setTheme(String mode) {
@@ -83,8 +103,16 @@ class _MyFitAppState extends State<MyFitApp> {
 
   void _setLocale(String languageCode) {
     final next = Locale(languageCode);
-    if (_locale == next) return;
-    setState(() => _locale = next);
+    if (_locale == next && !_askLanguage) return;
+    unawaited(
+      (widget.localeStore ?? LocaleStore())
+          .save(languageCode)
+          .catchError((Object _) {}),
+    );
+    setState(() {
+      _locale = next;
+      _askLanguage = false;
+    });
   }
 
   @override
@@ -103,13 +131,18 @@ class _MyFitAppState extends State<MyFitApp> {
         value: AppTheme.systemOverlay(Theme.of(context)),
         child: child!,
       ),
-      home: AuthGate(
-        authService: widget.authService,
-        profileService: widget.profileService,
-        onLocaleChanged: _setLocale,
-        onThemeChanged: _setTheme,
-        onProfileThemeChanged: _restoreProfileTheme,
-      ),
+      home: _askLanguage
+          ? LanguagePickerPage(
+              initialCode: _locale?.languageCode,
+              onSelected: _setLocale,
+            )
+          : AuthGate(
+              authService: widget.authService,
+              profileService: widget.profileService,
+              onLocaleChanged: _setLocale,
+              onThemeChanged: _setTheme,
+              onProfileThemeChanged: _restoreProfileTheme,
+            ),
     );
   }
 }

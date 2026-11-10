@@ -1,313 +1,106 @@
-import '../theme/app_theme.dart';
 import 'package:flutter/material.dart';
-
-import '../data/workout_catalog.dart';
-import '../models/workout.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../data/trainer_course.dart';
+import '../l10n/app_localizations.dart';
+import '../models/trainer_course.dart';
+import '../theme/app_theme.dart';
 import '../widgets/app_ui.dart';
 
-class WorkoutsPage extends StatefulWidget {
-  const WorkoutsPage({
-    super.key,
-    required this.weightKg,
-    required this.logs,
-    required this.onAdded,
-    required this.onRemoved,
-  });
+/// "Mashqlar" tab: the selected trainer's video course.
+class WorkoutsPage extends StatelessWidget {
+  const WorkoutsPage({super.key, this.course = kTrainerCourse});
 
-  final double weightKg;
-  final List<WorkoutLog> logs;
-  final ValueChanged<WorkoutLog> onAdded;
-  final ValueChanged<int> onRemoved;
+  final TrainerCourse course;
 
-  @override
-  State<WorkoutsPage> createState() => _WorkoutsPageState();
-}
-
-class _WorkoutsPageState extends State<WorkoutsPage> {
-  WorkoutCategory? _category;
-  String _query = '';
-
-  Color _categoryColor(WorkoutCategory category) => switch (category) {
-    WorkoutCategory.cardio => AppPalette.accentRose,
-    WorkoutCategory.strength => AppPalette.accentBlue,
-    WorkoutCategory.bodyweight => AppPalette.accentTeal,
-    WorkoutCategory.flexibility => AppPalette.accentViolet,
-    WorkoutCategory.sport => AppPalette.accentAmber,
-  };
-
-  String _categoryName(WorkoutCategory category) => switch (category) {
-    WorkoutCategory.cardio => 'Kardio',
-    WorkoutCategory.strength => 'Kuch',
-    WorkoutCategory.bodyweight => 'Tana vazni',
-    WorkoutCategory.flexibility => 'Egiluvchanlik',
-    WorkoutCategory.sport => 'Sport',
-  };
-
-  Future<void> _add(Workout workout) async {
-    var minutes = 30.0;
-    final result = await showModalBottomSheet<int>(
-      context: context,
-      showDragHandle: true,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setSheetState) {
-          final calories = workout.calories(
-            weightKg: widget.weightKg,
-            minutes: minutes.round(),
-          );
-          return SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(22, 4, 22, 24),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    workout.name,
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    '${minutes.round()} daqiqa · ≈ ${calories.round()} kcal',
-                    style: TextStyle(
-                      color: context.appColor(
-                        Color(0xFF61716A),
-                        surface: false,
-                      ),
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Slider(
-                    value: minutes,
-                    min: 5,
-                    max: 180,
-                    divisions: 35,
-                    label: '${minutes.round()} daqiqa',
-                    onChanged: (v) => setSheetState(() => minutes = v),
-                  ),
-                  FilledButton.icon(
-                    onPressed: () => Navigator.pop(context, minutes.round()),
-                    icon: const Icon(LucideIcons.plus),
-                    label: const Text('Mashqni qo‘shish'),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
-    );
-    if (result == null || !mounted) return;
-    widget.onAdded(
-      WorkoutLog(
-        workout: workout,
-        minutes: result,
-        calories: workout.calories(weightKg: widget.weightKg, minutes: result),
+  void _open(BuildContext context, int index) {
+    Navigator.push(
+      context,
+      MaterialPageRoute<void>(
+        builder: (_) => LessonPage(course: course, index: index),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final filtered = kWorkoutCatalog
-        .where(
-          (w) =>
-              (_category == null || w.category == _category) &&
-              w.name.toLowerCase().contains(_query.toLowerCase()),
-        )
-        .toList();
-    final totalMinutes = widget.logs.fold<int>(
-      0,
-      (sum, log) => sum + log.minutes,
-    );
-    final totalCalories = widget.logs.fold<double>(
-      0,
-      (sum, log) => sum + log.calories,
-    );
-    return Container(
+    final scheme = Theme.of(context).colorScheme;
+    final lessons = [...course.lessons]
+      ..sort((a, b) => a.order.compareTo(b.order));
+    return ColoredBox(
       color: Theme.of(context).scaffoldBackgroundColor,
-      child: CustomScrollView(
-        slivers: [
-          SliverPadding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
-            sliver: SliverList.list(
-              children: [
-                Text(
-                  'Mashqlar',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: -.6,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Harakatni kuzating, maqsadingizga yaqinlashing',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    fontSize: 13.5,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  children: [
-                    Expanded(
-                      child: _Summary(
-                        value: '$totalMinutes',
-                        label: 'daqiqa',
-                        icon: LucideIcons.timer,
-                        accent: AppPalette.accentBlue,
-                      ),
+      child: ListView(
+        padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
+        children: [
+          Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 760),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    context.tr('Mashqlar'),
+                    style: TextStyle(
+                      color: scheme.onSurface,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: -.6,
                     ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: _Summary(
-                        value: '${totalCalories.round()}',
-                        label: 'kcal',
-                        icon: LucideIcons.flame,
-                        accent: AppPalette.accentAmber,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    context.tr('Murabbiy bilan video darslar'),
+                    style: TextStyle(
+                      color: scheme.onSurfaceVariant,
+                      fontSize: 13.5,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  _CourseHeader(course: course),
+                  if (course.videoCount < lessons.length) ...[
+                    const SizedBox(height: 12),
+                    _Notice(
+                      text: context.tr(
+                        'Videolar tez orada yuklanadi. Darslar tartibi quyida.',
                       ),
                     ),
                   ],
-                ),
-                const SizedBox(height: 16),
-                TextField(
-                  onChanged: (v) => setState(() => _query = v),
-                  decoration: const InputDecoration(
-                    hintText: 'Mashqni qidiring',
-                    prefixIcon: Icon(LucideIcons.search, size: 18),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                SizedBox(
-                  height: 42,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      ChoiceChip(
-                        label: const Text('Hammasi'),
-                        selected: _category == null,
-                        onSelected: (_) => setState(() => _category = null),
-                      ),
-                      ...WorkoutCategory.values.map(
-                        (c) => Padding(
-                          padding: const EdgeInsets.only(left: 8),
-                          child: ChoiceChip(
-                            label: Text(_categoryName(c)),
-                            selected: _category == c,
-                            onSelected: (_) => setState(() => _category = c),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                if (widget.logs.isNotEmpty) ...[
-                  const SizedBox(height: 18),
-                  const AppSectionHeader(title: 'Bugungi mashqlar'),
-                  const SizedBox(height: 8),
-                  ...widget.logs.asMap().entries.map(
-                    (e) => ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: AppIconTile.tinted(
-                        icon: e.value.workout.icon,
-                        accent: _categoryColor(e.value.workout.category),
-                      ),
-                      title: Text(e.value.workout.name),
-                      subtitle: Text(
-                        '${e.value.minutes} daqiqa · ${e.value.calories.round()} kcal',
-                      ),
-                      trailing: IconButton(
-                        tooltip: MaterialLocalizations.of(
-                          context,
-                        ).deleteButtonTooltip,
-                        icon: Icon(
-                          LucideIcons.trash2,
-                          size: 19,
-                          color: Theme.of(context).colorScheme.error,
-                        ),
-                        onPressed: () => widget.onRemoved(e.key),
+                  const SizedBox(height: 24),
+                  AppSectionHeader(
+                    title: context.tr('Darslar'),
+                    trailing: Text(
+                      '${lessons.length}',
+                      style: TextStyle(
+                        color: scheme.onSurfaceVariant,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
-                ],
-                const SizedBox(height: 16),
-                AppSectionHeader(title: '${filtered.length} ta mashq'),
-                const SizedBox(height: 4),
-              ],
-            ),
-          ),
-          SliverPadding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 28),
-            sliver: SliverGrid.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: MediaQuery.sizeOf(context).width >= 1100
-                    ? 4
-                    : MediaQuery.sizeOf(context).width >= 700
-                    ? 3
-                    : MediaQuery.sizeOf(context).width < 360 &&
-                          MediaQuery.textScalerOf(context).scale(14) > 18
-                    ? 1
-                    : 2,
-                mainAxisExtent:
-                    124 + (MediaQuery.textScalerOf(context).scale(14) - 14) * 6,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-              ),
-              itemCount: filtered.length,
-              itemBuilder: (_, i) {
-                final w = filtered[i];
-                return AppCard(
-                  onTap: () => _add(w),
-                  padding: const EdgeInsets.all(14),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          AppIconTile.tinted(
-                            icon: w.icon,
-                            size: 36,
-                            accent: _categoryColor(w.category),
-                          ),
-                          const Spacer(),
-                          Icon(
-                            LucideIcons.plus,
-                            size: 16,
-                            color: Theme.of(
+                  const SizedBox(height: 10),
+                  AppCard(
+                    padding: EdgeInsets.zero,
+                    child: Column(
+                      children: [
+                        for (var i = 0; i < lessons.length; i++) ...[
+                          if (i > 0)
+                            Divider(
+                              height: 1,
+                              indent: 70,
+                              color: scheme.outlineVariant,
+                            ),
+                          _LessonRow(
+                            lesson: lessons[i],
+                            onTap: () => _open(
                               context,
-                            ).colorScheme.onSurfaceVariant,
+                              course.lessons.indexOf(lessons[i]),
+                            ),
                           ),
                         ],
-                      ),
-                      const Spacer(),
-                      Text(
-                        w.name,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurface,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        _categoryName(w.category),
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                );
-              },
+                ],
+              ),
             ),
           ),
         ],
@@ -316,27 +109,24 @@ class _WorkoutsPageState extends State<WorkoutsPage> {
   }
 }
 
-class _Summary extends StatelessWidget {
-  const _Summary({
-    required this.value,
-    required this.label,
-    required this.icon,
-    required this.accent,
-  });
-  final String value;
-  final String label;
-  final IconData icon;
-  final Color accent;
+class _CourseHeader extends StatelessWidget {
+  const _CourseHeader({required this.course});
+
+  final TrainerCourse course;
+
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    return AppCard(
-      padding: const EdgeInsets.all(16),
+    final minutes = course.lessons.fold<int>(
+      0,
+      (sum, lesson) => sum + (lesson.durationMinutes ?? 0),
+    );
+    Widget stat(IconData icon, String value, String label) => Expanded(
       child: Row(
         children: [
-          AppIconTile.tinted(icon: icon, size: 36, accent: accent),
-          const SizedBox(width: 12),
-          Expanded(
+          Icon(icon, size: 16, color: scheme.onSurfaceVariant),
+          const SizedBox(width: 8),
+          Flexible(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -344,21 +134,311 @@ class _Summary extends StatelessWidget {
                   value,
                   style: TextStyle(
                     color: scheme.onSurface,
-                    fontSize: 20,
+                    fontSize: 15,
                     fontWeight: FontWeight.w600,
-                    letterSpacing: -.4,
-                    fontFeatures: const [FontFeature.tabularFigures()],
                   ),
                 ),
                 Text(
                   label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: scheme.onSurfaceVariant,
-                    fontSize: 12.5,
+                    fontSize: 12,
                   ),
                 ),
               ],
             ),
+          ),
+        ],
+      ),
+    );
+    return AppCard(
+      padding: const EdgeInsets.all(18),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const AppIconTile.tinted(
+                icon: LucideIcons.graduationCap,
+                size: 44,
+                accent: AppPalette.accentViolet,
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      context.tr(course.title),
+                      style: TextStyle(
+                        color: scheme.onSurface,
+                        fontSize: 16.5,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: -.2,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      course.trainerName ?? context.tr('Murabbiy'),
+                      style: TextStyle(
+                        color: scheme.onSurfaceVariant,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            context.tr(course.description),
+            style: TextStyle(
+              color: scheme.onSurfaceVariant,
+              fontSize: 13.5,
+              height: 1.45,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Divider(height: 1, color: scheme.outlineVariant),
+          const SizedBox(height: 14),
+          Row(
+            children: [
+              stat(
+                LucideIcons.listVideo,
+                '${course.lessons.length}',
+                context.tr('dars'),
+              ),
+              stat(
+                LucideIcons.circlePlay,
+                '${course.videoCount}',
+                context.tr('video yuklangan'),
+              ),
+              stat(
+                LucideIcons.timer,
+                minutes > 0 ? '$minutes' : '—',
+                context.tr('daqiqa'),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Notice extends StatelessWidget {
+  const _Notice({required this.text});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      decoration: BoxDecoration(
+        color: scheme.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(AppRadius.md),
+        border: Border.all(color: scheme.outlineVariant),
+      ),
+      child: Row(
+        children: [
+          Icon(LucideIcons.info, size: 16, color: scheme.onSurfaceVariant),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              text,
+              style: TextStyle(color: scheme.onSurfaceVariant, fontSize: 13),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _LessonRow extends StatelessWidget {
+  const _LessonRow({required this.lesson, required this.onTap});
+
+  final CourseLesson lesson;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return InkWell(
+      key: Key('lesson-${lesson.id}'),
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 12, 12, 12),
+        child: Row(
+          children: [
+            AppIconTile.tinted(
+              icon: lesson.hasVideo ? LucideIcons.play : LucideIcons.lock,
+              size: 40,
+              accent: lesson.hasVideo
+                  ? AppPalette.accentBlue
+                  : AppPalette.accentSlate,
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${lesson.order}. ${context.tr(lesson.title)}',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: scheme.onSurface,
+                      fontSize: 14.5,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    context.tr(lesson.description),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: scheme.onSurfaceVariant,
+                      fontSize: 12.5,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 8),
+            if (lesson.hasVideo && lesson.durationMinutes != null)
+              Text(
+                '${lesson.durationMinutes} ${context.tr('daq')}',
+                style: TextStyle(
+                  color: scheme.onSurfaceVariant,
+                  fontSize: 12.5,
+                  fontWeight: FontWeight.w500,
+                ),
+              )
+            else if (!lesson.hasVideo)
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                decoration: BoxDecoration(
+                  color: scheme.surfaceContainerHigh,
+                  borderRadius: BorderRadius.circular(AppRadius.xs),
+                ),
+                child: Text(
+                  context.tr('Tez orada'),
+                  style: TextStyle(
+                    color: scheme.onSurfaceVariant,
+                    fontSize: 11.5,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Lesson detail with a video area (playback is added with the backend).
+class LessonPage extends StatelessWidget {
+  const LessonPage({super.key, required this.course, required this.index});
+
+  final TrainerCourse course;
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final lesson = course.lessons[index];
+    void go(int target) => Navigator.pushReplacement(
+      context,
+      MaterialPageRoute<void>(
+        builder: (_) => LessonPage(course: course, index: target),
+      ),
+    );
+    return Scaffold(
+      appBar: AppBar(title: Text(context.tr('{n}-dars', {'n': lesson.order}))),
+      body: ListView(
+        padding: const EdgeInsets.fromLTRB(20, 4, 20, 32),
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(AppRadius.lg),
+            child: AspectRatio(
+              aspectRatio: 16 / 9,
+              child: ColoredBox(
+                color: AppPalette.navy,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      lesson.hasVideo
+                          ? LucideIcons.circlePlay
+                          : LucideIcons.clapperboard,
+                      size: 40,
+                      color: Colors.white.withValues(alpha: .85),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      context.tr(
+                        lesson.hasVideo
+                            ? 'Video tez orada ijro etiladi'
+                            : 'Video hali yuklanmagan',
+                      ),
+                      style: TextStyle(
+                        color: Colors.white.withValues(alpha: .75),
+                        fontSize: 13.5,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Text(
+            context.tr(lesson.title),
+            style: TextStyle(
+              color: scheme.onSurface,
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              letterSpacing: -.4,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            context.tr(lesson.description),
+            style: TextStyle(
+              color: scheme.onSurfaceVariant,
+              fontSize: 14.5,
+              height: 1.5,
+            ),
+          ),
+          const SizedBox(height: 28),
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: index > 0 ? () => go(index - 1) : null,
+                  icon: const Icon(LucideIcons.chevronLeft, size: 16),
+                  label: Text(context.tr('Oldingi')),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: FilledButton.icon(
+                  onPressed: index < course.lessons.length - 1
+                      ? () => go(index + 1)
+                      : null,
+                  icon: const Icon(LucideIcons.chevronRight, size: 16),
+                  label: Text(context.tr('Keyingi')),
+                ),
+              ),
+            ],
           ),
         ],
       ),
