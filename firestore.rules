@@ -20,8 +20,8 @@ service cloud.firestore {
       allow write: if false;
     }
 
-    // Lesson videos: any signed-in user can watch. Only the
-    // finalizeVideoUpload Cloud Function (Admin SDK) creates lessons.
+    // Lesson videos: any signed-in user can watch. Only the video Worker
+    // (workers/video, service account via REST) creates lessons.
     match /courses/{courseId}/lessons/{lessonId} {
       allow read: if request.auth != null;
       allow write: if false;

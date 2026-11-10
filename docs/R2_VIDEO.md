@@ -1,34 +1,38 @@
-# Dars videolari: Cloudflare R2
+# Dars videolari: Cloudflare Worker + R2
 
 Darslar ("Darslar" tab) videolari Cloudflare R2'da saqlanadi va ochiq URL orqali ko'rsatiladi.
-Firebase Authentication, Firestore va Storage (profil rasmlari) o'zgarmaydi.
+Yuklash API'si Cloudflare Worker'da (`workers/video`). **Firebase Blaze va Cloud Functions kerak emas.**
+Firebase Authentication, Firestore, Storage (profil rasmlari) va FatSecret o'zgarmaydi.
 
-## Qanday ishlaydi
+## Arxitektura
 
 ```
-Admin ilovada video tanlaydi
-  └─ ilova: .mp4, ≤ 2 GB, H.264 tekshiruvi (faylning faqat sarlavha qismlari o'qiladi)
-  └─ createVideoUploadUrl (Cloud Function, admin tekshiruvi)
-       └─ video_uploads/{uploadId} sessiyasi + 15 daqiqalik presigned PUT URL
-  └─ ilova faylni oqim (stream) bilan to'g'ridan-to'g'ri R2'ga PUT qiladi (foiz, bekor qilish)
-  └─ finalizeVideoUpload (Cloud Function)
-       └─ HeadObject: fayl bormi, hajmi va Content-Type mosmi
-       └─ moov qismini o'qib H.264 ekanini tekshiradi
-       └─ faqat shundan keyin courses/{categoryId}/lessons/{lessonId} yoziladi
+Flutter ──(Firebase ID token)──▶ Worker POST /createVideoUpload
+                                   ├─ ID token: Google JWKS (RS256), iss, aud, exp, iat, auth_time, sub
+                                   ├─ Firestore REST: admins/{uid} bormi → video_uploads/{id} (pending)
+                                   └─ presigned PUT (15 daq.; kalit + content-type + content-length imzolangan)
+Flutter ──(PUT, stream)──────────▶ R2 (to'g'ridan-to'g'ri; Worker orqali emas, token yuborilmaydi)
+Flutter ──(Firebase ID token)──▶ Worker POST /finalizeVideoUpload
+                                   ├─ R2 binding head(): hajm va Content-Type
+                                   ├─ R2 binding get(range): MP4 box'lari → H.264 (avc1/avc3)
+                                   └─ Firestore tranzaksiyasi: courses/{cat}/lessons/{id} + sessiya "completed"
+Flutter ──▶ Firestore (darslarni o'qish), Firebase Auth — avvalgidek
 ```
 
-Rad etilgan yuklash (masalan HEVC) uchun faqat o'sha sessiya yaratgan R2 obyekti o'chiriladi.
-Boshqa hech qanday video avtomatik ko'chirilmaydi yoki o'chirilmaydi.
+- UID faqat tekshirilgan tokendagi `sub` dan olinadi; so'rovdagi `uid` e'tiborsiz.
+- Admin har so'rovda `admins/{uid}` orqali tekshiriladi (olib tashlash darhol ta'sir qiladi).
+- Rad etilgan yuklashda (HEVC, QuickTime, hajm mos emas) faqat shu sessiya obyekti o'chiriladi.
+- Hech qanday mavjud video avtomatik ko'chirilmaydi yoki o'chirilmaydi.
 
-## Firestore tuzilmasi
+## Firestore
 
-| Yo'l | Kim o'qiydi | Kim yozadi |
+| Yo'l | Ilova o'qiydi | Kim yozadi |
 |---|---|---|
-| `admins/{uid}` | faqat o'sha foydalanuvchi | faqat Firebase Console |
-| `courses/{categoryId}/lessons/{lessonId}` | tizimga kirgan har kim | faqat `finalizeVideoUpload` |
-| `video_uploads/{uploadId}` | hech kim (ilova) | faqat Cloud Functions |
+| `admins/{uid}` | faqat o'zinikini | faqat Firebase Console |
+| `courses/{categoryId}/lessons/{lessonId}` | tizimga kirgan har kim | faqat Worker |
+| `video_uploads/{uploadId}` | yo'q | faqat Worker |
 
-Dars hujjati:
+Dars hujjati (avvalgi tuzilma bilan bir xil):
 
 ```
 order, title, description, durationMinutes, durationSeconds, videoUrl, thumbnailUrl,
@@ -36,75 +40,74 @@ storageProvider: "r2", objectKey, sizeBytes, contentType: "video/mp4", videoCode
 uploadedBy, uploadId, createdAt
 ```
 
-`categoryId` qiymatlari `lib/data/trainer_course.dart` dagi `kLessonCategories` bilan bir xil
-(`functions/r2_video.js` → `LESSON_CATEGORY_IDS`; test ikkalasini solishtiradi).
+`firestore.rules` mantiqi o'zgarmagan (faqat izoh yangilandi) — qayta deploy shart emas.
+Worker service account bilan ishlaydi va qoidalarni chetlab o'tadi; barcha tekshiruvlar Worker kodida.
 
 ## Bir martalik sozlash
 
-### 1. R2 API token
+### 1. R2 API token (presigned URL imzolash uchun)
 Cloudflare → R2 → **Manage R2 API Tokens** → **Create API token**:
-- Permission: **Object Read & Write**
-- Specify bucket: **myfit-videos**
+- Permission: **Object Read & Write**, Specify bucket: **myfit-videos**, TTL: ixtiyoriy.
 
-Access Key ID va Secret Access Key'ni hech qayerga yozmang (chat, GitHub, ilova kodi).
+### 2. Google service account (Firestore uchun, billing shart emas)
+1. https://console.cloud.google.com/iam-admin/serviceaccounts?project=myfit-d6275
+2. **Create service account** → nomi: `myfit-video-worker`.
+3. Rol: **Cloud Datastore User** (`roles/datastore.user`). Boshqa rol bermang.
+4. Account → **Keys** → **Add key** → **JSON**. Fayl yuklanadi.
 
-### 2. Secret'lar (o'z kompyuteringizda, loyiha papkasida)
+Kalitni hech qayerga yubormang va repository'ga qo'shmang. Yaratish taqiqlangan desa
+(`iam.disableServiceAccountKeyCreation`), Organization Policy'da shu loyiha uchun ruxsat bering.
+
+### 3. Worker deploy (o'z kompyuteringizda)
 
 ```bash
-firebase use myfit-d6275
-firebase functions:secrets:set R2_ACCESS_KEY_ID
-firebase functions:secrets:set R2_SECRET_ACCESS_KEY
+cd workers/video
+npm ci
+npm run check                      # tsc + testlar + dry-run build
+npx wrangler login
+npx wrangler secret put R2_ACCESS_KEY_ID
+npx wrangler secret put R2_SECRET_ACCESS_KEY
+npx wrangler secret put FIREBASE_SERVICE_ACCOUNT < /path/to/service-account.json
+npx wrangler deploy
 ```
 
-### 3. Maxfiy bo'lmagan parametrlar
-Standart qiymatlar kodda bor; deploy paytida CLI so'rasa, Enter bosing:
+Deploydan keyin manzil chiqadi: `https://myfit-video.<subdomain>.workers.dev`.
 
-| Parametr | Standart qiymat |
+`wrangler.jsonc` dagi ochiq sozlamalar (maxfiy emas):
+
+| O'zgaruvchi | Qiymat |
 |---|---|
+| `FIREBASE_PROJECT_ID` | `myfit-d6275` |
 | `R2_ENDPOINT` | `https://7d6c72f2d7ccf971e52c251086f2bfa1.r2.cloudflarestorage.com` |
-| `R2_BUCKET` | `myfit-videos` |
+| `R2_BUCKET` | `myfit-videos` (+ `VIDEOS` binding) |
 | `R2_PUBLIC_BASE_URL` | `https://pub-32dc4a48be774882aaf3dd1d07697a5b.r2.dev` |
+| `ALLOWED_ORIGINS` | web versiya uchun ruxsat etilgan originlar |
 
-O'z domeningizga o'tganda `functions/.env.myfit-d6275` faylini yarating (u `.gitignore`da):
+O'z domeningizga o'tganda `R2_PUBLIC_BASE_URL` ni o'zgartirib `npx wrangler deploy` qiling.
+Yangi URL faqat yangi darslarga yoziladi.
 
-```
-R2_PUBLIC_BASE_URL=https://video.myfit.uz
-```
-
-Yangi URL faqat yangi yuklangan videolarga yoziladi; eski darslar `videoUrl`i o'zgarmaydi.
-
-### 4. Admin qo'shish
-1. Firebase Console → Authentication → Users → foydalanuvchining **User UID** sini nusxalang.
-2. Firestore → **Start collection** `admins` → Document ID = shu UID → istalgan maydon, masalan `role: "admin"`.
-
-Ilovada bo'lim sahifasida o'ng yuqorida yuklash tugmasi paydo bo'ladi (sahifani qayta oching).
-
-### 5. Deploy
-Cloud Functions uchun loyiha **Blaze** rejasida bo'lishi kerak.
+### 4. Ilovaga Worker manzilini berish
+Manzil maxfiy emas; build paytida beriladi:
 
 ```bash
-cd functions && npm ci && npm test && cd ..
-firebase deploy --only firestore:rules,functions:createVideoUploadUrl,functions:finalizeVideoUpload
+flutter build apk --dart-define=MYFIT_VIDEO_API=https://myfit-video.<subdomain>.workers.dev
 ```
 
-`firestore.rules` faylida avvalgi `users` va `food_logs` qoidalari ham bor, ular o'zgarmagan.
-Bu buyruq FatSecret funksiyalariga tegmaydi.
+Codemagic: **Environment variables** → `MYFIT_VIDEO_API` (codemagic.yaml uni o'qiydi).
+Berilmasa, yuklash ekrani "Video xizmati hali sozlanmagan" deydi; darslarni ko'rish ishlayveradi.
 
-Darslar sonini ko'rsatish uchun `lessons` collection group so'rovi ishlatiladi. Agar Firestore
-"index kerak" desa, xatodagi havola orqali indeksni yarating (odatda talab qilinmaydi).
+### 5. Admin qo'shish
+Firebase Console → Authentication → foydalanuvchi **UID** → Firestore → `admins` kolleksiyasi →
+Document ID = UID, maydon masalan `role: "admin"`.
 
 ## CORS
-- **Android va iOS uchun CORS kerak emas** (CORS faqat brauzerga tegishli).
-- Ilovaning **web** versiyasidan yuklash kerak bo'lsa, R2 → myfit-videos → Settings → CORS Policy:
+- Android/iOS uchun kerak emas.
+- Web versiya: Worker `ALLOWED_ORIGINS` ni ishlatadi. R2 bucket → Settings → CORS Policy:
 
 ```json
 [
   {
-    "AllowedOrigins": [
-      "https://myfit-d6275.web.app",
-      "https://myfit-d6275.firebaseapp.com",
-      "http://localhost:5000"
-    ],
+    "AllowedOrigins": ["https://myfit-d6275.web.app", "https://myfit-d6275.firebaseapp.com"],
     "AllowedMethods": ["PUT", "GET", "HEAD"],
     "AllowedHeaders": ["content-type"],
     "ExposeHeaders": ["ETag"],
@@ -113,30 +116,30 @@ Darslar sonini ko'rsatish uchun `lessons` collection group so'rovi ishlatiladi. 
 ]
 ```
 
-Web brauzerda katta fayllar xotiraga to'liq o'qilishi mumkin; katta videolarni telefondan yuklang.
-
 ## Videoni tayyorlash
-Faqat **H.264 MP4** qabul qilinadi. iPhone'dagi `.mov` / HEVC videolar rad etiladi.
-Tavsiya (`faststart` video ochilishini tezlashtiradi):
+Faqat **H.264 MP4**, 2 GB gacha:
 
 ```bash
 ffmpeg -i input.mov -c:v libx264 -preset slow -crf 23 -c:a aac -b:a 128k -movflags +faststart output.mp4
 ```
 
-## Xato sabablari (`details.reason`)
+## Limitlar (Workers Free, 2026-11)
+- 100 000 so'rov/kun, 10 ms CPU, 128 MB xotira, 50 subrequest/so'rov.
+- Worker'ga kiruvchi so'rov tanasi 100 MB — shuning uchun video Worker orqali emas, presigned URL bilan to'g'ridan-to'g'ri R2'ga yuklanadi.
+- R2: bitta PUT 5 GiB gacha; presigned URL 1 soniya – 7 kun.
+- finalize ≈ 10–15 subrequest (Firestore 5–6, R2 2–4, birinchi so'rovda JWKS/OAuth).
 
-| reason | Ma'nosi |
-|---|---|
-| `not-admin` | `admins/{uid}` yo'q |
-| `unsupported-format` | MP4 emas (yoki QuickTime) |
-| `not-h264` | Video kodeki H.264 emas |
-| `too-large` / `empty-file` | 2 GB dan katta / bo'sh |
-| `size-mismatch` / `object-missing` | Yuklash to'liq tugamagan |
-| `upload-expired` | Sessiya 24 soatdan eski |
-| `storage-unavailable` | R2 bilan aloqa yo'q |
+## Xato sabablari (`error.reason`)
 
-## Eslatmalar
-- `r2.dev` manzili sinov uchun; tezlik cheklangan. Ommaga chiqarishdan oldin o'z domeningizni ulang.
-- Bekor qilingan yoki tugallanmagan yuklashlar `video_uploads` da `pending` bo'lib qoladi;
-  R2'da qisman obyekt qolsa, uni qo'lda o'chirish mumkin (avtomatik o'chirilmaydi).
-- Testlar: `cd functions && npm test`, `flutter test`.
+| reason | HTTP | Ma'nosi |
+|---|---|---|
+| `sign-in-required`, `invalid-token`, `token-expired` | 401 | token yo'q/yaroqsiz (ilova bir marta yangilab qayta urinadi) |
+| `not-admin`, `not-owner` | 403 | admin emas / boshqa adminning yuklashi |
+| `unsupported-format`, `not-h264`, `too-large`, `empty-file`, `size-mismatch` | 400 | fayl talabga mos emas |
+| `object-missing`, `upload-expired`, `upload-rejected` | 409 | yuklash tugamagan / eskirgan / rad etilgan |
+| `upload-not-found` | 404/400 | sessiya topilmadi |
+| `auth-unavailable`, `database-unavailable`, `storage-unavailable` | 503 | Google/R2 vaqtincha ishlamayapti |
+
+## Testlar
+- `cd workers/video && npm test` — token xavfsizligi, Firestore REST, MP4, presign, yuklash, HTTP.
+- `flutter test` — ilova tomoni (Worker klienti, progress, bekor qilish, xatolar, pleyer).
