@@ -48,8 +48,14 @@ export function r2VideoBucket(bucket: R2Bucket): VideoBucket {
 let verifier: FirebaseTokenVerifier | null = null;
 let firestore: { key: string; api: FirestoreApi } | null = null;
 
-function services(env: Env) {
+function tokenVerifier(env: Env) {
   verifier ??= new FirebaseTokenVerifier(env.FIREBASE_PROJECT_ID);
+  return verifier;
+}
+
+/** Built lazily, after the token is verified, so a bad secret never turns
+ *  unauthenticated requests into 500s. */
+function firestoreApi(env: Env): FirestoreApi {
   const key = `${env.FIREBASE_PROJECT_ID}|${env.FIREBASE_SERVICE_ACCOUNT?.length}`;
   if (!firestore || firestore.key !== key) {
     firestore = {
@@ -60,7 +66,18 @@ function services(env: Env) {
       ),
     };
   }
-  return { verifier, db: firestore.api };
+  return firestore.api;
+}
+
+/** Defers every Firestore call to [firestoreApi]. */
+function lazyFirestore(env: Env): FirestoreApi {
+  return {
+    get: (path, tx) => firestoreApi(env).get(path, tx),
+    lastLessonOrder: (id, tx) => firestoreApi(env).lastLessonOrder(id, tx),
+    beginTransaction: () => firestoreApi(env).beginTransaction(),
+    rollback: (tx) => firestoreApi(env).rollback(tx),
+    commit: (writes, tx) => firestoreApi(env).commit(writes, tx),
+  };
 }
 
 function corsHeaders(request: Request, env: Env): Record<string, string> {
@@ -132,10 +149,9 @@ export async function handle(
     let verify = override?.verify;
     let deps = override?.deps;
     if (!verify || !deps) {
-      const live = services(env);
-      verify ??= (header) => live.verifier.verify(header);
+      verify ??= (header) => tokenVerifier(env).verify(header);
       deps ??= {
-        db: live.db,
+        db: lazyFirestore(env),
         bucket: r2VideoBucket(env.VIDEOS),
         publicBaseUrl: env.R2_PUBLIC_BASE_URL,
         presign: (key, type, size) =>
