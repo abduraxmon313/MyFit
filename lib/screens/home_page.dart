@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 
 import '../models/food_nutrition.dart';
 import '../models/user_profile.dart';
-import '../models/workout.dart';
 import '../l10n/app_localizations.dart';
 import '../services/auth_service.dart';
 import '../services/food_data_service.dart';
@@ -52,7 +51,6 @@ class _HomePageState extends State<HomePage> {
   final _openFoodFactsService = OpenFoodFactsService();
   final _profileService = ProfileService();
   final List<FoodNutrition> _foods = [];
-  final List<WorkoutLog> _workouts = [];
   Map<DateTime, double> _weekCalories = {};
   bool _loadingLog = true;
   bool _logLoadFailed = false;
@@ -321,12 +319,7 @@ class _HomePageState extends State<HomePage> {
             onFoodRemoved: _removeMealFood,
           )
         : _navIndex == 2
-        ? WorkoutsPage(
-            weightKg: widget.profile.weightKg,
-            logs: _workouts,
-            onAdded: (workout) => setState(() => _workouts.add(workout)),
-            onRemoved: (index) => setState(() => _workouts.removeAt(index)),
-          )
+        ? const WorkoutsPage()
         : _navIndex == 3
         ? ProfilePage(
             profile: widget.profile,
@@ -406,7 +399,7 @@ class _HomePageState extends State<HomePage> {
     final destinations = [
       (LucideIcons.house, context.tr('Bosh sahifa')),
       (LucideIcons.utensils, context.tr('Ovqatlar')),
-      (LucideIcons.dumbbell, context.tr('Mashqlar')),
+      (LucideIcons.squarePlay, context.tr('Mashqlar')),
       (LucideIcons.chartColumn, context.tr('Hisobotlar')),
     ];
     final selectedTab = _navIndex == 3 ? 0 : pageForTab.indexOf(_navIndex);

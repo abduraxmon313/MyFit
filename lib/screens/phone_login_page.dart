@@ -7,12 +7,18 @@ import '../widgets/app_ui.dart';
 
 import '../l10n/app_localizations.dart';
 import '../services/auth_service.dart';
+import 'language_picker_page.dart';
 import 'otp_verify_page.dart';
 
 class PhoneLoginPage extends StatefulWidget {
-  const PhoneLoginPage({super.key, required this.authService});
+  const PhoneLoginPage({
+    super.key,
+    required this.authService,
+    this.onLanguageChanged,
+  });
 
   final AuthService authService;
+  final ValueChanged<String>? onLanguageChanged;
 
   @override
   State<PhoneLoginPage> createState() => _PhoneLoginPageState();
@@ -60,7 +66,51 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final languageCode = Localizations.localeOf(context).languageCode;
+    final current = kAppLanguages.firstWhere(
+      (l) => l.$1 == languageCode,
+      orElse: () => kAppLanguages.first,
+    );
     return Scaffold(
+      appBar: widget.onLanguageChanged == null
+          ? null
+          : AppBar(
+              actions: [
+                PopupMenuButton<String>(
+                  key: const Key('login-language'),
+                  tooltip: '',
+                  position: PopupMenuPosition.under,
+                  onSelected: widget.onLanguageChanged,
+                  itemBuilder: (_) => [
+                    for (final (code, flag, name) in kAppLanguages)
+                      PopupMenuItem(value: code, child: Text('$flag  $name')),
+                  ],
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      children: [
+                        Text(current.$2, style: const TextStyle(fontSize: 16)),
+                        const SizedBox(width: 6),
+                        Text(
+                          current.$3,
+                          style: TextStyle(
+                            color: scheme.onSurface,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(width: 2),
+                        Icon(
+                          LucideIcons.chevronDown,
+                          size: 16,
+                          color: scheme.onSurfaceVariant,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(

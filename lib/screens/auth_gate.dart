@@ -71,7 +71,10 @@ class _AuthGateState extends State<AuthGate> {
           _profileUid = null;
           _appliedTheme = null;
           _profileStream = null;
-          return PhoneLoginPage(authService: widget.authService);
+          return PhoneLoginPage(
+            authService: widget.authService,
+            onLanguageChanged: widget.onLocaleChanged,
+          );
         }
         if (_profileUid != user.uid || _profileStream == null) {
           _profileUid = user.uid;

@@ -449,6 +449,96 @@ class AppLocalizations {
       'Saqlangan {count} ta mahsulot menyuga qo‘shilmaydi. Chiqasizmi?':
           'Сохранённые продукты ({count}) не будут добавлены в меню. Выйти?',
       'Qolish': 'Остаться',
+      'Asosiy harakatlarni to‘g‘ri bajarish texnikasi.':
+          'Техника правильного выполнения базовых движений.',
+      'Asosiy texnika':
+          'Базовая техника',
+      'Cho‘zilish va tiklanish':
+          'Растяжка и восстановление',
+      'Darslar':
+          'Уроки',
+      'Darslarni haftaga taqsimlash bo‘yicha tavsiyalar.':
+          'Рекомендации по распределению уроков на неделю.',
+      'Faollik darajasi':
+          'Уровень активности',
+      'Firebase Storage limiti tugagan.':
+          'Лимит Firebase Storage исчерпан.',
+      'Firebase Storage yoqilmagan (Blaze rejasi kerak).':
+          'Firebase Storage не включён (нужен тариф Blaze).',
+      'Haftalik reja':
+          'Недельный план',
+      'Har bir mashg‘ulotdan oldin bajariladigan isinish majmuasi.':
+          'Комплекс разминки перед каждой тренировкой.',
+      'Internet aloqasi yo‘q. Qayta urinib ko‘ring.':
+          'Нет интернета. Попробуйте ещё раз.',
+      'Kamera yoki galereyaga ruxsat berilmagan. Telefon sozlamalaridan ruxsat bering.':
+          'Нет доступа к камере или галерее. Разрешите его в настройках телефона.',
+      'Kardio va chidamlilik':
+          'Кардио и выносливость',
+      'Keyingi':
+          'Следующий',
+      'Kirish va xavfsizlik':
+          'Введение и безопасность',
+      'Ko‘krak, yelka, qo‘l va orqa mushaklari uchun mashqlar.':
+          'Упражнения для груди, плеч, рук и спины.',
+      'Kurs tuzilishi, jihozlar va jarohatdan saqlanish qoidalari.':
+          'Структура курса, инвентарь и правила профилактики травм.',
+      'Maqsadingiz':
+          'Ваша цель',
+      'Mashg‘ulotdan keyingi cho‘zilish va dam olish.':
+          'Растяжка и отдых после тренировки.',
+      'Murabbiy':
+          'Тренер',
+      'Murabbiy bilan video darslar':
+          'Видеоуроки с тренером',
+      'Murabbiy video kursi':
+          'Видеокурс тренера',
+      'Murabbiy tomonidan tayyorlangan mashg‘ulotlar ketma-ketligi. Har bir darsni tartib bilan o‘ting.':
+          'Последовательность тренировок от тренера. Проходите уроки по порядку.',
+      'Oldingi':
+          'Предыдущий',
+      'Oyoq va dumba mushaklari uchun mashqlar.':
+          'Упражнения для ног и ягодиц.',
+      'Pastki tana mashqlari':
+          'Упражнения для нижней части тела',
+      'Rasm juda katta yoki noto‘g‘ri formatda.':
+          'Фото слишком большое или в неверном формате.',
+      'Rasm saqlashga ruxsat yo‘q: Firebase Storage qoidalari o‘rnatilmagan.':
+          'Нет доступа к хранилищу: правила Firebase Storage не развернуты.',
+      'Rasm yuklash uchun qayta kiring.':
+          'Войдите снова, чтобы загрузить фото.',
+      'Rasmni yangilab bo‘lmadi ({code}).':
+          'Не удалось обновить фото ({code}).',
+      'Tana o‘lchamlari':
+          'Параметры тела',
+      'Tez orada':
+          'Скоро',
+      'To‘g‘ri isinish':
+          'Правильная разминка',
+      'Videolar tez orada yuklanadi. Darslar tartibi quyida.':
+          'Видео скоро появятся. Порядок уроков ниже.',
+      'Yuqori tana mashqlari':
+          'Упражнения для верхней части тела',
+      'Yurak-qon tomir tizimini mustahkamlovchi mashg‘ulot.':
+          'Тренировка для сердечно-сосудистой системы.',
+      'daq':
+          'мин',
+      'dars':
+          'уроков',
+      'video yuklangan':
+          'видео загружено',
+      '{n}-dars':
+          'Урок {n}',
+      'Video hali yuklanmagan':
+          'Видео ещё не загружено',
+      'Video tez orada ijro etiladi':
+          'Воспроизведение скоро появится',
+      'Asosan o‘tirib ishlayman, mashq kam':
+          'В основном сижу, тренируюсь редко',
+      'Haftasiga 2–4 marta mashq qilaman':
+          'Тренируюсь 2–4 раза в неделю',
+      'Deyarli har kuni faol harakatdaman':
+          'Активен почти каждый день',
       'SMS xizmati yoqilmagan: Firebase loyihasiga billing ulanmagan.':
           'SMS не включены: к проекту Firebase не подключён биллинг.',
       'Bugungi SMS limiti tugadi. Keyinroq urinib ko‘ring.':
@@ -890,6 +980,96 @@ class AppLocalizations {
       'Saqlangan {count} ta mahsulot menyuga qo‘shilmaydi. Chiqasizmi?':
           '{count} saved items will not be added to the meal. Leave?',
       'Qolish': 'Stay',
+      'Asosiy harakatlarni to‘g‘ri bajarish texnikasi.':
+          'Correct technique for the basic movements.',
+      'Asosiy texnika':
+          'Basic technique',
+      'Cho‘zilish va tiklanish':
+          'Stretching and recovery',
+      'Darslar':
+          'Lessons',
+      'Darslarni haftaga taqsimlash bo‘yicha tavsiyalar.':
+          'How to spread the lessons across the week.',
+      'Faollik darajasi':
+          'Activity level',
+      'Firebase Storage limiti tugagan.':
+          'Firebase Storage quota is exceeded.',
+      'Firebase Storage yoqilmagan (Blaze rejasi kerak).':
+          'Firebase Storage is not enabled (Blaze plan required).',
+      'Haftalik reja':
+          'Weekly plan',
+      'Har bir mashg‘ulotdan oldin bajariladigan isinish majmuasi.':
+          'Warm-up routine before every session.',
+      'Internet aloqasi yo‘q. Qayta urinib ko‘ring.':
+          'No internet connection. Please try again.',
+      'Kamera yoki galereyaga ruxsat berilmagan. Telefon sozlamalaridan ruxsat bering.':
+          'Camera or photo access is denied. Allow it in phone settings.',
+      'Kardio va chidamlilik':
+          'Cardio and endurance',
+      'Keyingi':
+          'Next',
+      'Kirish va xavfsizlik':
+          'Introduction and safety',
+      'Ko‘krak, yelka, qo‘l va orqa mushaklari uchun mashqlar.':
+          'Exercises for chest, shoulders, arms and back.',
+      'Kurs tuzilishi, jihozlar va jarohatdan saqlanish qoidalari.':
+          'Course structure, equipment and injury-prevention rules.',
+      'Maqsadingiz':
+          'Your goal',
+      'Mashg‘ulotdan keyingi cho‘zilish va dam olish.':
+          'Stretching and rest after a session.',
+      'Murabbiy':
+          'Trainer',
+      'Murabbiy bilan video darslar':
+          'Video lessons with a trainer',
+      'Murabbiy video kursi':
+          'Trainer video course',
+      'Murabbiy tomonidan tayyorlangan mashg‘ulotlar ketma-ketligi. Har bir darsni tartib bilan o‘ting.':
+          'A sequence of sessions prepared by the trainer. Take the lessons in order.',
+      'Oldingi':
+          'Previous',
+      'Oyoq va dumba mushaklari uchun mashqlar.':
+          'Exercises for legs and glutes.',
+      'Pastki tana mashqlari':
+          'Lower-body exercises',
+      'Rasm juda katta yoki noto‘g‘ri formatda.':
+          'The photo is too large or in an unsupported format.',
+      'Rasm saqlashga ruxsat yo‘q: Firebase Storage qoidalari o‘rnatilmagan.':
+          'No storage permission: Firebase Storage rules are not deployed.',
+      'Rasm yuklash uchun qayta kiring.':
+          'Sign in again to upload a photo.',
+      'Rasmni yangilab bo‘lmadi ({code}).':
+          'Could not update the photo ({code}).',
+      'Tana o‘lchamlari':
+          'Body measurements',
+      'Tez orada':
+          'Soon',
+      'To‘g‘ri isinish':
+          'Proper warm-up',
+      'Videolar tez orada yuklanadi. Darslar tartibi quyida.':
+          'Videos are coming soon. The lesson order is below.',
+      'Yuqori tana mashqlari':
+          'Upper-body exercises',
+      'Yurak-qon tomir tizimini mustahkamlovchi mashg‘ulot.':
+          'A session that strengthens the cardiovascular system.',
+      'daq':
+          'min',
+      'dars':
+          'lessons',
+      'video yuklangan':
+          'videos uploaded',
+      '{n}-dars':
+          'Lesson {n}',
+      'Video hali yuklanmagan':
+          'Video not uploaded yet',
+      'Video tez orada ijro etiladi':
+          'Playback is coming soon',
+      'Asosan o‘tirib ishlayman, mashq kam':
+          'Mostly sitting, little exercise',
+      'Haftasiga 2–4 marta mashq qilaman':
+          'I exercise 2–4 times a week',
+      'Deyarli har kuni faol harakatdaman':
+          'Active almost every day',
       'SMS xizmati yoqilmagan: Firebase loyihasiga billing ulanmagan.':
           'SMS is not enabled: no billing account is linked to the Firebase project.',
       'Bugungi SMS limiti tugadi. Keyinroq urinib ko‘ring.':

@@ -1,5 +1,6 @@
-import 'dart:typed_data';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import '../l10n/app_localizations.dart';
 import '../models/user_profile.dart';
@@ -45,11 +46,11 @@ class _ProfilePageState extends State<ProfilePage> {
     if (oldWidget.profile != widget.profile) _profile = widget.profile;
   }
 
-  void _message(String text) {
+  void _message(String text, [Map<String, Object> values = const {}]) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(context.tr(text)),
+        content: Text(context.tr(text, values)),
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -135,10 +136,9 @@ class _ProfilePageState extends State<ProfilePage> {
         );
         _message('Profil rasmi yangilandi.');
       }
-    } catch (_) {
-      _message(
-        'Rasmni yangilab bo‘lmadi. Ruxsat va internetni tekshirib, qayta urinib ko‘ring.',
-      );
+    } catch (error) {
+      final (text, values) = photoErrorMessage(error);
+      _message(text, values);
     } finally {
       if (mounted) {
         setState(() {
@@ -405,12 +405,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 context,
                 Column(
                   children: [
-                    _row(
-                      context,
-                      LucideIcons.cake,
-                      'Yosh',
-                      '${profile.age}',
-                    ),
+                    _row(context, LucideIcons.cake, 'Yosh', '${profile.age}'),
                     Divider(height: 24, color: colors.outlineVariant),
                     _row(
                       context,
@@ -644,4 +639,48 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
+}
+
+/// Turns a photo pick/upload failure into a message that names the cause.
+(String, Map<String, Object>) photoErrorMessage(Object error) {
+  if (error is FirebaseException) {
+    switch (error.code) {
+      case 'unauthorized':
+      case 'permission-denied':
+        return (
+          'Rasm saqlashga ruxsat yo‘q: Firebase Storage qoidalari o‘rnatilmagan.',
+          const {},
+        );
+      case 'unauthenticated':
+        return ('Rasm yuklash uchun qayta kiring.', const {});
+      case 'bucket-not-found':
+      case 'project-not-found':
+      case 'object-not-found':
+      case 'unknown':
+        return ('Firebase Storage yoqilmagan (Blaze rejasi kerak).', const {});
+      case 'quota-exceeded':
+        return ('Firebase Storage limiti tugagan.', const {});
+      case 'retry-limit-exceeded':
+      case 'network-request-failed':
+      case 'unavailable':
+        return ('Internet aloqasi yo‘q. Qayta urinib ko‘ring.', const {});
+    }
+    return ('Rasmni yangilab bo‘lmadi ({code}).', {'code': error.code});
+  }
+  if (error is PlatformException) {
+    if (error.code.contains('access_denied')) {
+      return (
+        'Kamera yoki galereyaga ruxsat berilmagan. Telefon sozlamalaridan ruxsat bering.',
+        const {},
+      );
+    }
+    return ('Rasmni yangilab bo‘lmadi ({code}).', {'code': error.code});
+  }
+  if (error is FormatException) {
+    return ('Rasm juda katta yoki noto‘g‘ri formatda.', const {});
+  }
+  return (
+    'Rasmni yangilab bo‘lmadi. Ruxsat va internetni tekshirib, qayta urinib ko‘ring.',
+    const {},
+  );
 }
