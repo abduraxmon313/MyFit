@@ -52,7 +52,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
     _resendToken = widget.resendToken;
     if (_verificationId != null) {
       _startTimer();
-      _info = 'Kod yuborildi';
+      _info = 'SMS kod yuborildi';
     } else if (widget.autoSend) {
       WidgetsBinding.instance.addPostFrameCallback((_) => _requestCode());
     }
@@ -87,7 +87,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
         _sending = true;
       }
       _error = null;
-      _info = 'Kod yuborilmoqda...';
+      _info = 'SMS kod yuborilmoqda...';
     });
 
     try {
@@ -101,7 +101,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
             _resendToken = resendToken;
             _sending = false;
             _resending = false;
-            _info = 'Kod yuborildi. SMS ni tekshiring.';
+            _info = 'SMS kod yuborildi. Xabarlarni tekshiring.';
           });
           _startTimer();
         },
@@ -152,7 +152,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
   Future<void> _verify() async {
     if (!_formKey.currentState!.validate()) return;
     if (_verificationId == null) {
-      setState(() => _error = context.tr('Avval kod yuborilsin.'));
+      setState(() => _error = context.tr('Avval SMS kodni oling.'));
       return;
     }
 
@@ -187,9 +187,9 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
   String _mapError(FirebaseAuthException e) {
     switch (e.code) {
       case 'invalid-verification-code':
-        return context.tr('Kod noto‘g‘ri.');
+        return context.tr('SMS kod noto‘g‘ri.');
       case 'session-expired':
-        return context.tr('Sessiya tugadi. Kodni qayta yuboring.');
+        return context.tr('SMS kod muddati tugadi. Qayta yuboring.');
       case 'invalid-phone-number':
         return context.tr('Telefon raqam noto‘g‘ri.');
       case 'too-many-requests':
@@ -253,7 +253,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                   ),
                   const SizedBox(height: 20),
                   Text(
-                    context.tr('OTP kod'),
+                    context.tr('SMS kod'),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: scheme.onSurface,
@@ -265,7 +265,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                   const SizedBox(height: 8),
                   Text(
                     context.tr(
-                      '{phone} raqamiga yuborilgan\n6 xonali kodni kiriting',
+                      '{phone} raqamiga yuborilgan\n6 xonali SMS kodni kiriting',
                       {'phone': formatUzPhone(widget.phoneNumber)},
                     ),
                     textAlign: TextAlign.center,
@@ -312,7 +312,9 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                             ),
                             validator: (value) {
                               if ((value ?? '').trim().length != 6) {
-                                return context.tr('6 xonali kod kiriting');
+                                return context.tr(
+                                  '6 xonali SMS kodni kiriting',
+                                );
                               }
                               return null;
                             },
@@ -370,7 +372,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                                   ? context.tr('Qayta yuborish ({seconds} s)', {
                                       'seconds': _secondsLeft,
                                     })
-                                  : context.tr('Kodni qayta yuborish'),
+                                  : context.tr('SMS kodni qayta yuborish'),
                             ),
                           ),
                         ],

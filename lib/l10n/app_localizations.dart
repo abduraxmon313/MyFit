@@ -327,23 +327,25 @@ class AppLocalizations {
       'Telefon raqamingiz bilan kiring': 'Войдите по номеру телефона',
       'Telefon raqam': 'Номер телефона',
       'To‘liq raqam kiriting (9 ta raqam)': 'Введите полный номер (9 цифр)',
-      'OTP kod olish': 'Получить код',
-      'SMS orqali 6 xonali kod yuboriladi': 'Мы отправим 6-значный код по SMS',
-      'OTP kod': 'Код подтверждения',
-      '{phone} raqamiga yuborilgan\n6 xonali kodni kiriting':
-          'Введите 6-значный код,\nотправленный на {phone}',
-      '6 xonali kod kiriting': 'Введите 6-значный код',
+      'SMS kod olish': 'Получить SMS-код',
+      'Raqamingizga 6 xonali SMS kod yuboriladi':
+          'Мы отправим 6-значный SMS-код',
+      'SMS kod': 'SMS-код',
+      '{phone} raqamiga yuborilgan\n6 xonali SMS kodni kiriting':
+          'Введите 6-значный SMS-код,\nотправленный на {phone}',
+      '6 xonali SMS kodni kiriting': 'Введите 6-значный SMS-код',
       'Tasdiqlash': 'Подтвердить',
       'Yuborilmoqda...': 'Отправка...',
       'Qayta yuborish ({seconds} s)': 'Повторить через {seconds} с',
-      'Kodni qayta yuborish': 'Отправить код снова',
-      'Kod yuborildi': 'Код отправлен',
-      'Kod yuborilmoqda...': 'Код отправляется...',
-      'Kod yuborildi. SMS ni tekshiring.': 'Код отправлен. Проверьте SMS.',
-      'Avval kod yuborilsin.': 'Сначала отправьте код.',
-      'Kod noto‘g‘ri.': 'Неверный код.',
-      'Sessiya tugadi. Kodni qayta yuboring.':
-          'Сеанс истёк. Отправьте код снова.',
+      'SMS kodni qayta yuborish': 'Отправить SMS-код снова',
+      'SMS kod yuborildi': 'SMS-код отправлен',
+      'SMS kod yuborilmoqda...': 'SMS-код отправляется...',
+      'SMS kod yuborildi. Xabarlarni tekshiring.':
+          'SMS-код отправлен. Проверьте сообщения.',
+      'Avval SMS kodni oling.': 'Сначала получите SMS-код.',
+      'SMS kod noto‘g‘ri.': 'Неверный SMS-код.',
+      'SMS kod muddati tugadi. Qayta yuboring.':
+          'Срок SMS-кода истёк. Отправьте снова.',
       'Telefon raqam noto‘g‘ri.': 'Неверный номер телефона.',
       'Juda ko‘p urinish. Keyinroq qayta urinib ko‘ring.':
           'Слишком много попыток. Повторите позже.',
@@ -891,24 +893,25 @@ class AppLocalizations {
       'Telefon raqamingiz bilan kiring': 'Sign in with your phone number',
       'Telefon raqam': 'Phone number',
       'To‘liq raqam kiriting (9 ta raqam)': 'Enter the full number (9 digits)',
-      'OTP kod olish': 'Get verification code',
-      'SMS orqali 6 xonali kod yuboriladi':
-          'A 6-digit code will be sent by SMS',
-      'OTP kod': 'Verification code',
-      '{phone} raqamiga yuborilgan\n6 xonali kodni kiriting':
-          'Enter the 6-digit code\nsent to {phone}',
-      '6 xonali kod kiriting': 'Enter the 6-digit code',
+      'SMS kod olish': 'Get SMS code',
+      'Raqamingizga 6 xonali SMS kod yuboriladi':
+          'We will send a 6-digit SMS code',
+      'SMS kod': 'SMS code',
+      '{phone} raqamiga yuborilgan\n6 xonali SMS kodni kiriting':
+          'Enter the 6-digit SMS code\nsent to {phone}',
+      '6 xonali SMS kodni kiriting': 'Enter the 6-digit SMS code',
       'Tasdiqlash': 'Verify',
       'Yuborilmoqda...': 'Sending...',
       'Qayta yuborish ({seconds} s)': 'Resend in {seconds}s',
-      'Kodni qayta yuborish': 'Resend code',
-      'Kod yuborildi': 'Code sent',
-      'Kod yuborilmoqda...': 'Sending code...',
-      'Kod yuborildi. SMS ni tekshiring.': 'Code sent. Check your SMS.',
-      'Avval kod yuborilsin.': 'Send the code first.',
-      'Kod noto‘g‘ri.': 'Incorrect code.',
-      'Sessiya tugadi. Kodni qayta yuboring.':
-          'The session expired. Resend the code.',
+      'SMS kodni qayta yuborish': 'Resend SMS code',
+      'SMS kod yuborildi': 'SMS code sent',
+      'SMS kod yuborilmoqda...': 'Sending SMS code...',
+      'SMS kod yuborildi. Xabarlarni tekshiring.':
+          'SMS code sent. Check your messages.',
+      'Avval SMS kodni oling.': 'Get the SMS code first.',
+      'SMS kod noto‘g‘ri.': 'Incorrect SMS code.',
+      'SMS kod muddati tugadi. Qayta yuboring.':
+          'The SMS code has expired. Send it again.',
       'Telefon raqam noto‘g‘ri.': 'Invalid phone number.',
       'Juda ko‘p urinish. Keyinroq qayta urinib ko‘ring.':
           'Too many attempts. Try again later.',

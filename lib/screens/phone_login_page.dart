@@ -221,7 +221,7 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
                                       color: scheme.onPrimary,
                                     ),
                                   )
-                                : Text(context.tr('OTP kod olish')),
+                                : Text(context.tr('SMS kod olish')),
                           ),
                         ],
                       ),
@@ -239,7 +239,9 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
                       const SizedBox(width: 6),
                       Flexible(
                         child: Text(
-                          context.tr('SMS orqali 6 xonali kod yuboriladi'),
+                          context.tr(
+                            'Raqamingizga 6 xonali SMS kod yuboriladi',
+                          ),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: scheme.onSurfaceVariant,
