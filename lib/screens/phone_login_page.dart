@@ -1,6 +1,5 @@
 import '../theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../widgets/app_ui.dart';
@@ -9,6 +8,7 @@ import '../l10n/app_localizations.dart';
 import '../services/auth_service.dart';
 import 'language_picker_page.dart';
 import 'otp_verify_page.dart';
+import '../services/phone_format.dart';
 
 class PhoneLoginPage extends StatefulWidget {
   const PhoneLoginPage({
@@ -175,11 +175,7 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
                                 FontFeature.tabularFigures(),
                               ],
                             ),
-                            inputFormatters: [
-                              FilteringTextInputFormatter.allow(
-                                RegExp(r'[0-9+\s]'),
-                              ),
-                            ],
+                            inputFormatters: const [UzPhoneInputFormatter()],
                             decoration: InputDecoration(
                               hintText: '90 123 45 67',
                               prefixIcon: const Icon(

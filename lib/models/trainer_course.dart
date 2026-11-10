@@ -46,7 +46,7 @@ class CourseLesson {
   };
 }
 
-/// A trainer's video course shown in the "Mashqlar" tab.
+/// A lesson category (video course) shown in the "Darslar" tab.
 class TrainerCourse {
   const TrainerCourse({
     required this.id,
@@ -65,4 +65,8 @@ class TrainerCourse {
   final List<CourseLesson> lessons;
 
   int get videoCount => lessons.where((lesson) => lesson.hasVideo).length;
+
+  /// Lessons in watching order.
+  List<CourseLesson> get orderedLessons =>
+      [...lessons]..sort((a, b) => a.order.compareTo(b.order));
 }

@@ -21,7 +21,7 @@ import 'food_history_page.dart';
 import 'reports_page.dart';
 import 'national_food_picker_page.dart';
 import 'profile_page.dart';
-import 'workouts_page.dart';
+import 'lessons_page.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class HomePage extends StatefulWidget {
@@ -319,7 +319,7 @@ class _HomePageState extends State<HomePage> {
             onFoodRemoved: _removeMealFood,
           )
         : _navIndex == 2
-        ? const WorkoutsPage()
+        ? const LessonsPage()
         : _navIndex == 3
         ? ProfilePage(
             profile: widget.profile,
@@ -399,7 +399,7 @@ class _HomePageState extends State<HomePage> {
     final destinations = [
       (LucideIcons.house, context.tr('Bosh sahifa')),
       (LucideIcons.utensils, context.tr('Ovqatlar')),
-      (LucideIcons.squarePlay, context.tr('Mashqlar')),
+      (LucideIcons.graduationCap, context.tr('Darslar')),
       (LucideIcons.chartColumn, context.tr('Hisobotlar')),
     ];
     final selectedTab = _navIndex == 3 ? 0 : pageForTab.indexOf(_navIndex);

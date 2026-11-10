@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import '../l10n/app_localizations.dart';
 import '../models/user_profile.dart';
+import '../services/phone_format.dart';
 import '../services/profile_photo_picker.dart';
 import '../widgets/appearance_selector.dart';
 import '../widgets/profile_avatar.dart';
@@ -318,7 +319,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     Text(
                       widget.phoneNumber.isEmpty
                           ? context.tr('Kiritilmagan')
-                          : widget.phoneNumber,
+                          : formatUzPhone(widget.phoneNumber),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: colors.onSurfaceVariant,
@@ -420,7 +421,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       'Telefon',
                       widget.phoneNumber.isEmpty
                           ? context.tr('Kiritilmagan')
-                          : widget.phoneNumber,
+                          : formatUzPhone(widget.phoneNumber),
                     ),
                   ],
                 ),
