@@ -461,6 +461,45 @@ class AppLocalizations {
       'Saqlangan {count} ta mahsulot menyuga qo‘shilmaydi. Chiqasizmi?':
           'Сохранённые продукты ({count}) не будут добавлены в меню. Выйти?',
       'Qolish': 'Остаться',
+      'Dars nomi': 'Название урока',
+      'Dars nomini kiriting (2–120 belgi).':
+          'Введите название урока (2–120 символов).',
+      'Darslarni yuklab bo‘lmadi. Internetni tekshiring.':
+          'Не удалось загрузить уроки. Проверьте интернет.',
+      'Faqat MP4 (H.264), 2 GB gacha.': 'Только MP4 (H.264), до 2 ГБ.',
+      'Faqat MP4 formatidagi videolar qabul qilinadi.':
+          'Принимаются только видео в формате MP4.',
+      'Galereyadan MP4 video': 'MP4-видео из галереи',
+      'Internet aloqasi uzildi. Qayta urinib ko‘ring.':
+          'Соединение прервано. Попробуйте ещё раз.',
+      'Serverda tekshirilmoqda...': 'Проверка на сервере...',
+      'Tavsif (ixtiyoriy)': 'Описание (необязательно)',
+      'Video H.264 kodekida bo‘lishi kerak. Videoni H.264 MP4 qilib eksport qiling.':
+          'Видео должно быть в кодеке H.264. Экспортируйте его как H.264 MP4.',
+      'Video fayli bo‘sh.': 'Файл видео пустой.',
+      'Video hajmi 2 GB dan oshmasligi kerak.':
+          'Размер видео не должен превышать 2 ГБ.',
+      'Video ombori vaqtincha ishlamayapti.':
+          'Хранилище видео временно недоступно.',
+      'Video tekshirilmoqda...': 'Проверка видео...',
+      'Video to‘liq yuklanmadi. Qayta urinib ko‘ring.':
+          'Видео загрузилось не полностью. Попробуйте ещё раз.',
+      'Video yuklandi': 'Видео загружено',
+      'Video yuklash': 'Загрузить видео',
+      'Video yuklash faqat adminlar uchun.':
+          'Загружать видео могут только администраторы.',
+      'Video yuklash uchun qayta kiring.':
+          'Войдите снова, чтобы загрузить видео.',
+      'Videoni ochib bo‘lmadi': 'Не удалось открыть видео',
+      'Videoni tanlab bo‘lmadi.': 'Не удалось выбрать видео.',
+      'Videoni tanlash': 'Выбрать видео',
+      'Videoni yuklab bo‘lmadi. Qayta urinib ko‘ring.':
+          'Не удалось загрузить видео. Попробуйте ещё раз.',
+      'Yuklanmoqda...': 'Загрузка...',
+      'Yuklash': 'Загрузить',
+      'Yuklash bekor qilindi.': 'Загрузка отменена.',
+      'Yuklash muddati tugadi. Qaytadan boshlang.':
+          'Время загрузки истекло. Начните заново.',
       'Ayollar organizmiga mos ovqatlanish tavsiyalari.':
           'Рекомендации по питанию с учётом женского организма.',
       'Ayollar uchun fitnes zalda mashqlar':
@@ -1024,6 +1063,43 @@ class AppLocalizations {
       'Saqlangan {count} ta mahsulot menyuga qo‘shilmaydi. Chiqasizmi?':
           '{count} saved items will not be added to the meal. Leave?',
       'Qolish': 'Stay',
+      'Dars nomi': 'Lesson title',
+      'Dars nomini kiriting (2–120 belgi).':
+          'Enter a lesson title (2–120 characters).',
+      'Darslarni yuklab bo‘lmadi. Internetni tekshiring.':
+          'Could not load lessons. Check your internet connection.',
+      'Faqat MP4 (H.264), 2 GB gacha.': 'MP4 (H.264) only, up to 2 GB.',
+      'Faqat MP4 formatidagi videolar qabul qilinadi.':
+          'Only MP4 videos are accepted.',
+      'Galereyadan MP4 video': 'MP4 video from the gallery',
+      'Internet aloqasi uzildi. Qayta urinib ko‘ring.':
+          'The connection was lost. Please try again.',
+      'Serverda tekshirilmoqda...': 'Verifying on the server...',
+      'Tavsif (ixtiyoriy)': 'Description (optional)',
+      'Video H.264 kodekida bo‘lishi kerak. Videoni H.264 MP4 qilib eksport qiling.':
+          'The video must use the H.264 codec. Export it as an H.264 MP4.',
+      'Video fayli bo‘sh.': 'The video file is empty.',
+      'Video hajmi 2 GB dan oshmasligi kerak.':
+          'The video must not exceed 2 GB.',
+      'Video ombori vaqtincha ishlamayapti.':
+          'Video storage is temporarily unavailable.',
+      'Video tekshirilmoqda...': 'Checking the video...',
+      'Video to‘liq yuklanmadi. Qayta urinib ko‘ring.':
+          'The video did not upload completely. Please try again.',
+      'Video yuklandi': 'Video uploaded',
+      'Video yuklash': 'Upload video',
+      'Video yuklash faqat adminlar uchun.': 'Only admins can upload videos.',
+      'Video yuklash uchun qayta kiring.': 'Sign in again to upload a video.',
+      'Videoni ochib bo‘lmadi': 'Could not open the video',
+      'Videoni tanlab bo‘lmadi.': 'Could not pick the video.',
+      'Videoni tanlash': 'Choose a video',
+      'Videoni yuklab bo‘lmadi. Qayta urinib ko‘ring.':
+          'Could not upload the video. Please try again.',
+      'Yuklanmoqda...': 'Uploading...',
+      'Yuklash': 'Upload',
+      'Yuklash bekor qilindi.': 'Upload cancelled.',
+      'Yuklash muddati tugadi. Qaytadan boshlang.':
+          'The upload session expired. Start again.',
       'Ayollar organizmiga mos ovqatlanish tavsiyalari.':
           'Nutrition advice suited to the female body.',
       'Ayollar uchun fitnes zalda mashqlar': 'Gym workouts for women',
