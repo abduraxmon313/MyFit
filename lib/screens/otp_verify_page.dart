@@ -1,4 +1,3 @@
-import '../theme/app_theme.dart';
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,6 +6,9 @@ import 'package:flutter/services.dart';
 
 import '../l10n/app_localizations.dart';
 import '../services/auth_service.dart';
+import '../services/phone_format.dart';
+import '../theme/app_theme.dart';
+import '../widgets/app_ui.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class OtpVerifyPage extends StatefulWidget {
@@ -221,249 +223,163 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final scheme = Theme.of(context).colorScheme;
     final canResend = !_sending && !_resending && _secondsLeft == 0;
 
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xFF0B1324), Color(0xFF111B30), Color(0xFF16213A)],
-          ),
+      appBar: AppBar(
+        leading: IconButton(
+          tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+          onPressed: () => Navigator.of(context).maybePop(),
+          icon: const Icon(LucideIcons.chevronLeft),
         ),
-        child: SafeArea(
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: IconButton(
-                  onPressed: () => Navigator.of(context).maybePop(),
-                  icon: Icon(
-                    LucideIcons.chevronLeft,
-                    color: context.appColor(Colors.white, surface: false),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Center(
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 16,
+      ),
+      body: SafeArea(
+        top: false,
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 400),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Center(
+                    child: AppIconTile.tinted(
+                      icon: LucideIcons.messageSquareText,
+                      size: 48,
+                      accent: AppPalette.accentBlue,
                     ),
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 420),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    context.tr('OTP kod'),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: scheme.onSurface,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: -.5,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    context.tr(
+                      '{phone} raqamiga yuborilgan\n6 xonali kodni kiriting',
+                      {'phone': formatUzPhone(widget.phoneNumber)},
+                    ),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: scheme.onSurfaceVariant,
+                      fontSize: 14.5,
+                      height: 1.45,
+                    ),
+                  ),
+                  const SizedBox(height: 28),
+                  AppCard(
+                    padding: const EdgeInsets.all(24),
+                    child: Form(
+                      key: _formKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(
-                            context.tr('OTP kod'),
+                          if (_sending) ...[
+                            const Center(child: CircularProgressIndicator()),
+                            const SizedBox(height: 16),
+                          ],
+                          TextFormField(
+                            controller: _codeController,
+                            enabled: !_sending && _verificationId != null,
+                            keyboardType: TextInputType.number,
                             textAlign: TextAlign.center,
-                            style: theme.textTheme.headlineMedium?.copyWith(
-                              color: context.appColor(
-                                Colors.white,
-                                surface: false,
-                              ),
+                            style: TextStyle(
+                              color: scheme.onSurface,
+                              fontSize: 26,
+                              letterSpacing: 10,
                               fontWeight: FontWeight.w600,
+                              fontFeatures: const [
+                                FontFeature.tabularFigures(),
+                              ],
                             ),
+                            maxLength: 6,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            decoration: const InputDecoration(
+                              counterText: '',
+                              hintText: '––––––',
+                              hintStyle: TextStyle(letterSpacing: 10),
+                            ),
+                            validator: (value) {
+                              if ((value ?? '').trim().length != 6) {
+                                return context.tr('6 xonali kod kiriting');
+                              }
+                              return null;
+                            },
+                          ),
+                          if (_info != null) ...[
+                            const SizedBox(height: 12),
+                            Text(
+                              context.tr(_info!),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: scheme.onSurfaceVariant,
+                                fontSize: 13,
+                              ),
+                            ),
+                          ],
+                          if (_error != null) ...[
+                            const SizedBox(height: 12),
+                            Text(
+                              _error!,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: scheme.error,
+                                fontSize: 13,
+                              ),
+                            ),
+                          ],
+                          const SizedBox(height: 20),
+                          FilledButton(
+                            onPressed:
+                                (_loading ||
+                                    _sending ||
+                                    _verificationId == null)
+                                ? null
+                                : _verify,
+                            child: _loading
+                                ? SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: scheme.onPrimary,
+                                    ),
+                                  )
+                                : Text(context.tr('Tasdiqlash')),
                           ),
                           const SizedBox(height: 8),
-                          Text(
-                            context.tr(
-                              '{phone} raqamiga yuborilgan\n6 xonali kodni kiriting',
-                              {'phone': widget.phoneNumber},
-                            ),
-                            textAlign: TextAlign.center,
-                            style: theme.textTheme.bodyLarge?.copyWith(
-                              color: context.appColor(
-                                Colors.white70,
-                                surface: false,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 32),
-                          Container(
-                            padding: const EdgeInsets.all(20),
-                            decoration: BoxDecoration(
-                              color: context
-                                  .appColor(Colors.white, surface: true)
-                                  .withValues(alpha: 0.08),
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: context.appColor(
-                                  Colors.white24,
-                                  surface: true,
-                                ),
-                              ),
-                            ),
-                            child: Form(
-                              key: _formKey,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  if (_sending) ...[
-                                    const Center(
-                                      child: CircularProgressIndicator(
-                                        color: Color(0xFFA9C1FF),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 16),
-                                  ],
-                                  TextFormField(
-                                    controller: _codeController,
-                                    enabled:
-                                        !_sending && _verificationId != null,
-                                    keyboardType: TextInputType.number,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: context.appColor(
-                                        Colors.white,
-                                        surface: false,
-                                      ),
-                                      fontSize: 28,
-                                      letterSpacing: 10,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                    maxLength: 6,
-                                    inputFormatters: [
-                                      FilteringTextInputFormatter.digitsOnly,
-                                    ],
-                                    decoration: InputDecoration(
-                                      counterText: '',
-                                      hintText: '------',
-                                      hintStyle: TextStyle(
-                                        color: context
-                                            .appColor(
-                                              Colors.white,
-                                              surface: false,
-                                            )
-                                            .withValues(alpha: 0.25),
-                                        letterSpacing: 10,
-                                      ),
-                                      filled: true,
-                                      fillColor: context
-                                          .appColor(Colors.black, surface: true)
-                                          .withValues(alpha: 0.25),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                        borderSide: BorderSide.none,
-                                      ),
-                                    ),
-                                    validator: (value) {
-                                      if ((value ?? '').trim().length != 6) {
-                                        return context.tr(
-                                          '6 xonali kod kiriting',
-                                        );
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                  if (_info != null) ...[
-                                    const SizedBox(height: 12),
-                                    Text(
-                                      context.tr(_info!),
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: context.appColor(
-                                          Color(0xFFA9C1FF),
-                                          surface: false,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                  if (_error != null) ...[
-                                    const SizedBox(height: 12),
-                                    Text(
-                                      _error!,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: context.appColor(
-                                          Color(0xFFFFB4A8),
-                                          surface: false,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                  const SizedBox(height: 20),
-                                  FilledButton(
-                                    onPressed:
-                                        (_loading ||
-                                            _sending ||
-                                            _verificationId == null)
-                                        ? null
-                                        : _verify,
-                                    style: FilledButton.styleFrom(
-                                      backgroundColor: Theme.of(
-                                        context,
-                                      ).colorScheme.primary,
-                                      foregroundColor: Theme.of(
-                                        context,
-                                      ).colorScheme.onPrimary,
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 16,
-                                      ),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                    ),
-                                    child: _loading
-                                        ? const SizedBox(
-                                            height: 22,
-                                            width: 22,
-                                            child: CircularProgressIndicator(
-                                              strokeWidth: 2.4,
-                                              color: Color(0xFFA9C1FF),
-                                            ),
-                                          )
-                                        : Text(
-                                            context.tr('Tasdiqlash'),
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 16,
-                                            ),
-                                          ),
-                                  ),
-                                  const SizedBox(height: 12),
-                                  TextButton(
-                                    onPressed: canResend
-                                        ? () => _requestCode(isResend: true)
-                                        : null,
-                                    child: Text(
-                                      _resending
-                                          ? context.tr('Yuborilmoqda...')
-                                          : _secondsLeft > 0
-                                          ? context.tr(
-                                              'Qayta yuborish ({seconds} s)',
-                                              {'seconds': _secondsLeft},
-                                            )
-                                          : context.tr('Kodni qayta yuborish'),
-                                      style: TextStyle(
-                                        color: canResend
-                                            ? context.appColor(
-                                                Color(0xFFA9C1FF),
-                                                surface: false,
-                                              )
-                                            : context.appColor(
-                                                Colors.white54,
-                                                surface: false,
-                                              ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                          TextButton(
+                            onPressed: canResend
+                                ? () => _requestCode(isResend: true)
+                                : null,
+                            child: Text(
+                              _resending
+                                  ? context.tr('Yuborilmoqda...')
+                                  : _secondsLeft > 0
+                                  ? context.tr('Qayta yuborish ({seconds} s)', {
+                                      'seconds': _secondsLeft,
+                                    })
+                                  : context.tr('Kodni qayta yuborish'),
                             ),
                           ),
                         ],
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

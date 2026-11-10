@@ -2,11 +2,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:myfit/data/trainer_course.dart';
 import 'package:myfit/main.dart';
+import 'package:myfit/models/trainer_course.dart';
 import 'package:myfit/screens/auth_gate.dart';
 import 'package:myfit/screens/language_picker_page.dart';
 import 'package:myfit/screens/profile_page.dart';
-import 'package:myfit/screens/workouts_page.dart';
+import 'package:myfit/screens/lessons_page.dart';
 import 'package:myfit/services/locale_store.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -49,16 +51,22 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('saved language skips the picker', (tester) async {
+  testWidgets('signed-out start shows the picker with the saved language', (
+    tester,
+  ) async {
     await tester.pumpWidget(
       MyFitApp(
         authService: SignedOutAuth(),
         profileService: TestProfiles(),
         initialLocale: 'en',
+        askLanguage: true,
       ),
     );
     await tester.pumpAndSettle();
-    expect(find.byType(LanguagePickerPage), findsNothing);
+    expect(find.byType(LanguagePickerPage), findsOneWidget);
+    expect(find.text('Continue'), findsOneWidget);
+    await tester.tap(find.byKey(const Key('language-continue')));
+    await tester.pumpAndSettle();
     expect(
       Localizations.localeOf(tester.element(find.byType(AuthGate))),
       const Locale('en'),
@@ -87,21 +95,53 @@ void main() {
     expect(other.$2['code'], 'weird');
   });
 
-  testWidgets('course tab lists lessons and opens a lesson', (tester) async {
+  testWidgets('lessons tab lists categories and opens one', (tester) async {
     tester.view.devicePixelRatio = 1;
     tester.view.physicalSize = const Size(390, 1000);
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
     await tester.pumpWidget(
-      const MaterialApp(home: Scaffold(body: WorkoutsPage())),
+      const MaterialApp(home: Scaffold(body: LessonsPage())),
     );
-    expect(find.text('Murabbiy video kursi'), findsOneWidget);
-    await tester.tap(find.byKey(const Key('lesson-l1')));
+    expect(kLessonCategories, hasLength(13));
+    expect(find.text('Darslar'), findsOneWidget);
+    expect(find.text('FullBody mashqlar'), findsOneWidget);
+    await tester.tap(find.byKey(const Key('category-fullbody')));
     await tester.pumpAndSettle();
-    expect(find.text('Video hali yuklanmagan'), findsOneWidget);
+    expect(find.byType(LessonCategoryPage), findsOneWidget);
+    expect(find.byKey(const Key('category-empty')), findsOneWidget);
+    await tester.tap(find.byKey(const Key('category-back')));
+    await tester.pumpAndSettle();
+    expect(find.byType(LessonCategoryPage), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('category videos open in order, any one can be picked', (
+    tester,
+  ) async {
+    const course = TrainerCourse(
+      id: 'superset',
+      title: 'SuperSet mashqlar',
+      description: '',
+      lessons: [
+        CourseLesson(id: 'b', order: 2, title: 'Ikkinchi', description: ''),
+        CourseLesson(id: 'a', order: 1, title: 'Birinchi', description: ''),
+        CourseLesson(id: 'c', order: 3, title: 'Uchinchi', description: ''),
+      ],
+    );
+    await tester.pumpWidget(
+      const MaterialApp(home: LessonCategoryPage(course: course)),
+    );
+    expect(
+      tester.getTopLeft(find.byKey(const Key('lesson-a'))).dy,
+      lessThan(tester.getTopLeft(find.byKey(const Key('lesson-b'))).dy),
+    );
+    await tester.tap(find.byKey(const Key('lesson-b')));
+    await tester.pumpAndSettle();
+    expect(find.text('Ikkinchi'), findsOneWidget);
     await tester.tap(find.text('Keyingi'));
     await tester.pumpAndSettle();
-    expect(find.text('To‘g‘ri isinish'), findsWidgets);
+    expect(find.text('Uchinchi'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 }

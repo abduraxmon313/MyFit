@@ -45,7 +45,8 @@ class AppLocalizations {
       'Rasm yuklanmoqda…': 'Загрузка фото…',
       'Profil rasmi yangilandi.': 'Фото профиля обновлено.',
       'Profil rasmi olib tashlandi.': 'Фото профиля убрано.',
-      'Rasmni yangilab bo‘lmadi. Ruxsat va internetni tekshirib, qayta urinib ko‘ring.': 'Не удалось обновить фото. Проверьте разрешения и подключение к интернету и повторите попытку.',
+      'Rasmni yangilab bo‘lmadi. Ruxsat va internetni tekshirib, qayta urinib ko‘ring.':
+          'Не удалось обновить фото. Проверьте разрешения и подключение к интернету и повторите попытку.',
       'Sozlamalar': 'Настройки',
       'Hisobotlar': 'Отчёты',
       'Ovqatlanishingiz raqamlarda': 'Ваше питание в цифрах',
@@ -58,27 +59,36 @@ class AppLocalizations {
       'Jami kaloriya': 'Всего калорий',
       'Kunlik o‘rtacha': 'В среднем за день',
       'Yozuvli kunlar': 'Дни с записями',
-      'O‘rtacha bugungacha bo‘lgan barcha kunlar bo‘yicha.': 'Среднее по всем дням периода до сегодняшнего дня включительно.',
-      'Bu davrda ovqat yozuvlari yo‘q.': 'За этот период нет записей о питании.',
-      'Kundalikka ovqat qo‘shing — hisoblar shu yerda ko‘rinadi.': 'Добавьте еду в дневник — здесь появятся расчёты.',
+      'O‘rtacha bugungacha bo‘lgan barcha kunlar bo‘yicha.':
+          'Среднее по всем дням периода до сегодняшнего дня включительно.',
+      'Bu davrda ovqat yozuvlari yo‘q.':
+          'За этот период нет записей о питании.',
+      'Kundalikka ovqat qo‘shing — hisoblar shu yerda ko‘rinadi.':
+          'Добавьте еду в дневник — здесь появятся расчёты.',
       'Kaloriya dinamikasi': 'Динамика калорий',
       'Kunlik maqsad': 'Дневная цель',
-      'Kunni bosib, ovqatlarni ko‘ring. Chiziq — joriy kunlik maqsad.': 'Нажмите на день, чтобы увидеть еду. Линия — текущая дневная цель.',
+      'Kunni bosib, ovqatlarni ko‘ring. Chiziq — joriy kunlik maqsad.':
+          'Нажмите на день, чтобы увидеть еду. Линия — текущая дневная цель.',
       'Makronutrientlar': 'Макронутриенты',
       'Yog‘lar': 'Жиры',
-      'Ulushlar oqsil va uglevod uchun 4, yog‘ uchun 9 kcal/g asosida.': 'Доли рассчитаны по 4 ккал/г для белков и углеводов и 9 ккал/г для жиров.',
+      'Ulushlar oqsil va uglevod uchun 4, yog‘ uchun 9 kcal/g asosida.':
+          'Доли рассчитаны по 4 ккал/г для белков и углеводов и 9 ккал/г для жиров.',
       'Ovqatlanish taqsimoti': 'По приёмам пищи',
       'Iste’mol qilingan mahsulotlar': 'Съеденные продукты',
       'ta yozuv': 'записей',
-      'Hisoblar saqlangan porsiyalarga asoslangan. Yozuvsiz kun iste’mol qilinmaganini anglatmaydi. Maqsad joriy profilingizdan olinadi.': 'Расчёты основаны на сохранённых порциях. Отсутствие записей не означает отсутствие питания. Цель взята из текущего профиля.',
-      'Ayrim oziq qiymatlari yetishmaydi. ≥ — ma’lum qiymatlar yig‘indisi; ulushlar to‘liq emas.': 'Некоторые данные отсутствуют. ≥ — сумма известных значений; доли неполные.',
+      'Hisoblar saqlangan porsiyalarga asoslangan. Yozuvsiz kun iste’mol qilinmaganini anglatmaydi. Maqsad joriy profilingizdan olinadi.':
+          'Расчёты основаны на сохранённых порциях. Отсутствие записей не означает отсутствие питания. Цель взята из текущего профиля.',
+      'Ayrim oziq qiymatlari yetishmaydi. ≥ — ma’lum qiymatlar yig‘indisi; ulushlar to‘liq emas.':
+          'Некоторые данные отсутствуют. ≥ — сумма известных значений; доли неполные.',
       'Kelajak kun': 'Будущий день',
       'Yozuv yo‘q': 'Нет записей',
       "Yana ko‘rsatish": "Показать ещё",
       "Oziq qiymati 100 {unit} uchun": "Пищевая ценность на 100 {unit}",
-      "1–5000 {unit} oralig‘ida miqdor kiriting.": "Введите количество от 1 до 5000 {unit}.",
+      "1–5000 {unit} oralig‘ida miqdor kiriting.":
+          "Введите количество от 1 до 5000 {unit}.",
       "Mahsulot bazalarda topilmadi.": "Продукт не найден в базах данных.",
-      "Qiymatlar mahsulotda ko‘rsatilgan 100 g yoki 100 ml uchun.": "Значения указаны на 100 г или 100 мл в зависимости от продукта.",
+      "Qiymatlar mahsulotda ko‘rsatilgan 100 g yoki 100 ml uchun.":
+          "Значения указаны на 100 г или 100 мл в зависимости от продукта.",
       'Kundalikni yuklab bo‘lmadi.': 'Не удалось загрузить дневник.',
       'Qayta urinish': 'Повторить',
       'Saqlash amalga oshmadi. Qayta urinib ko‘ring.':
@@ -449,58 +459,92 @@ class AppLocalizations {
       'Saqlangan {count} ta mahsulot menyuga qo‘shilmaydi. Chiqasizmi?':
           'Сохранённые продукты ({count}) не будут добавлены в меню. Выйти?',
       'Qolish': 'Остаться',
+      'Ayollar organizmiga mos ovqatlanish tavsiyalari.':
+          'Рекомендации по питанию с учётом женского организма.',
+      'Ayollar uchun fitnes zalda mashqlar':
+          'Упражнения в фитнес-зале для женщин',
+      'Ayollar uchun mashqlar': 'Упражнения для женщин',
+      'Ayollar uchun to‘g‘ri ovqatlanish': 'Правильное питание для женщин',
+      'Ayollar uchun trenajyor zalidagi mashg‘ulotlar.':
+          'Тренировки на тренажёрах для женщин.',
+      'Bo‘limlar': 'Разделы',
+      'Butun tana mushaklarini bitta mashg‘ulotda ishlatish.':
+          'Все группы мышц за одну тренировку.',
+      'Dietada taomni mazali pishirish': 'Вкусная готовка на диете',
+      'DropSet mashqlar': 'Упражнения DropSet',
+      'FullBody mashqlar': 'Упражнения FullBody',
+      'Haftada 3 kunlik trenirovka': 'Тренировки 3 дня в неделю',
+      'Haftada 4 kunlik trenirovka': 'Тренировки 4 дня в неделю',
+      'Haftada 5 kunlik trenirovka': 'Тренировки 5 дней в неделю',
+      'Haftasiga 3 kun shug‘ullanish dasturi.':
+          'Программа на 3 тренировки в неделю.',
+      'Haftasiga 4 kun shug‘ullanish dasturi.':
+          'Программа на 4 тренировки в неделю.',
+      'Haftasiga 5 kun shug‘ullanish dasturi.':
+          'Программа на 5 тренировок в неделю.',
+      'Ikki mashqni dam olmasdan ketma-ket bajarish.':
+          'Два упражнения подряд без отдыха.',
+      'Og‘irlikni kamaytirib, yondashuvni davom ettirish.':
+          'Снижайте вес и продолжайте подход.',
+      'Orqaga': 'Назад',
+      'Ozish uchun kardio mashqlar': 'Кардио для похудения',
+      'Parhez taomlarini mazali tayyorlash usullari.':
+          'Как вкусно готовить диетические блюда.',
+      'Sport ozuqalari: qaysi biri, qachon va qancha.':
+          'Спортивное питание: что, когда и сколько.',
+      'SportPitlar': 'Спортпит',
+      'SuperSet mashqlar': 'Упражнения SuperSet',
+      'To‘g‘ri ovqatlanish | Ozish va Semirish':
+          'Правильное питание | Похудение и набор веса',
+      'Uyda va zalda bajariladigan mashqlar.': 'Упражнения для дома и зала.',
+      'Vazn yo‘qotish va vazn olish uchun to‘g‘ri ovqatlanish.':
+          'Правильное питание для похудения и набора веса.',
+      'Videolar': 'Видео',
+      'Videolar tez orada': 'Видео скоро появятся',
+      'Videolar tez orada yuklanadi': 'Видео скоро будут загружены',
+      'Yog‘ yoqish uchun kardio mashg‘ulotlari.':
+          'Кардиотренировки для сжигания жира.',
+      'Yuklangan videolar shu yerda tartib bilan chiqadi.':
+          'Загруженные видео появятся здесь по порядку.',
+      '{n} / {total} qadam': 'Шаг {n} из {total}',
+      '{n} ta video': '{n} видео',
       'Asosiy harakatlarni to‘g‘ri bajarish texnikasi.':
           'Техника правильного выполнения базовых движений.',
-      'Asosiy texnika':
-          'Базовая техника',
-      'Cho‘zilish va tiklanish':
-          'Растяжка и восстановление',
-      'Darslar':
-          'Уроки',
+      'Asosiy texnika': 'Базовая техника',
+      'Cho‘zilish va tiklanish': 'Растяжка и восстановление',
+      'Darslar': 'Уроки',
       'Darslarni haftaga taqsimlash bo‘yicha tavsiyalar.':
           'Рекомендации по распределению уроков на неделю.',
-      'Faollik darajasi':
-          'Уровень активности',
-      'Firebase Storage limiti tugagan.':
-          'Лимит Firebase Storage исчерпан.',
+      'Faollik darajasi': 'Уровень активности',
+      'Firebase Storage limiti tugagan.': 'Лимит Firebase Storage исчерпан.',
       'Firebase Storage yoqilmagan (Blaze rejasi kerak).':
           'Firebase Storage не включён (нужен тариф Blaze).',
-      'Haftalik reja':
-          'Недельный план',
+      'Haftalik reja': 'Недельный план',
       'Har bir mashg‘ulotdan oldin bajariladigan isinish majmuasi.':
           'Комплекс разминки перед каждой тренировкой.',
       'Internet aloqasi yo‘q. Qayta urinib ko‘ring.':
           'Нет интернета. Попробуйте ещё раз.',
       'Kamera yoki galereyaga ruxsat berilmagan. Telefon sozlamalaridan ruxsat bering.':
           'Нет доступа к камере или галерее. Разрешите его в настройках телефона.',
-      'Kardio va chidamlilik':
-          'Кардио и выносливость',
-      'Keyingi':
-          'Следующий',
-      'Kirish va xavfsizlik':
-          'Введение и безопасность',
+      'Kardio va chidamlilik': 'Кардио и выносливость',
+      'Keyingi': 'Следующий',
+      'Kirish va xavfsizlik': 'Введение и безопасность',
       'Ko‘krak, yelka, qo‘l va orqa mushaklari uchun mashqlar.':
           'Упражнения для груди, плеч, рук и спины.',
       'Kurs tuzilishi, jihozlar va jarohatdan saqlanish qoidalari.':
           'Структура курса, инвентарь и правила профилактики травм.',
-      'Maqsadingiz':
-          'Ваша цель',
+      'Maqsadingiz': 'Ваша цель',
       'Mashg‘ulotdan keyingi cho‘zilish va dam olish.':
           'Растяжка и отдых после тренировки.',
-      'Murabbiy':
-          'Тренер',
-      'Murabbiy bilan video darslar':
-          'Видеоуроки с тренером',
-      'Murabbiy video kursi':
-          'Видеокурс тренера',
+      'Murabbiy': 'Тренер',
+      'Murabbiy bilan video darslar': 'Видеоуроки с тренером',
+      'Murabbiy video kursi': 'Видеокурс тренера',
       'Murabbiy tomonidan tayyorlangan mashg‘ulotlar ketma-ketligi. Har bir darsni tartib bilan o‘ting.':
           'Последовательность тренировок от тренера. Проходите уроки по порядку.',
-      'Oldingi':
-          'Предыдущий',
+      'Oldingi': 'Предыдущий',
       'Oyoq va dumba mushaklari uchun mashqlar.':
           'Упражнения для ног и ягодиц.',
-      'Pastki tana mashqlari':
-          'Упражнения для нижней части тела',
+      'Pastki tana mashqlari': 'Упражнения для нижней части тела',
       'Rasm juda katta yoki noto‘g‘ri formatda.':
           'Фото слишком большое или в неверном формате.',
       'Rasm saqlashga ruxsat yo‘q: Firebase Storage qoidalari o‘rnatilmagan.':
@@ -509,36 +553,24 @@ class AppLocalizations {
           'Войдите снова, чтобы загрузить фото.',
       'Rasmni yangilab bo‘lmadi ({code}).':
           'Не удалось обновить фото ({code}).',
-      'Tana o‘lchamlari':
-          'Параметры тела',
-      'Tez orada':
-          'Скоро',
-      'To‘g‘ri isinish':
-          'Правильная разминка',
+      'Tana o‘lchamlari': 'Параметры тела',
+      'Tez orada': 'Скоро',
+      'To‘g‘ri isinish': 'Правильная разминка',
       'Videolar tez orada yuklanadi. Darslar tartibi quyida.':
           'Видео скоро появятся. Порядок уроков ниже.',
-      'Yuqori tana mashqlari':
-          'Упражнения для верхней части тела',
+      'Yuqori tana mashqlari': 'Упражнения для верхней части тела',
       'Yurak-qon tomir tizimini mustahkamlovchi mashg‘ulot.':
           'Тренировка для сердечно-сосудистой системы.',
-      'daq':
-          'мин',
-      'dars':
-          'уроков',
-      'video yuklangan':
-          'видео загружено',
-      '{n}-dars':
-          'Урок {n}',
-      'Video hali yuklanmagan':
-          'Видео ещё не загружено',
-      'Video tez orada ijro etiladi':
-          'Воспроизведение скоро появится',
+      'daq': 'мин',
+      'dars': 'уроков',
+      'video yuklangan': 'видео загружено',
+      '{n}-dars': 'Урок {n}',
+      'Video hali yuklanmagan': 'Видео ещё не загружено',
+      'Video tez orada ijro etiladi': 'Воспроизведение скоро появится',
       'Asosan o‘tirib ishlayman, mashq kam':
           'В основном сижу, тренируюсь редко',
-      'Haftasiga 2–4 marta mashq qilaman':
-          'Тренируюсь 2–4 раза в неделю',
-      'Deyarli har kuni faol harakatdaman':
-          'Активен почти каждый день',
+      'Haftasiga 2–4 marta mashq qilaman': 'Тренируюсь 2–4 раза в неделю',
+      'Deyarli har kuni faol harakatdaman': 'Активен почти каждый день',
       'SMS xizmati yoqilmagan: Firebase loyihasiga billing ulanmagan.':
           'SMS не включены: к проекту Firebase не подключён биллинг.',
       'Bugungi SMS limiti tugadi. Keyinroq urinib ko‘ring.':
@@ -586,7 +618,8 @@ class AppLocalizations {
       'Rasm yuklanmoqda…': 'Uploading photo…',
       'Profil rasmi yangilandi.': 'Profile photo updated.',
       'Profil rasmi olib tashlandi.': 'Profile photo removed.',
-      'Rasmni yangilab bo‘lmadi. Ruxsat va internetni tekshirib, qayta urinib ko‘ring.': 'Could not update the photo. Check permissions and your internet connection, then try again.',
+      'Rasmni yangilab bo‘lmadi. Ruxsat va internetni tekshirib, qayta urinib ko‘ring.':
+          'Could not update the photo. Check permissions and your internet connection, then try again.',
       'Sozlamalar': 'Settings',
       'Hisobotlar': 'Reports',
       'Ovqatlanishingiz raqamlarda': 'Your nutrition in numbers',
@@ -599,27 +632,35 @@ class AppLocalizations {
       'Jami kaloriya': 'Total calories',
       'Kunlik o‘rtacha': 'Daily average',
       'Yozuvli kunlar': 'Days logged',
-      'O‘rtacha bugungacha bo‘lgan barcha kunlar bo‘yicha.': 'Average across all days in the period through today.',
+      'O‘rtacha bugungacha bo‘lgan barcha kunlar bo‘yicha.':
+          'Average across all days in the period through today.',
       'Bu davrda ovqat yozuvlari yo‘q.': 'No food entries in this period.',
-      'Kundalikka ovqat qo‘shing — hisoblar shu yerda ko‘rinadi.': 'Add food to your diary to see your totals here.',
+      'Kundalikka ovqat qo‘shing — hisoblar shu yerda ko‘rinadi.':
+          'Add food to your diary to see your totals here.',
       'Kaloriya dinamikasi': 'Calorie trend',
       'Kunlik maqsad': 'Daily target',
-      'Kunni bosib, ovqatlarni ko‘ring. Chiziq — joriy kunlik maqsad.': 'Tap a day to see its food. The line is your current daily target.',
+      'Kunni bosib, ovqatlarni ko‘ring. Chiziq — joriy kunlik maqsad.':
+          'Tap a day to see its food. The line is your current daily target.',
       'Makronutrientlar': 'Macronutrients',
       'Yog‘lar': 'Fat',
-      'Ulushlar oqsil va uglevod uchun 4, yog‘ uchun 9 kcal/g asosida.': 'Shares use 4 kcal/g for protein and carbs, and 9 kcal/g for fat.',
+      'Ulushlar oqsil va uglevod uchun 4, yog‘ uchun 9 kcal/g asosida.':
+          'Shares use 4 kcal/g for protein and carbs, and 9 kcal/g for fat.',
       'Ovqatlanish taqsimoti': 'Meal breakdown',
       'Iste’mol qilingan mahsulotlar': 'Foods consumed',
       'ta yozuv': 'entries',
-      'Hisoblar saqlangan porsiyalarga asoslangan. Yozuvsiz kun iste’mol qilinmaganini anglatmaydi. Maqsad joriy profilingizdan olinadi.': 'Totals use saved portions. An unlogged day does not mean no food was consumed. The target uses your current profile.',
-      'Ayrim oziq qiymatlari yetishmaydi. ≥ — ma’lum qiymatlar yig‘indisi; ulushlar to‘liq emas.': 'Some nutrient data is missing. ≥ means the sum of known values; shares are incomplete.',
+      'Hisoblar saqlangan porsiyalarga asoslangan. Yozuvsiz kun iste’mol qilinmaganini anglatmaydi. Maqsad joriy profilingizdan olinadi.':
+          'Totals use saved portions. An unlogged day does not mean no food was consumed. The target uses your current profile.',
+      'Ayrim oziq qiymatlari yetishmaydi. ≥ — ma’lum qiymatlar yig‘indisi; ulushlar to‘liq emas.':
+          'Some nutrient data is missing. ≥ means the sum of known values; shares are incomplete.',
       'Kelajak kun': 'Future day',
       'Yozuv yo‘q': 'No entries',
       "Yana ko‘rsatish": "Show more",
       "Oziq qiymati 100 {unit} uchun": "Nutrition per 100 {unit}",
-      "1–5000 {unit} oralig‘ida miqdor kiriting.": "Enter an amount between 1 and 5000 {unit}.",
+      "1–5000 {unit} oralig‘ida miqdor kiriting.":
+          "Enter an amount between 1 and 5000 {unit}.",
       "Mahsulot bazalarda topilmadi.": "Product not found in the databases.",
-      "Qiymatlar mahsulotda ko‘rsatilgan 100 g yoki 100 ml uchun.": "Values are per 100 g or 100 ml as shown for each product.",
+      "Qiymatlar mahsulotda ko‘rsatilgan 100 g yoki 100 ml uchun.":
+          "Values are per 100 g or 100 ml as shown for each product.",
       'Kundalikni yuklab bo‘lmadi.': 'Could not load your diary.',
       'Qayta urinish': 'Retry',
       'Saqlash amalga oshmadi. Qayta urinib ko‘ring.':
@@ -980,96 +1021,116 @@ class AppLocalizations {
       'Saqlangan {count} ta mahsulot menyuga qo‘shilmaydi. Chiqasizmi?':
           '{count} saved items will not be added to the meal. Leave?',
       'Qolish': 'Stay',
+      'Ayollar organizmiga mos ovqatlanish tavsiyalari.':
+          'Nutrition advice suited to the female body.',
+      'Ayollar uchun fitnes zalda mashqlar': 'Gym workouts for women',
+      'Ayollar uchun mashqlar': 'Workouts for women',
+      'Ayollar uchun to‘g‘ri ovqatlanish': 'Healthy eating for women',
+      'Ayollar uchun trenajyor zalidagi mashg‘ulotlar.':
+          'Machine-based gym sessions for women.',
+      'Bo‘limlar': 'Categories',
+      'Butun tana mushaklarini bitta mashg‘ulotda ishlatish.':
+          'Work every muscle group in one session.',
+      'Dietada taomni mazali pishirish': 'Tasty cooking on a diet',
+      'DropSet mashqlar': 'DropSet workouts',
+      'FullBody mashqlar': 'FullBody workouts',
+      'Haftada 3 kunlik trenirovka': '3-day weekly training',
+      'Haftada 4 kunlik trenirovka': '4-day weekly training',
+      'Haftada 5 kunlik trenirovka': '5-day weekly training',
+      'Haftasiga 3 kun shug‘ullanish dasturi.':
+          'A program with 3 sessions a week.',
+      'Haftasiga 4 kun shug‘ullanish dasturi.':
+          'A program with 4 sessions a week.',
+      'Haftasiga 5 kun shug‘ullanish dasturi.':
+          'A program with 5 sessions a week.',
+      'Ikki mashqni dam olmasdan ketma-ket bajarish.':
+          'Two exercises back to back without rest.',
+      'Og‘irlikni kamaytirib, yondashuvni davom ettirish.':
+          'Lower the weight and keep the set going.',
+      'Orqaga': 'Back',
+      'Ozish uchun kardio mashqlar': 'Cardio for weight loss',
+      'Parhez taomlarini mazali tayyorlash usullari.':
+          'How to make diet meals taste good.',
+      'Sport ozuqalari: qaysi biri, qachon va qancha.':
+          'Sports supplements: which, when and how much.',
+      'SportPitlar': 'Sports supplements',
+      'SuperSet mashqlar': 'SuperSet workouts',
+      'To‘g‘ri ovqatlanish | Ozish va Semirish':
+          'Healthy eating | Weight loss and gain',
+      'Uyda va zalda bajariladigan mashqlar.':
+          'Exercises for home and the gym.',
+      'Vazn yo‘qotish va vazn olish uchun to‘g‘ri ovqatlanish.':
+          'Healthy eating to lose or gain weight.',
+      'Videolar': 'Videos',
+      'Videolar tez orada': 'Videos coming soon',
+      'Videolar tez orada yuklanadi': 'Videos will be uploaded soon',
+      'Yog‘ yoqish uchun kardio mashg‘ulotlari.':
+          'Cardio sessions to burn fat.',
+      'Yuklangan videolar shu yerda tartib bilan chiqadi.':
+          'Uploaded videos will appear here in order.',
+      '{n} / {total} qadam': 'Step {n} of {total}',
+      '{n} ta video': '{n} videos',
       'Asosiy harakatlarni to‘g‘ri bajarish texnikasi.':
           'Correct technique for the basic movements.',
-      'Asosiy texnika':
-          'Basic technique',
-      'Cho‘zilish va tiklanish':
-          'Stretching and recovery',
-      'Darslar':
-          'Lessons',
+      'Asosiy texnika': 'Basic technique',
+      'Cho‘zilish va tiklanish': 'Stretching and recovery',
+      'Darslar': 'Lessons',
       'Darslarni haftaga taqsimlash bo‘yicha tavsiyalar.':
           'How to spread the lessons across the week.',
-      'Faollik darajasi':
-          'Activity level',
-      'Firebase Storage limiti tugagan.':
-          'Firebase Storage quota is exceeded.',
+      'Faollik darajasi': 'Activity level',
+      'Firebase Storage limiti tugagan.': 'Firebase Storage quota is exceeded.',
       'Firebase Storage yoqilmagan (Blaze rejasi kerak).':
           'Firebase Storage is not enabled (Blaze plan required).',
-      'Haftalik reja':
-          'Weekly plan',
+      'Haftalik reja': 'Weekly plan',
       'Har bir mashg‘ulotdan oldin bajariladigan isinish majmuasi.':
           'Warm-up routine before every session.',
       'Internet aloqasi yo‘q. Qayta urinib ko‘ring.':
           'No internet connection. Please try again.',
       'Kamera yoki galereyaga ruxsat berilmagan. Telefon sozlamalaridan ruxsat bering.':
           'Camera or photo access is denied. Allow it in phone settings.',
-      'Kardio va chidamlilik':
-          'Cardio and endurance',
-      'Keyingi':
-          'Next',
-      'Kirish va xavfsizlik':
-          'Introduction and safety',
+      'Kardio va chidamlilik': 'Cardio and endurance',
+      'Keyingi': 'Next',
+      'Kirish va xavfsizlik': 'Introduction and safety',
       'Ko‘krak, yelka, qo‘l va orqa mushaklari uchun mashqlar.':
           'Exercises for chest, shoulders, arms and back.',
       'Kurs tuzilishi, jihozlar va jarohatdan saqlanish qoidalari.':
           'Course structure, equipment and injury-prevention rules.',
-      'Maqsadingiz':
-          'Your goal',
+      'Maqsadingiz': 'Your goal',
       'Mashg‘ulotdan keyingi cho‘zilish va dam olish.':
           'Stretching and rest after a session.',
-      'Murabbiy':
-          'Trainer',
-      'Murabbiy bilan video darslar':
-          'Video lessons with a trainer',
-      'Murabbiy video kursi':
-          'Trainer video course',
+      'Murabbiy': 'Trainer',
+      'Murabbiy bilan video darslar': 'Video lessons with a trainer',
+      'Murabbiy video kursi': 'Trainer video course',
       'Murabbiy tomonidan tayyorlangan mashg‘ulotlar ketma-ketligi. Har bir darsni tartib bilan o‘ting.':
           'A sequence of sessions prepared by the trainer. Take the lessons in order.',
-      'Oldingi':
-          'Previous',
+      'Oldingi': 'Previous',
       'Oyoq va dumba mushaklari uchun mashqlar.':
           'Exercises for legs and glutes.',
-      'Pastki tana mashqlari':
-          'Lower-body exercises',
+      'Pastki tana mashqlari': 'Lower-body exercises',
       'Rasm juda katta yoki noto‘g‘ri formatda.':
           'The photo is too large or in an unsupported format.',
       'Rasm saqlashga ruxsat yo‘q: Firebase Storage qoidalari o‘rnatilmagan.':
           'No storage permission: Firebase Storage rules are not deployed.',
-      'Rasm yuklash uchun qayta kiring.':
-          'Sign in again to upload a photo.',
+      'Rasm yuklash uchun qayta kiring.': 'Sign in again to upload a photo.',
       'Rasmni yangilab bo‘lmadi ({code}).':
           'Could not update the photo ({code}).',
-      'Tana o‘lchamlari':
-          'Body measurements',
-      'Tez orada':
-          'Soon',
-      'To‘g‘ri isinish':
-          'Proper warm-up',
+      'Tana o‘lchamlari': 'Body measurements',
+      'Tez orada': 'Soon',
+      'To‘g‘ri isinish': 'Proper warm-up',
       'Videolar tez orada yuklanadi. Darslar tartibi quyida.':
           'Videos are coming soon. The lesson order is below.',
-      'Yuqori tana mashqlari':
-          'Upper-body exercises',
+      'Yuqori tana mashqlari': 'Upper-body exercises',
       'Yurak-qon tomir tizimini mustahkamlovchi mashg‘ulot.':
           'A session that strengthens the cardiovascular system.',
-      'daq':
-          'min',
-      'dars':
-          'lessons',
-      'video yuklangan':
-          'videos uploaded',
-      '{n}-dars':
-          'Lesson {n}',
-      'Video hali yuklanmagan':
-          'Video not uploaded yet',
-      'Video tez orada ijro etiladi':
-          'Playback is coming soon',
-      'Asosan o‘tirib ishlayman, mashq kam':
-          'Mostly sitting, little exercise',
-      'Haftasiga 2–4 marta mashq qilaman':
-          'I exercise 2–4 times a week',
-      'Deyarli har kuni faol harakatdaman':
-          'Active almost every day',
+      'daq': 'min',
+      'dars': 'lessons',
+      'video yuklangan': 'videos uploaded',
+      '{n}-dars': 'Lesson {n}',
+      'Video hali yuklanmagan': 'Video not uploaded yet',
+      'Video tez orada ijro etiladi': 'Playback is coming soon',
+      'Asosan o‘tirib ishlayman, mashq kam': 'Mostly sitting, little exercise',
+      'Haftasiga 2–4 marta mashq qilaman': 'I exercise 2–4 times a week',
+      'Deyarli har kuni faol harakatdaman': 'Active almost every day',
       'SMS xizmati yoqilmagan: Firebase loyihasiga billing ulanmagan.':
           'SMS is not enabled: no billing account is linked to the Firebase project.',
       'Bugungi SMS limiti tugadi. Keyinroq urinib ko‘ring.':

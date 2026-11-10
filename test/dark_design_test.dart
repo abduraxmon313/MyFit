@@ -13,7 +13,7 @@ import 'package:myfit/screens/body_fat_calculator_page.dart';
 import 'package:myfit/screens/water_calculator_page.dart';
 import 'package:myfit/screens/meals_page.dart';
 import 'package:myfit/screens/profile_page.dart';
-import 'package:myfit/screens/workouts_page.dart';
+import 'package:myfit/screens/lessons_page.dart';
 import 'package:myfit/theme/app_theme.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
@@ -56,7 +56,7 @@ void main() {
         onSave: (_) async {},
         onSignOut: () async {},
       ),
-      const WorkoutsPage(),
+      const LessonsPage(),
       const CalculatorPage(),
       const CalorieCalculatorPage(),
       const BodyFatCalculatorPage(),
@@ -155,7 +155,7 @@ void main() {
                   ),
                   NavigationDestination(
                     icon: Icon(LucideIcons.dumbbell),
-                    label: 'Mashqlar',
+                    label: 'Darslar',
                   ),
                   NavigationDestination(
                     icon: Icon(LucideIcons.user),

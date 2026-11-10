@@ -1,62 +1,87 @@
 import '../models/trainer_course.dart';
 
-/// Course outline used until the real course is loaded from Firebase.
-/// Titles are structural placeholders; no videos are attached yet.
-const kTrainerCourse = TrainerCourse(
-  id: 'main',
-  title: 'Murabbiy video kursi',
-  description:
-      'Murabbiy tomonidan tayyorlangan mashg‘ulotlar ketma-ketligi. Har bir darsni tartib bilan o‘ting.',
-  lessons: [
-    CourseLesson(
-      id: 'l1',
-      order: 1,
-      title: 'Kirish va xavfsizlik',
-      description:
-          'Kurs tuzilishi, jihozlar va jarohatdan saqlanish qoidalari.',
-    ),
-    CourseLesson(
-      id: 'l2',
-      order: 2,
-      title: 'To‘g‘ri isinish',
-      description:
-          'Har bir mashg‘ulotdan oldin bajariladigan isinish majmuasi.',
-    ),
-    CourseLesson(
-      id: 'l3',
-      order: 3,
-      title: 'Asosiy texnika',
-      description: 'Asosiy harakatlarni to‘g‘ri bajarish texnikasi.',
-    ),
-    CourseLesson(
-      id: 'l4',
-      order: 4,
-      title: 'Yuqori tana mashqlari',
-      description: 'Ko‘krak, yelka, qo‘l va orqa mushaklari uchun mashqlar.',
-    ),
-    CourseLesson(
-      id: 'l5',
-      order: 5,
-      title: 'Pastki tana mashqlari',
-      description: 'Oyoq va dumba mushaklari uchun mashqlar.',
-    ),
-    CourseLesson(
-      id: 'l6',
-      order: 6,
-      title: 'Kardio va chidamlilik',
-      description: 'Yurak-qon tomir tizimini mustahkamlovchi mashg‘ulot.',
-    ),
-    CourseLesson(
-      id: 'l7',
-      order: 7,
-      title: 'Cho‘zilish va tiklanish',
-      description: 'Mashg‘ulotdan keyingi cho‘zilish va dam olish.',
-    ),
-    CourseLesson(
-      id: 'l8',
-      order: 8,
-      title: 'Haftalik reja',
-      description: 'Darslarni haftaga taqsimlash bo‘yicha tavsiyalar.',
-    ),
-  ],
-);
+/// "Darslar" tab categories, in display order.
+///
+/// Each category is a [TrainerCourse] whose lessons are its ordered videos.
+/// Videos are uploaded later (Firebase Storage + Firestore), so the lists
+/// start empty.
+const kLessonCategories = <TrainerCourse>[
+  TrainerCourse(
+    id: 'nutrition',
+    title: 'To‘g‘ri ovqatlanish | Ozish va Semirish',
+    description: 'Vazn yo‘qotish va vazn olish uchun to‘g‘ri ovqatlanish.',
+    lessons: [],
+  ),
+  TrainerCourse(
+    id: 'diet-cooking',
+    title: 'Dietada taomni mazali pishirish',
+    description: 'Parhez taomlarini mazali tayyorlash usullari.',
+    lessons: [],
+  ),
+  TrainerCourse(
+    id: 'fullbody',
+    title: 'FullBody mashqlar',
+    description: 'Butun tana mushaklarini bitta mashg‘ulotda ishlatish.',
+    lessons: [],
+  ),
+  TrainerCourse(
+    id: 'split-3',
+    title: 'Haftada 3 kunlik trenirovka',
+    description: 'Haftasiga 3 kun shug‘ullanish dasturi.',
+    lessons: [],
+  ),
+  TrainerCourse(
+    id: 'split-4',
+    title: 'Haftada 4 kunlik trenirovka',
+    description: 'Haftasiga 4 kun shug‘ullanish dasturi.',
+    lessons: [],
+  ),
+  TrainerCourse(
+    id: 'split-5',
+    title: 'Haftada 5 kunlik trenirovka',
+    description: 'Haftasiga 5 kun shug‘ullanish dasturi.',
+    lessons: [],
+  ),
+  TrainerCourse(
+    id: 'superset',
+    title: 'SuperSet mashqlar',
+    description: 'Ikki mashqni dam olmasdan ketma-ket bajarish.',
+    lessons: [],
+  ),
+  TrainerCourse(
+    id: 'dropset',
+    title: 'DropSet mashqlar',
+    description: 'Og‘irlikni kamaytirib, yondashuvni davom ettirish.',
+    lessons: [],
+  ),
+  TrainerCourse(
+    id: 'sportpit',
+    title: 'SportPitlar',
+    description: 'Sport ozuqalari: qaysi biri, qachon va qancha.',
+    lessons: [],
+  ),
+  TrainerCourse(
+    id: 'women-gym',
+    title: 'Ayollar uchun fitnes zalda mashqlar',
+    description: 'Ayollar uchun trenajyor zalidagi mashg‘ulotlar.',
+    lessons: [],
+  ),
+  TrainerCourse(
+    id: 'women-workouts',
+    title: 'Ayollar uchun mashqlar',
+    description: 'Uyda va zalda bajariladigan mashqlar.',
+    lessons: [],
+  ),
+  TrainerCourse(
+    id: 'women-nutrition',
+    title: 'Ayollar uchun to‘g‘ri ovqatlanish',
+    description: 'Ayollar organizmiga mos ovqatlanish tavsiyalari.',
+    lessons: [],
+  ),
+  TrainerCourse(
+    id: 'cardio',
+    title: 'Ozish uchun kardio mashqlar',
+    description: 'Yog‘ yoqish uchun kardio mashg‘ulotlari.',
+    lessons: [],
+  ),
+];

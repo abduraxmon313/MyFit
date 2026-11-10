@@ -12,6 +12,7 @@ import 'services/auth_service.dart';
 import 'services/profile_service.dart';
 import 'services/appearance_store.dart';
 import 'services/locale_store.dart';
+import 'services/onboarding_store.dart';
 import 'screens/language_picker_page.dart';
 
 Future<void> main() async {
@@ -27,6 +28,17 @@ Future<void> main() async {
     ),
   );
   final authService = AuthService();
+  // Ro'yxatdan o'tish oxiriga yetmay ilova yopilgan bo'lsa, qaytadan
+  // til tanlashdan boshlanadi.
+  final onboarding = OnboardingStore();
+  if (await onboarding.isInProgress()) {
+    if (authService.currentUser != null) {
+      try {
+        await authService.signOut();
+      } catch (_) {}
+    }
+    await onboarding.setInProgress(false);
+  }
   runApp(
     MyFitApp(
       authService: authService,
@@ -35,8 +47,8 @@ Future<void> main() async {
       appearanceStore: appearanceStore,
       initialLocale: initialLocale,
       localeStore: localeStore,
-      // Til faqat birinchi ochilishda, hali hech kim kirmagan bo'lsa so'raladi.
-      askLanguage: initialLocale == null && authService.currentUser == null,
+      // Kirilmagan bo'lsa, ilova til tanlashdan boshlanadi.
+      askLanguage: authService.currentUser == null,
     ),
   );
 }
