@@ -46,10 +46,19 @@ android {
             keyPassword = keystoreProperties["keyPassword"] as String?
             storeFile = (keystoreProperties["storeFile"] as String?)?.let { file(it) }
             storePassword = keystoreProperties["storePassword"] as String?
+            (keystoreProperties["storeType"] as String?)?.let { storeType = it }
         }
     }
 
     buildTypes {
+        // With android/key.properties (created by CI) the test APK is signed
+        // with the fixed MyFit key, so a new APK installs as an update.
+        // Without it, Gradle keeps the machine's own debug key.
+        getByName("debug") {
+            if (keystorePropertiesFile.exists()) {
+                signingConfig = signingConfigs.getByName("release")
+            }
+        }
         release {
             signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
