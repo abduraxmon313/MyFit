@@ -8,6 +8,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart' show XFile;
 
+import '../config/app_config.dart';
 import '../models/trainer_course.dart';
 import 'mp4_inspector.dart';
 
@@ -145,12 +146,6 @@ class UploadedLessonVideo {
   final String videoUrl;
 }
 
-/// Base URL of the Cloudflare Worker video API (`workers/video`).
-///
-/// Set at build time: `--dart-define=MYFIT_VIDEO_API=https://myfit-video.<subdomain>.workers.dev`.
-/// It is a public URL, not a secret.
-const kLessonVideoApi = String.fromEnvironment('MYFIT_VIDEO_API');
-
 /// Returns the signed-in user's Firebase ID token (`null` when signed out).
 typedef IdTokenProvider = Future<String?> Function({bool forceRefresh});
 
@@ -164,7 +159,7 @@ Future<String?> _firebaseIdToken({bool forceRefresh = false}) async =>
 /// and checks `admins/{uid}`. R2 credentials never reach the app.
 class LessonVideoUploader {
   LessonVideoUploader({this.client, String? apiBase, IdTokenProvider? idToken})
-    : apiBase = apiBase ?? kLessonVideoApi,
+    : apiBase = apiBase ?? kVideoApiBaseUrl,
       idToken = idToken ?? _firebaseIdToken;
 
   /// Defaults to a new client per upload.

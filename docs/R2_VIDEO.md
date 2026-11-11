@@ -71,7 +71,7 @@ npx wrangler secret put FIREBASE_SERVICE_ACCOUNT < /path/to/service-account.json
 npx wrangler deploy
 ```
 
-Deploydan keyin manzil chiqadi: `https://myfit-video.<subdomain>.workers.dev`.
+Deploy qilingan manzil: `https://myfit-video.myfit-app.workers.dev`.
 
 `wrangler.jsonc` dagi ochiq sozlamalar (maxfiy emas):
 
@@ -86,15 +86,10 @@ Deploydan keyin manzil chiqadi: `https://myfit-video.<subdomain>.workers.dev`.
 O'z domeningizga o'tganda `R2_PUBLIC_BASE_URL` ni o'zgartirib `npx wrangler deploy` qiling.
 Yangi URL faqat yangi darslarga yoziladi.
 
-### 4. Ilovaga Worker manzilini berish
-Manzil maxfiy emas; build paytida beriladi:
-
-```bash
-flutter build apk --dart-define=MYFIT_VIDEO_API=https://myfit-video.<subdomain>.workers.dev
-```
-
-Codemagic: **Environment variables** → `MYFIT_VIDEO_API` (codemagic.yaml uni o'qiydi).
-Berilmasa, yuklash ekrani "Video xizmati hali sozlanmagan" deydi; darslarni ko'rish ishlayveradi.
+### 4. Ilovadagi Worker manzili
+Manzil bitta joyda: `lib/config/app_config.dart` → `kVideoApiBaseUrl`
+(`https://myfit-video.myfit-app.workers.dev`). Android va iOS bir xil manzildan foydalanadi;
+`--dart-define` yoki Codemagic o'zgaruvchisi kerak emas. Domen o'zgarsa, faqat shu qatorni yangilang.
 
 ### 5. Admin qo'shish
 Firebase Console → Authentication → foydalanuvchi **UID** → Firestore → `admins` kolleksiyasi →
