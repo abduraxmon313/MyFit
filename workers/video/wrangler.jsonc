@@ -22,9 +22,11 @@
     "ALLOWED_ORIGINS": "https://myfit-d6275.web.app,https://myfit-d6275.firebaseapp.com",
     // SMS sign-in template (DevSMS). Empty = DevSMS universal OTP.
     // Set the template ID you choose from the "List DevSMS templates" workflow.
-    "DEVSMS_OTP_TEMPLATE_ID": "",
-    // Token that receives the code, e.g. "{code}" (auto if the text has one).
-    "DEVSMS_OTP_CODE_PLACEHOLDER": "",
+    // 564 = "Ilovaga kirish" (owner's approved template).
+    "DEVSMS_OTP_TEMPLATE_ID": "564",
+    // Token or literal example code that receives the code (auto if one token).
+    // Template 564 shows the example code 583921; it is replaced by the real code.
+    "DEVSMS_OTP_CODE_PLACEHOLDER": "583921",
     // JSON with fixed values for other tokens, e.g. {"{app}":"MyFit"}.
     "DEVSMS_OTP_TEMPLATE_VALUES": "",
     // Sender name registered in DevSMS (empty = DevSMS default).

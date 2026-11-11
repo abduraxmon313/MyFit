@@ -233,7 +233,11 @@ export async function verifySmsCode(deps: SmsDeps, body: unknown) {
 /** Which DevSMS template the OTP uses (chosen by the owner, see docs). */
 export interface OtpTemplateConfig {
   templateId: string;
-  /** Token replaced by the code, e.g. `{code}`; auto when the text has one. */
+  /**
+   * Text replaced by the code: a token like `{code}`, or the example code
+   * written literally in the approved template (e.g. `583921`). Auto when
+   * the text has exactly one token.
+   */
   codePlaceholder?: string;
   /** Fixed values for other tokens, e.g. `{"{app}": "MyFit"}`. */
   values?: Record<string, string>;
@@ -296,15 +300,36 @@ export class DevSmsSender implements SmsSender {
     const token =
       this.template.codePlaceholder ??
       (template.placeholders.length === 1 ? template.placeholders[0] : undefined);
-    if (!token || !template.placeholders.includes(token)) {
+    if (!token || !template.text.includes(token)) {
       throw new ApiError(
         500,
         "sms-misconfigured",
         `Template ${template.id} has no code placeholder (${template.placeholders.join(", ") || "none"})`,
       );
     }
-    const message = renderTemplate(template.text, { ...this.template.values, [token]: code });
-    await this.client.sendSms(phone, message, template.id, this.template.from);
+    const values = { ...this.template.values };
+    let message: string;
+    if (template.placeholders.includes(token)) {
+      message = renderTemplate(template.text, { ...values, [token]: code });
+    } else {
+      // Literal example code in the approved text: swap it for the real one.
+      if (template.text.split(token).length !== 2) {
+        throw new ApiError(500, "sms-misconfigured", `Code text ${token} must appear exactly once`);
+      }
+      message = renderTemplate(template.text, values).split(token).join(code);
+    }
+    try {
+      await this.client.sendSms(phone, message, template.id, this.template.from);
+    } catch (error) {
+      // DevSMS did not accept the text (nothing charged): keep sign-in
+      // working with the pre-approved universal OTP.
+      if (error instanceof ApiError && error.reason === "sms-rejected") {
+        console.error("Template SMS rejected, falling back to universal OTP", template.id);
+        await this.client.sendUniversalOtp(phone, code, this.serviceName);
+        return;
+      }
+      throw error;
+    }
   }
 
   private async findTemplate(id: string): Promise<DevSmsTemplate> {
