@@ -105,6 +105,13 @@ describe("HTTP API", () => {
     expect(preflight.headers.get("access-control-allow-headers")).toContain("authorization");
   });
 
+  it("a broken service-account secret does not affect token rejection", async () => {
+    const broken = { ...env, FIREBASE_SERVICE_ACCOUNT: "not json" } as Env;
+    const response = await handle(post("/createVideoUpload", { json: body }), broken);
+    expect(response.status).toBe(401);
+    expect((await response.json() as any).error.reason).toBe("sign-in-required");
+  });
+
   it("hides internal error details", async () => {
     const h = harness();
     h.deps.presign = async () => {
