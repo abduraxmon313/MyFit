@@ -184,3 +184,20 @@ Sozlash (bir marta):
    rolini qo'shing (Cloud Datastore User ham qoladi). Kalitni almashtirish shart emas.
 2. devsms.uz → API kalitlari → kalit (`sms:send` ruxsati bilan). GitHub → Secrets → `DEVSMS_API_TOKEN`.
 3. Actions → **Deploy video Worker** → Run workflow.
+
+### DevSMS shablonlari (o'zingiz yaratgan shablonlar)
+
+1. Actions → **List DevSMS templates** → Run workflow. Run sahifasidagi Summary'da jadval chiqadi:
+   ID, nomi, holati, parametrlar (`{code}`, `%d`, `#name#` …) va matn. Shablonlar faqat o'qiladi
+   (`GET /api/v1/templates`), hech biri o'zgartirilmaydi yoki o'chirilmaydi. Kalitga `templates:read` ruxsati kerak.
+2. SMS kod uchun tanlangan shablonni `workers/video/wrangler.jsonc` → `vars` ga yozing:
+   - `DEVSMS_OTP_TEMPLATE_ID`: shablon ID;
+   - `DEVSMS_OTP_CODE_PLACEHOLDER`: kod qo'yiladigan parametr (shablonda bitta parametr bo'lsa, bo'sh qoldiring);
+   - `DEVSMS_OTP_TEMPLATE_VALUES`: boshqa parametrlar uchun doimiy qiymatlar, JSON (masalan `{"{app}":"MyFit"}`);
+   - `DEVSMS_FROM`: DevSMS'da tasdiqlangan yuboruvchi nomi (bo'sh = standart).
+3. Deploy workflow'ni ishga tushiring. Worker shablon matnini API orqali o'qiydi (10 daqiqa keshlanadi),
+   kodni joyiga qo'yadi va `POST /api/v1/sms` ga `message` + `template_id` bilan yuboradi (`sms:send`).
+   `DEVSMS_OTP_TEMPLATE_ID` bo'sh bo'lsa, DevSMS'ning tayyor "Universal OTP" shabloni ishlatiladi.
+
+Barcha parametrlar to'ldirilmasa yoki shablon topilmasa, SMS yuborilmaydi (`sms-misconfigured`).
+Token faqat GitHub Secret va Worker secret'ida; Flutter ilovasida yo'q.

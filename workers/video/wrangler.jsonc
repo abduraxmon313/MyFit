@@ -19,6 +19,15 @@
     // Switch to a custom domain later (new uploads only).
     "R2_PUBLIC_BASE_URL": "https://pub-32dc4a48be774882aaf3dd1d07697a5b.r2.dev",
     // Browser origins allowed to call the API (mobile apps need no CORS).
-    "ALLOWED_ORIGINS": "https://myfit-d6275.web.app,https://myfit-d6275.firebaseapp.com"
+    "ALLOWED_ORIGINS": "https://myfit-d6275.web.app,https://myfit-d6275.firebaseapp.com",
+    // SMS sign-in template (DevSMS). Empty = DevSMS universal OTP.
+    // Set the template ID you choose from the "List DevSMS templates" workflow.
+    "DEVSMS_OTP_TEMPLATE_ID": "",
+    // Token that receives the code, e.g. "{code}" (auto if the text has one).
+    "DEVSMS_OTP_CODE_PLACEHOLDER": "",
+    // JSON with fixed values for other tokens, e.g. {"{app}":"MyFit"}.
+    "DEVSMS_OTP_TEMPLATE_VALUES": "",
+    // Sender name registered in DevSMS (empty = DevSMS default).
+    "DEVSMS_FROM": ""
   }
 }

@@ -1,5 +1,6 @@
 import { ApiError, invalid, unavailable } from "./errors";
 import { FirestoreAborted, type FirestoreApi, type FsFields } from "./firestore";
+import { DevSmsClient, renderTemplate, type DevSmsTemplate } from "./devsms";
 import type { IdentityApi } from "./identity";
 
 /**
@@ -229,55 +230,96 @@ export async function verifySmsCode(deps: SmsDeps, body: unknown) {
   return { customToken: await deps.identity.customToken(uid) };
 }
 
-/** DevSMS universal OTP (pre-approved templates, no moderation needed). */
+/** Which DevSMS template the OTP uses (chosen by the owner, see docs). */
+export interface OtpTemplateConfig {
+  templateId: string;
+  /** Token replaced by the code, e.g. `{code}`; auto when the text has one. */
+  codePlaceholder?: string;
+  /** Fixed values for other tokens, e.g. `{"{app}": "MyFit"}`. */
+  values?: Record<string, string>;
+  from?: string;
+}
+
+export function parseOtpTemplateConfig(env: {
+  DEVSMS_OTP_TEMPLATE_ID?: string;
+  DEVSMS_OTP_CODE_PLACEHOLDER?: string;
+  DEVSMS_OTP_TEMPLATE_VALUES?: string;
+  DEVSMS_FROM?: string;
+}): OtpTemplateConfig | undefined {
+  const templateId = (env.DEVSMS_OTP_TEMPLATE_ID ?? "").trim();
+  if (!templateId) return undefined;
+  let values: Record<string, string> = {};
+  const raw = (env.DEVSMS_OTP_TEMPLATE_VALUES ?? "").trim();
+  if (raw) {
+    try {
+      const parsed = JSON.parse(raw) as Record<string, unknown>;
+      values = Object.fromEntries(Object.entries(parsed).map(([k, v]) => [k, String(v)]));
+    } catch {
+      throw new ApiError(500, "sms-misconfigured", "DEVSMS_OTP_TEMPLATE_VALUES is not JSON");
+    }
+  }
+  return {
+    templateId,
+    codePlaceholder: (env.DEVSMS_OTP_CODE_PLACEHOLDER ?? "").trim() || undefined,
+    values,
+    from: (env.DEVSMS_FROM ?? "").trim() || undefined,
+  };
+}
+
+const TEMPLATE_CACHE_MS = 10 * 60 * 1000;
+const templateCache = new Map<string, { template: DevSmsTemplate; expiresAt: number }>();
+
+/**
+ * Sends the OTP through DevSMS. Without a configured template it uses the
+ * pre-approved universal OTP; with one, it reads the owner's template via
+ * `templates:read`, fills the code and sends it with `template_id`.
+ */
 export class DevSmsSender implements SmsSender {
+  private readonly client: DevSmsClient;
+
   constructor(
-    private readonly apiToken: string,
-    private readonly fetcher: typeof fetch = (input, init) => fetch(input, init),
+    apiToken: string,
+    fetcher: typeof fetch = (input, init) => fetch(input, init),
     private readonly serviceName = "MyFit",
-  ) {}
+    private readonly template?: OtpTemplateConfig,
+    private readonly now: () => number = () => Date.now(),
+  ) {
+    this.client = new DevSmsClient(apiToken, fetcher);
+  }
 
   async sendCode(phone: string, code: string): Promise<void> {
-    if (!this.apiToken) throw new ApiError(500, "sms-misconfigured", "DEVSMS_API_TOKEN is not set");
-    const idempotencyKey = crypto.randomUUID();
-    const body = JSON.stringify({
-      phone,
-      otp: { template_type: 4, service_name: this.serviceName, code },
-    });
-    // One retry with the same Idempotency-Key never sends a second SMS.
-    for (let attempt = 0; attempt < 2; attempt++) {
-      let response: Response;
-      try {
-        response = await this.fetcher("https://devsms.uz/api/v1/sms", {
-          method: "POST",
-          headers: {
-            authorization: `Bearer ${this.apiToken}`,
-            "content-type": "application/json",
-            accept: "application/json",
-            "idempotency-key": idempotencyKey,
-          },
-          body,
-        });
-      } catch {
-        if (attempt === 0) continue;
-        throw unavailable("sms-unavailable", "SMS service unreachable");
-      }
-      const json = (await response.json().catch(() => ({}))) as Record<string, unknown>;
-      if (response.ok && json.success !== false) return;
-      const errorCode = String(json.error_code ?? "");
-      console.error("DevSMS failed", response.status, errorCode);
-      if ((response.status === 502 || response.status === 409) && attempt === 0) continue;
-      if (response.status === 401 || response.status === 403) {
-        throw new ApiError(502, "sms-misconfigured", "SMS provider rejected the request");
-      }
-      if (response.status === 402 || errorCode === "insufficient_balance") {
-        throw new ApiError(503, "sms-unavailable", "SMS balance is empty");
-      }
-      if (response.status === 422 || response.status === 400) {
-        throw invalid("invalid-phone", "SMS provider rejected the phone number");
-      }
-      throw unavailable("sms-unavailable", "SMS service failed");
+    if (!this.template) {
+      await this.client.sendUniversalOtp(phone, code, this.serviceName);
+      return;
     }
-    throw unavailable("sms-unavailable", "SMS service failed");
+    const template = await this.findTemplate(this.template.templateId);
+    const token =
+      this.template.codePlaceholder ??
+      (template.placeholders.length === 1 ? template.placeholders[0] : undefined);
+    if (!token || !template.placeholders.includes(token)) {
+      throw new ApiError(
+        500,
+        "sms-misconfigured",
+        `Template ${template.id} has no code placeholder (${template.placeholders.join(", ") || "none"})`,
+      );
+    }
+    const message = renderTemplate(template.text, { ...this.template.values, [token]: code });
+    await this.client.sendSms(phone, message, template.id, this.template.from);
   }
+
+  private async findTemplate(id: string): Promise<DevSmsTemplate> {
+    const cached = templateCache.get(id);
+    if (cached && cached.expiresAt > this.now()) return cached.template;
+    const template = (await this.client.listTemplates()).find((t) => String(t.id) === id);
+    if (!template) {
+      throw new ApiError(500, "sms-misconfigured", `DevSMS template ${id} not found`);
+    }
+    templateCache.set(id, { template, expiresAt: this.now() + TEMPLATE_CACHE_MS });
+    return template;
+  }
+}
+
+/** Test hook. */
+export function clearTemplateCache() {
+  templateCache.clear();
 }
