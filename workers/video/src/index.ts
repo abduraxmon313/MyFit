@@ -6,6 +6,7 @@ import { presignPut } from "./presign";
 import {
   DevSmsSender,
   hmacKeyFromSecret,
+  parseOtpTemplateConfig,
   sendSmsCode,
   verifySmsCode,
   type SmsDeps,
@@ -37,6 +38,11 @@ export interface Env {
   FIREBASE_SERVICE_ACCOUNT: string;
   /** DevSMS API token (optional until SMS sign-in is enabled). */
   DEVSMS_API_TOKEN?: string;
+  /** OTP template chosen by the owner (empty = DevSMS universal OTP). */
+  DEVSMS_OTP_TEMPLATE_ID?: string;
+  DEVSMS_OTP_CODE_PLACEHOLDER?: string;
+  DEVSMS_OTP_TEMPLATE_VALUES?: string;
+  DEVSMS_FROM?: string;
 }
 
 const MAX_BODY_BYTES = 8 * 1024;
@@ -128,7 +134,12 @@ function smsDeps(env: Env): SmsDeps {
   return {
     db: lazyFirestore(env),
     identity: identity.api,
-    sender: new DevSmsSender(env.DEVSMS_API_TOKEN ?? ""),
+    sender: new DevSmsSender(
+      env.DEVSMS_API_TOKEN ?? "",
+      undefined,
+      "MyFit",
+      parseOtpTemplateConfig(env),
+    ),
     hmacKey: () => hmac,
   };
 }
