@@ -757,7 +757,7 @@ class _MealFoodRow extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(14, 10, onRemove == null ? 16 : 4, 10),
       child: Row(
         children: [
-          FoodThumbnail(icon: foodCategoryIcon(food), size: 40),
+          FoodThumbnail.forFood(food, size: 40),
           const SizedBox(width: 12),
           Expanded(
             child: Column(

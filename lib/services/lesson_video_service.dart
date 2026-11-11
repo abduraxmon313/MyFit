@@ -176,6 +176,9 @@ class LessonVideoUploader {
     UploadProgress? onProgress,
     void Function(LessonUploadPhase phase)? onPhase,
     UploadCancelToken? cancelToken,
+
+    /// Swap the video of this existing lesson (keeps its id and order).
+    String? replaceLessonId,
   }) async {
     onPhase?.call(LessonUploadPhase.validating);
     final size = await file.length();
@@ -198,6 +201,7 @@ class LessonVideoUploader {
             : 'video.mp4',
         'contentType': kLessonVideoContentType,
         'sizeBytes': size,
+        'replaceLessonId': ?replaceLessonId,
       }, timeout: const Duration(seconds: 30));
       final uploadId = session['uploadId'] as String;
       final headers = <String, String>{
@@ -226,6 +230,43 @@ class LessonVideoUploader {
         lessonId: result['lessonId'] as String,
         videoUrl: result['videoUrl'] as String,
       );
+    } finally {
+      if (client == null) httpClient.close();
+    }
+  }
+
+  /// Changes the title and description of a lesson (admin).
+  Future<void> updateLesson({
+    required String categoryId,
+    required String lessonId,
+    required String title,
+    String description = '',
+  }) => _withClient(
+    (httpClient) => callApi(httpClient, '/updateLesson', {
+      'categoryId': categoryId,
+      'lessonId': lessonId,
+      'title': title.trim(),
+      'description': description.trim(),
+    }),
+  );
+
+  /// Deletes a lesson and its video; later lessons move up (admin).
+  Future<void> deleteLesson({
+    required String categoryId,
+    required String lessonId,
+  }) => _withClient(
+    (httpClient) => callApi(httpClient, '/deleteLesson', {
+      'categoryId': categoryId,
+      'lessonId': lessonId,
+    }),
+  );
+
+  Future<void> _withClient(
+    Future<Object?> Function(http.Client client) run,
+  ) async {
+    final httpClient = client ?? http.Client();
+    try {
+      await run(httpClient);
     } finally {
       if (client == null) httpClient.close();
     }

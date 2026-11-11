@@ -99,13 +99,17 @@ export type FsWrite =
   | { kind: "create"; path: string; fields: FsFields }
   | { kind: "update"; path: string; fields: FsFields }
   /** Create or fully replace (no precondition). */
-  | { kind: "set"; path: string; fields: FsFields };
+  | { kind: "set"; path: string; fields: FsFields }
+  /** Delete an existing document. */
+  | { kind: "delete"; path: string };
 
 /** The subset of Firestore used by the video API (injectable for tests). */
 export interface FirestoreApi {
   get(path: string, transaction?: string): Promise<FsDocument | null>;
   /** Highest `order` among `courses/{courseId}/lessons`. */
   lastLessonOrder(courseId: string, transaction?: string): Promise<number>;
+  /** All lessons of a course (id + order), ascending by order. */
+  listLessons(courseId: string, transaction?: string): Promise<{ id: string; order: number }[]>;
   beginTransaction(): Promise<string>;
   rollback(transaction: string): Promise<void>;
   commit(writes: FsWrite[], transaction?: string): Promise<void>;
@@ -249,6 +253,31 @@ export class FirestoreRest implements FirestoreApi {
     return Number.isFinite(value) ? value : 0;
   }
 
+  async listLessons(courseId: string, transaction?: string) {
+    const response = await this.call(this.url(`/courses/${courseId}:runQuery`), {
+      method: "POST",
+      body: JSON.stringify({
+        structuredQuery: {
+          from: [{ collectionId: "lessons" }],
+          select: { fields: [{ fieldPath: "order" }] },
+          orderBy: [{ field: { fieldPath: "order" }, direction: "ASCENDING" }],
+          limit: 500,
+        },
+        ...(transaction ? { transaction } : {}),
+      }),
+    });
+    if (!response.ok) return this.fail(response, "runQuery");
+    const rows = (await response.json()) as {
+      document?: { name: string; fields?: Record<string, RestValue> };
+    }[];
+    return rows
+      .filter((row) => row.document)
+      .map((row) => ({
+        id: row.document!.name.split("/").pop()!,
+        order: Number(row.document!.fields?.order ? decodeValue(row.document!.fields.order) : 0) || 0,
+      }));
+  }
+
   async beginTransaction(): Promise<string> {
     const response = await this.call(this.url(":beginTransaction"), {
       method: "POST",
@@ -272,7 +301,9 @@ export class FirestoreRest implements FirestoreApi {
   async commit(writes: FsWrite[], transaction?: string): Promise<void> {
     const body = {
       writes: writes.map((write) =>
-        write.kind === "set"
+        write.kind === "delete"
+          ? { delete: this.name(write.path), currentDocument: { exists: true } }
+          : write.kind === "set"
           ? {
               update: {
                 name: this.name(write.path),

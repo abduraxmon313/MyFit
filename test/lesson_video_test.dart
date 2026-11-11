@@ -122,14 +122,40 @@ class FakeUploader extends LessonVideoUploader {
     UploadProgress? onProgress,
     void Function(LessonUploadPhase phase)? onPhase,
     UploadCancelToken? cancelToken,
+    String? replaceLessonId,
   }) async {
-    calls.add('$categoryId|$title|${file.name}');
+    calls.add(
+      '$categoryId|$title|${file.name}'
+      '${replaceLessonId == null ? '' : '|replace:$replaceLessonId'}',
+    );
     onPhase?.call(LessonUploadPhase.uploading);
     onProgress?.call(50, 100);
     await finish.future;
     cancelToken?.throwIfCancelled();
     if (failWith != null) throw failWith!;
     return const UploadedLessonVideo(lessonId: 'l1', videoUrl: 'https://v/1');
+  }
+
+  final edits = <String>[];
+
+  @override
+  Future<void> updateLesson({
+    required String categoryId,
+    required String lessonId,
+    required String title,
+    String description = '',
+  }) async {
+    if (failWith != null) throw failWith!;
+    edits.add('update|$categoryId|$lessonId|$title|$description');
+  }
+
+  @override
+  Future<void> deleteLesson({
+    required String categoryId,
+    required String lessonId,
+  }) async {
+    if (failWith != null) throw failWith!;
+    edits.add('delete|$categoryId|$lessonId');
   }
 }
 
@@ -767,6 +793,162 @@ void main() {
       uploader.finish.complete();
       await tester.pumpAndSettle();
       expect(find.text('Video yuklash faqat adminlar uchun.'), findsOneWidget);
+    });
+  });
+
+  group('admin lesson editing', () {
+    const course = TrainerCourse(
+      id: 'cardio',
+      title: 'Ozish uchun kardio mashqlar',
+      description: '',
+      lessons: [],
+    );
+    const uploaded = CourseLesson(
+      id: 'l7',
+      order: 1,
+      title: 'Isinish',
+      description: 'Eski tavsif',
+      videoUrl: 'https://pub.r2.dev/lessons/cardio/1.mp4',
+      storageProvider: 'r2',
+    );
+
+    Future<void> pumpCategory(
+      WidgetTester tester,
+      FakeUploader uploader, {
+      bool admin = true,
+    }) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: LessonCategoryPage(
+            course: course,
+            uploader: uploader,
+            repository: FakeLessonRepository(
+              admin: admin,
+              lessons: {
+                'cardio': const [uploaded],
+              },
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+    }
+
+    testWidgets('non-admins see no edit menu', (tester) async {
+      await pumpCategory(tester, FakeUploader(), admin: false);
+      expect(find.byKey(const Key('lesson-menu-l7')), findsNothing);
+    });
+
+    testWidgets('edit changes title and description without a new video', (
+      tester,
+    ) async {
+      final uploader = FakeUploader();
+      await pumpCategory(tester, uploader);
+      await tester.tap(find.byKey(const Key('lesson-menu-l7')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('lesson-edit')));
+      await tester.pumpAndSettle();
+      expect(find.text('Darsni tahrirlash'), findsOneWidget);
+      expect(find.text('Isinish'), findsWidgets);
+      // Saving is allowed without choosing a new video.
+      final save = find.byKey(const Key('upload-start'));
+      expect(tester.widget<FilledButton>(save).onPressed, isNotNull);
+      await tester.enterText(
+        find.byKey(const Key('upload-title')),
+        'Yangi nom',
+      );
+      await tester.enterText(
+        find.byKey(const Key('upload-description')),
+        'Yangi tavsif',
+      );
+      await tester.tap(save);
+      await tester.pumpAndSettle();
+      expect(uploader.edits, ['update|cardio|l7|Yangi nom|Yangi tavsif']);
+      expect(uploader.calls, isEmpty);
+      expect(find.text('Dars yangilandi'), findsOneWidget);
+    });
+
+    testWidgets('edit with a new video replaces this lesson', (tester) async {
+      final uploader = FakeUploader()..finish.complete();
+      final bytes = mp4Bytes();
+      await tester.pumpWidget(
+        MaterialApp(
+          home: VideoUploadPage(
+            category: course,
+            uploader: uploader,
+            lesson: uploaded,
+            pickVideo: () async =>
+                XFile.fromData(bytes, name: 'new.mp4', path: '/picked/new.mp4'),
+          ),
+        ),
+      );
+      await tester.tap(find.byKey(const Key('upload-pick')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('upload-start')));
+      await tester.pumpAndSettle();
+      expect(uploader.calls, ['cardio|Isinish|new.mp4|replace:l7']);
+      expect(uploader.edits, isEmpty);
+    });
+
+    testWidgets('delete asks for confirmation, then deletes', (tester) async {
+      final uploader = FakeUploader();
+      await pumpCategory(tester, uploader);
+      Future<void> openDelete() async {
+        await tester.tap(find.byKey(const Key('lesson-menu-l7')));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(const Key('lesson-delete')));
+        await tester.pumpAndSettle();
+      }
+
+      await openDelete();
+      expect(find.text('Darsni o‘chirasizmi?'), findsOneWidget);
+      await tester.tap(find.text('Bekor qilish'));
+      await tester.pumpAndSettle();
+      expect(uploader.edits, isEmpty);
+
+      await openDelete();
+      await tester.tap(find.byKey(const Key('lesson-delete-confirm')));
+      await tester.pumpAndSettle();
+      expect(uploader.edits, ['delete|cardio|l7']);
+      expect(find.text('Dars o‘chirildi'), findsOneWidget);
+    });
+
+    testWidgets('a failed delete shows the reason', (tester) async {
+      final uploader = FakeUploader(
+        failWith: const LessonVideoException('not-admin'),
+      );
+      await pumpCategory(tester, uploader);
+      await tester.tap(find.byKey(const Key('lesson-menu-l7')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('lesson-delete')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('lesson-delete-confirm')));
+      await tester.pumpAndSettle();
+      expect(find.text('Video yuklash faqat adminlar uchun.'), findsOneWidget);
+    });
+
+    test('uploader sends edit and delete requests to the Worker', () async {
+      final seen = <String>[];
+      final client = MockClient((request) async {
+        seen.add('${request.url.path} ${request.body}');
+        return http.Response('{}', 200);
+      });
+      final uploader = LessonVideoUploader(
+        client: client,
+        apiBase: 'https://w.example',
+        idToken: ({bool forceRefresh = false}) async => 't',
+      );
+      await uploader.updateLesson(
+        categoryId: 'cardio',
+        lessonId: 'l7',
+        title: ' Nom ',
+        description: 'Tavsif',
+      );
+      await uploader.deleteLesson(categoryId: 'cardio', lessonId: 'l7');
+      expect(seen, [
+        '/updateLesson {"categoryId":"cardio","lessonId":"l7","title":"Nom","description":"Tavsif"}',
+        '/deleteLesson {"categoryId":"cardio","lessonId":"l7"}',
+      ]);
     });
   });
 }

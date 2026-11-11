@@ -30,6 +30,7 @@ String lessonVideoErrorText(
     'Server vaqtincha ishlamayapti. Keyinroq urinib ko‘ring.',
   'not-configured' => 'Video xizmati hali sozlanmagan.',
   'invalid-title' => 'Dars nomini kiriting (2–120 belgi).',
+  'lesson-not-found' => 'Dars topilmadi (o‘chirilgan bo‘lishi mumkin).',
   _ => 'Videoni yuklab bo‘lmadi. Qayta urinib ko‘ring.',
 });
 
@@ -42,9 +43,14 @@ class VideoUploadPage extends StatefulWidget {
     required this.category,
     this.uploader,
     this.pickVideo,
+    this.lesson,
   });
 
   final TrainerCourse category;
+
+  /// Edit mode: change this lesson's title/description and, optionally,
+  /// replace its video. `null` creates a new lesson.
+  final CourseLesson? lesson;
   final LessonVideoUploader? uploader;
 
   /// Overrides the gallery picker (tests).
@@ -60,6 +66,18 @@ class _VideoUploadPageState extends State<VideoUploadPage> {
   final _description = TextEditingController();
   late final LessonVideoUploader _uploader =
       widget.uploader ?? LessonVideoUploader();
+
+  bool get _editing => widget.lesson != null;
+
+  @override
+  void initState() {
+    super.initState();
+    final lesson = widget.lesson;
+    if (lesson != null) {
+      _title.text = lesson.title;
+      _description.text = lesson.description;
+    }
+  }
 
   XFile? _file;
   int _fileSize = 0;
@@ -125,11 +143,48 @@ class _VideoUploadPageState extends State<VideoUploadPage> {
     }
   }
 
+  /// Edit mode without a new video: only title/description change.
+  Future<void> _saveDetails() async {
+    final lesson = widget.lesson!;
+    setState(() {
+      _phase = LessonUploadPhase.finalizing;
+      _error = null;
+    });
+    try {
+      await _uploader.updateLesson(
+        categoryId: widget.category.id,
+        lessonId: lesson.id,
+        title: _title.text,
+        description: _description.text,
+      );
+      if (!mounted) return;
+      Navigator.pop(context, true);
+    } on LessonVideoException catch (error) {
+      if (mounted) {
+        setState(() {
+          _phase = null;
+          _error = lessonVideoErrorText(context, error);
+        });
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(() {
+          _phase = null;
+          _error = context.tr('Saqlab bo‘lmadi. Qayta urinib ko‘ring.');
+        });
+      }
+    }
+  }
+
   Future<void> _upload() async {
     final file = _file;
-    if (file == null || _busy) return;
+    if (_busy) return;
     FocusScope.of(context).unfocus();
     if (!(_formKey.currentState?.validate() ?? false)) return;
+    if (file == null) {
+      if (_editing) await _saveDetails();
+      return;
+    }
     final cancel = UploadCancelToken();
     setState(() {
       _cancel = cancel;
@@ -145,6 +200,7 @@ class _VideoUploadPageState extends State<VideoUploadPage> {
         description: _description.text,
         file: file,
         cancelToken: cancel,
+        replaceLessonId: widget.lesson?.id,
         onPhase: (phase) {
           if (mounted) setState(() => _phase = phase);
         },
@@ -191,7 +247,9 @@ class _VideoUploadPageState extends State<VideoUploadPage> {
             icon: const Icon(LucideIcons.arrowLeft),
             onPressed: _busy ? null : () => Navigator.maybePop(context),
           ),
-          title: Text(context.tr('Video yuklash')),
+          title: Text(
+            context.tr(_editing ? 'Darsni tahrirlash' : 'Video yuklash'),
+          ),
         ),
         bottomNavigationBar: SafeArea(
           top: false,
@@ -208,9 +266,11 @@ class _VideoUploadPageState extends State<VideoUploadPage> {
                   )
                 : FilledButton.icon(
                     key: const Key('upload-start'),
-                    onPressed: file == null || _checking ? null : _upload,
+                    onPressed: (file == null && !_editing) || _checking
+                        ? null
+                        : _upload,
                     icon: const Icon(LucideIcons.cloudUpload, size: 18),
-                    label: Text(context.tr('Yuklash')),
+                    label: Text(context.tr(_editing ? 'Saqlash' : 'Yuklash')),
                   ),
           ),
         ),
@@ -255,7 +315,11 @@ class _VideoUploadPageState extends State<VideoUploadPage> {
                         children: [
                           Text(
                             file == null
-                                ? context.tr('Videoni tanlash')
+                                ? context.tr(
+                                    _editing
+                                        ? 'Videoni almashtirish (ixtiyoriy)'
+                                        : 'Videoni tanlash',
+                                  )
                                 : file.name,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -270,7 +334,11 @@ class _VideoUploadPageState extends State<VideoUploadPage> {
                             _checking
                                 ? context.tr('Video tekshirilmoqda...')
                                 : file == null
-                                ? context.tr('Galereyadan MP4 video')
+                                ? context.tr(
+                                    _editing
+                                        ? 'Joriy video qoladi'
+                                        : 'Galereyadan MP4 video',
+                                  )
                                 : '${_megabytes(_fileSize)} MB · H.264',
                             style: TextStyle(
                               color: scheme.onSurfaceVariant,
