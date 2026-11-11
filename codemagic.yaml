@@ -1,12 +1,16 @@
 workflows:
   # main'ga har push bo'lganda va har bir PR uchun sinov APK yig'iladi.
-  # Debug APK imzo kalitisiz ishlaydi; Android telefonga to'g'ridan-to'g'ri o'rnatiladi.
+  # Debug APK doimiy MyFit kaliti bilan imzolanadi (android/app/myfit-upload.p12),
+  # shuning uchun yangi APK eskisining ustiga "Yangilash" sifatida o'rnatiladi.
   android-test-apk:
     name: Android sinov APK
     instance_type: mac_mini_m2
     max_build_duration: 40
     environment:
       flutter: stable
+      groups:
+        # ANDROID_KEYSTORE_PASSWORD (Secure) - GitHub Secret bilan bir xil parol.
+        - android_signing
     triggering:
       events:
         - push
@@ -23,8 +27,26 @@ workflows:
         script: flutter analyze
       - name: Testlar
         script: flutter test
+      - name: Imzo kalitini ulash
+        script: |
+          KEYSTORE=android/app/myfit-upload.p12
+          if [ -f "$KEYSTORE" ] && [ -n "$ANDROID_KEYSTORE_PASSWORD" ]; then
+            umask 077
+            printf 'storeFile=myfit-upload.p12\nstoreType=pkcs12\nkeyAlias=myfit\nstorePassword=%s\nkeyPassword=%s\n' \
+              "$ANDROID_KEYSTORE_PASSWORD" "$ANDROID_KEYSTORE_PASSWORD" > android/key.properties
+            echo "MyFit kaliti bilan imzolanadi."
+          else
+            echo "OGOHLANTIRISH: kalit yoki ANDROID_KEYSTORE_PASSWORD yo'q - vaqtinchalik debug kalit ishlatiladi."
+          fi
       - name: APK yig'ish
         script: flutter build apk --debug --build-number=$BUILD_NUMBER
+      - name: Imzoni tekshirish
+        script: |
+          if [ -f android/key.properties ]; then
+            APKSIGNER=$(ls "$ANDROID_SDK_ROOT"/build-tools/*/apksigner | sort -V | tail -1)
+            "$APKSIGNER" verify --print-certs build/app/outputs/flutter-apk/app-debug.apk | grep -E "SHA-256 digest" | head -1 || true
+          fi
+          rm -f android/key.properties
     artifacts:
       - build/app/outputs/flutter-apk/*.apk
     publishing:
