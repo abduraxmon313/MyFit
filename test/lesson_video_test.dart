@@ -868,6 +868,30 @@ void main() {
       expect(find.text('Dars yangilandi'), findsOneWidget);
     });
 
+    testWidgets('edit-only failure never mentions a video upload', (
+      tester,
+    ) async {
+      final uploader = FakeUploader(
+        failWith: const LessonVideoException('internal'),
+      );
+      await tester.pumpWidget(
+        MaterialApp(
+          home: VideoUploadPage(
+            category: course,
+            uploader: uploader,
+            lesson: uploaded,
+          ),
+        ),
+      );
+      await tester.tap(find.byKey(const Key('upload-start')));
+      await tester.pumpAndSettle();
+      expect(
+        find.text('Saqlab bo‘lmadi. Qayta urinib ko‘ring.'),
+        findsOneWidget,
+      );
+      expect(find.textContaining('yuklab'), findsNothing);
+    });
+
     testWidgets('edit with a new video replaces this lesson', (tester) async {
       final uploader = FakeUploader()..finish.complete();
       final bytes = mp4Bytes();

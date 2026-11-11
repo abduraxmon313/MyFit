@@ -163,7 +163,18 @@ class _VideoUploadPageState extends State<VideoUploadPage> {
       if (mounted) {
         setState(() {
           _phase = null;
-          _error = lessonVideoErrorText(context, error);
+          // Saving text only: never mention a video upload here.
+          _error =
+              const {
+                'not-admin',
+                'sign-in-required',
+                'invalid-title',
+                'lesson-not-found',
+                'network',
+                'not-configured',
+              }.contains(error.reason)
+              ? lessonVideoErrorText(context, error)
+              : context.tr('Saqlab bo‘lmadi. Qayta urinib ko‘ring.');
         });
       }
     } catch (_) {

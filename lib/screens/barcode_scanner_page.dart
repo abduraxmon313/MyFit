@@ -5,6 +5,8 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import '../l10n/app_localizations.dart';
 import '../models/food_nutrition.dart';
 import '../services/open_food_facts_service.dart';
+import '../widgets/meal_type_picker.dart';
+import 'meals_page.dart';
 import 'custom_food_page.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
@@ -27,6 +29,9 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
     torchEnabled: false,
   );
   final _grams = TextEditingController(text: '100');
+
+  /// Meal the product is added to (suggested from the time of day).
+  MealType _meal = suggestedMealType();
 
   FoodNutrition? _food;
   String? _barcode;
@@ -99,7 +104,7 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
       );
       return;
     }
-    Navigator.pop(context, _food!.forGrams(_weight));
+    Navigator.pop(context, _food!.forGrams(_weight).withMealType(_meal.name));
   }
 
   @override
@@ -482,6 +487,20 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
                       ),
                     ),
                   ],
+                  const SizedBox(height: 16),
+                  Text(
+                    context.tr('Qaysi ovqatlanishga qo‘shilsin?'),
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  MealTypePicker(
+                    value: _meal,
+                    onChanged: (meal) => setState(() => _meal = meal),
+                  ),
                   const SizedBox(height: 16),
                   FilledButton.icon(
                     onPressed: _addFood,

@@ -8,6 +8,8 @@ import 'package:image_picker/image_picker.dart';
 import '../l10n/app_localizations.dart';
 import '../models/food_nutrition.dart';
 import '../services/food_vision_service.dart';
+import '../widgets/meal_type_picker.dart';
+import 'meals_page.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class FoodScanPage extends StatefulWidget {
@@ -44,6 +46,9 @@ class _FoodScanPageState extends State<FoodScanPage>
 
   XFile? _image;
   FoodNutrition? _nutrition;
+
+  /// Meal the food is added to (suggested from the time of day).
+  MealType _meal = suggestedMealType();
   bool _analyzing = false;
   String? _error;
 
@@ -217,7 +222,10 @@ class _FoodScanPageState extends State<FoodScanPage>
       );
       return;
     }
-    Navigator.pop(context, _nutrition!.forGrams(_weight));
+    Navigator.pop(
+      context,
+      _nutrition!.forGrams(_weight).withMealType(_meal.name),
+    );
   }
 
   @override
@@ -282,7 +290,7 @@ class _FoodScanPageState extends State<FoodScanPage>
                       right: 18,
                       top: 10,
                       child: _ScannerHeader(
-                        title: context.tr('AI ovqat skaneri'),
+                        title: context.tr('Ovqat skaneri'),
                         subtitle: context.tr(
                           'Mahsulot tarkibini bir zumda biling',
                         ),
@@ -295,7 +303,7 @@ class _FoodScanPageState extends State<FoodScanPage>
                         size: frameSize,
                         analyzing: _analyzing,
                         title: context.tr('Ovqatni ramka ichiga joylashtiring'),
-                        analyzingLabel: context.tr('AI ovqatni aniqlamoqda...'),
+                        analyzingLabel: context.tr('Ovqat tahlil qilinmoqda...'),
                         readyLabel: context.tr('Tahlilga tayyor'),
                       ),
                     ),
@@ -423,8 +431,8 @@ class _FoodScanPageState extends State<FoodScanPage>
                                   ),
                                   child: Text(
                                     confidence == null
-                                        ? context.tr('AI aniqlandi')
-                                        : '${context.tr('AI aniqlandi')} · '
+                                        ? context.tr('Aniqlandi')
+                                        : '${context.tr('Aniqlandi')} · '
                                               '${(confidence * 100).round()}%',
                                     style: TextStyle(
                                       color: context.appColor(
@@ -569,6 +577,27 @@ class _FoodScanPageState extends State<FoodScanPage>
                       ),
                     ),
                   ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(22, 10, 22, 4),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      context.tr('Qaysi ovqatlanishga qo‘shilsin?'),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    MealTypePicker(
+                      value: _meal,
+                      onChanged: (meal) => setState(() => _meal = meal),
+                    ),
+                  ],
                 ),
               ),
               Padding(
