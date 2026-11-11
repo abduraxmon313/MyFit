@@ -7,6 +7,7 @@ import '../models/food_nutrition.dart';
 import '../models/user_profile.dart';
 import '../l10n/app_localizations.dart';
 import '../services/auth_service.dart';
+import '../services/calorie_api_service.dart';
 import '../services/food_data_service.dart';
 import '../services/food_log_service.dart';
 import '../services/food_vision_service.dart';
@@ -45,10 +46,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final _visionService = FoodVisionService();
+  final _calorieApi = CalorieApiService();
+  late final _visionService = FoodVisionService(calorieApi: _calorieApi);
   final _foodDataService = FoodDataService();
   late final _foodLogService = widget.foodLogService ?? FoodLogService();
-  final _openFoodFactsService = OpenFoodFactsService();
+  late final _openFoodFactsService = OpenFoodFactsService(
+    calorieApi: _calorieApi,
+  );
   final _profileService = ProfileService();
   final List<FoodNutrition> _foods = [];
   Map<DateTime, double> _weekCalories = {};

@@ -5,3 +5,5 @@ R2_SECRET_ACCESS_KEY=
 FIREBASE_SERVICE_ACCOUNT=
 # Optional: devsms.uz token for SMS sign-in.
 DEVSMS_API_TOKEN=
+# Optional: calorieapi.com key for barcode/food lookup.
+CALORIE_API_KEY=

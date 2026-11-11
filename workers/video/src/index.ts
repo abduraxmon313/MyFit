@@ -1,6 +1,7 @@
 import { FirebaseTokenVerifier } from "./auth";
 import { ApiError } from "./errors";
 import { FirestoreRest, parseServiceAccount, type FirestoreApi } from "./firestore";
+import { edgeFoodCache, lookupBarcode, searchFoods, type FoodDeps } from "./food";
 import { IdentityRest, type IdentityApi } from "./identity";
 import { presignPut } from "./presign";
 import {
@@ -43,6 +44,8 @@ export interface Env {
   DEVSMS_OTP_CODE_PLACEHOLDER?: string;
   DEVSMS_OTP_TEMPLATE_VALUES?: string;
   DEVSMS_FROM?: string;
+  /** Calorie API key (secret, optional until food lookup is enabled). */
+  CALORIE_API_KEY?: string;
 }
 
 const MAX_BODY_BYTES = 8 * 1024;
@@ -210,6 +213,7 @@ export async function handle(
     deps?: UploadDeps;
     profile?: ProfileDeps;
     sms?: SmsDeps;
+    food?: FoodDeps;
   },
 ): Promise<Response> {
   const cors = corsHeaders(request, env);
@@ -217,7 +221,8 @@ export async function handle(
   const videoRoutes = ["/createVideoUpload", "/finalizeVideoUpload"];
   const profileRoutes = ["/profile/upload", "/profile/delete"];
   const smsRoutes = ["/auth/sms/send", "/auth/sms/verify"];
-  const routes = [...videoRoutes, ...profileRoutes, ...smsRoutes];
+  const foodRoutes = ["/food/barcode", "/food/search"];
+  const routes = [...videoRoutes, ...profileRoutes, ...smsRoutes, ...foodRoutes];
   try {
     if (!routes.includes(pathname)) {
       throw new ApiError(404, "not-found", "Unknown endpoint");
@@ -242,6 +247,19 @@ export async function handle(
 
     const verify =
       override?.verify ?? ((header: string | null) => tokenVerifier(env).verify(header));
+
+    if (foodRoutes.includes(pathname)) {
+      // Any signed-in user; protects the Calorie API quota.
+      await verify(request.headers.get("authorization"));
+      const body = await readJson(request);
+      const food: FoodDeps = override?.food ?? {
+        apiKey: env.CALORIE_API_KEY ?? "",
+        cache: edgeFoodCache(),
+      };
+      const result =
+        pathname === "/food/barcode" ? await lookupBarcode(food, body) : await searchFoods(food, body);
+      return json(result, 200, cors);
+    }
 
     if (profileRoutes.includes(pathname)) {
       // Any signed-in user; only for their own UID (no admin needed).
