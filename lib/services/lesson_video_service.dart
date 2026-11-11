@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart' show XFile;
 
@@ -342,6 +343,11 @@ class FirestoreLessonRepository implements LessonRepository {
       .collection('lessons')
       .orderBy('order')
       .snapshots()
+      // TEMP DEBUG: shows permission-denied if lesson rules are missing.
+      .handleError((Object error) {
+        debugPrint('[MyFit admin] courses/$categoryId/lessons failed: $error');
+        throw error;
+      })
       .map(
         (snapshot) => [
           for (final doc in snapshot.docs)
@@ -364,10 +370,22 @@ class FirestoreLessonRepository implements LessonRepository {
   @override
   Future<bool> isAdmin() async {
     final uid = _auth.currentUser?.uid;
+    // TEMP DEBUG (admin tugmasi): logcat / Xcode konsolida `[MyFit admin]`.
+    debugPrint('[MyFit admin] auth uid=${uid ?? 'null (signed out)'}');
     if (uid == null) return false;
     try {
-      return (await _firestore.collection('admins').doc(uid).get()).exists;
-    } catch (_) {
+      final doc = await _firestore.collection('admins').doc(uid).get();
+      debugPrint(
+        '[MyFit admin] admins/$uid exists=${doc.exists} '
+        'fromCache=${doc.metadata.isFromCache} data=${doc.data()}',
+      );
+      return doc.exists;
+    } on FirebaseException catch (error) {
+      // permission-denied => Firestore Rules (admins/{uid}) not deployed.
+      debugPrint('[MyFit admin] admins/$uid read failed: ${error.code}');
+      return false;
+    } catch (error) {
+      debugPrint('[MyFit admin] admins/$uid read failed: $error');
       return false;
     }
   }

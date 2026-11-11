@@ -40,7 +40,9 @@ storageProvider: "r2", objectKey, sizeBytes, contentType: "video/mp4", videoCode
 uploadedBy, uploadId, createdAt
 ```
 
-`firestore.rules` mantiqi o'zgarmagan (faqat izoh yangilandi) — qayta deploy shart emas.
+**`firestore.rules` Firebase'ga deploy qilinishi shart** (`admins` va `courses/*/lessons` bloklari).
+Deploy qilinmasa, ilova `admins/{uid}` ni o'qiy olmaydi (permission-denied) va yuklash tugmasi chiqmaydi.
+Spark rejasida ishlaydi: `firebase deploy --only firestore:rules` yoki Console → Firestore → Rules → Publish.
 Worker service account bilan ishlaydi va qoidalarni chetlab o'tadi; barcha tekshiruvlar Worker kodida.
 
 ## Bir martalik sozlash
