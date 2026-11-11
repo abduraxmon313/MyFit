@@ -20,7 +20,9 @@ import {
 } from "./profile";
 import {
   createUpload,
+  deleteLesson,
   finalizeUpload,
+  updateLesson,
   UPLOAD_URL_TTL_SECONDS,
   type UploadDeps,
   type VideoBucket,
@@ -152,6 +154,7 @@ function lazyFirestore(env: Env): FirestoreApi {
   return {
     get: (path, tx) => firestoreApi(env).get(path, tx),
     lastLessonOrder: (id, tx) => firestoreApi(env).lastLessonOrder(id, tx),
+    listLessons: (id, tx) => firestoreApi(env).listLessons(id, tx),
     beginTransaction: () => firestoreApi(env).beginTransaction(),
     rollback: (tx) => firestoreApi(env).rollback(tx),
     commit: (writes, tx) => firestoreApi(env).commit(writes, tx),
@@ -218,7 +221,7 @@ export async function handle(
 ): Promise<Response> {
   const cors = corsHeaders(request, env);
   const { pathname } = new URL(request.url);
-  const videoRoutes = ["/createVideoUpload", "/finalizeVideoUpload"];
+  const videoRoutes = ["/createVideoUpload", "/finalizeVideoUpload", "/updateLesson", "/deleteLesson"];
   const profileRoutes = ["/profile/upload", "/profile/delete"];
   const smsRoutes = ["/auth/sms/send", "/auth/sms/verify"];
   const foodRoutes = ["/food/barcode", "/food/search"];
@@ -300,10 +303,13 @@ export async function handle(
     // The UID comes only from the verified token, never from the body.
     const { uid } = await verify(request.headers.get("authorization"));
     const body = await readJson(request);
-    const result =
-      pathname === "/createVideoUpload"
-        ? await createUpload(deps, uid, body)
-        : await finalizeUpload(deps, uid, body);
+    const handlers = {
+      "/createVideoUpload": createUpload,
+      "/finalizeVideoUpload": finalizeUpload,
+      "/updateLesson": updateLesson,
+      "/deleteLesson": deleteLesson,
+    } as const;
+    const result = await handlers[pathname as keyof typeof handlers](deps, uid, body);
     return json(result, 200, cors);
   } catch (error) {
     if (error instanceof ApiError) {

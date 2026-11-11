@@ -258,6 +258,70 @@ class _LessonCategoryPageState extends State<LessonCategoryPage> {
     }
   }
 
+  Future<void> _editLesson(CourseLesson lesson) async {
+    final saved = await Navigator.push<bool>(
+      context,
+      MaterialPageRoute(
+        builder: (_) => VideoUploadPage(
+          category: widget.course,
+          uploader: widget.uploader,
+          lesson: lesson,
+        ),
+      ),
+    );
+    if (saved == true && mounted) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(context.tr('Dars yangilandi'))));
+    }
+  }
+
+  Future<void> _deleteLesson(CourseLesson lesson) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(context.tr('Darsni o‘chirasizmi?')),
+        content: Text(
+          context.tr(
+            '“{title}” darsi va uning videosi butunlay o‘chiriladi. Buni qaytarib bo‘lmaydi.',
+            {'title': lesson.title},
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(context.tr('Bekor qilish')),
+          ),
+          FilledButton(
+            key: const Key('lesson-delete-confirm'),
+            style: FilledButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.error,
+            ),
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(context.tr('O‘chirish')),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !mounted) return;
+    final messenger = ScaffoldMessenger.of(context);
+    try {
+      await (widget.uploader ?? LessonVideoUploader()).deleteLesson(
+        categoryId: widget.course.id,
+        lessonId: lesson.id,
+      );
+      if (!mounted) return;
+      messenger.showSnackBar(
+        SnackBar(content: Text(context.tr('Dars o‘chirildi'))),
+      );
+    } on LessonVideoException catch (error) {
+      if (!mounted) return;
+      messenger.showSnackBar(
+        SnackBar(content: Text(lessonVideoErrorText(context, error))),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) => StreamBuilder<List<CourseLesson>>(
     stream: _lessons,
@@ -393,6 +457,14 @@ class _LessonCategoryPageState extends State<LessonCategoryPage> {
                               ),
                             _LessonRow(
                               lesson: lessons[i],
+                              onEdit:
+                                  _isAdmin && lessons[i].storageProvider != null
+                                  ? () => _editLesson(lessons[i])
+                                  : null,
+                              onDelete:
+                                  _isAdmin && lessons[i].storageProvider != null
+                                  ? () => _deleteLesson(lessons[i])
+                                  : null,
                               onTap: () => Navigator.push(
                                 context,
                                 MaterialPageRoute<void>(
@@ -472,10 +544,19 @@ class _EmptyVideos extends StatelessWidget {
 }
 
 class _LessonRow extends StatelessWidget {
-  const _LessonRow({required this.lesson, required this.onTap});
+  const _LessonRow({
+    required this.lesson,
+    required this.onTap,
+    this.onEdit,
+    this.onDelete,
+  });
 
   final CourseLesson lesson;
   final VoidCallback onTap;
+
+  /// Admin actions (uploaded lessons only).
+  final VoidCallback? onEdit;
+  final VoidCallback? onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -549,6 +630,47 @@ class _LessonRow extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
+              ),
+            if (onEdit != null || onDelete != null)
+              PopupMenuButton<String>(
+                key: Key('lesson-menu-${lesson.id}'),
+                tooltip: context.tr('Amallar'),
+                icon: Icon(
+                  LucideIcons.ellipsisVertical,
+                  size: 18,
+                  color: scheme.onSurfaceVariant,
+                ),
+                onSelected: (action) =>
+                    (action == 'edit' ? onEdit : onDelete)?.call(),
+                itemBuilder: (context) => [
+                  if (onEdit != null)
+                    PopupMenuItem(
+                      key: const Key('lesson-edit'),
+                      value: 'edit',
+                      child: ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        leading: const Icon(LucideIcons.pencil, size: 18),
+                        title: Text(context.tr('Tahrirlash')),
+                      ),
+                    ),
+                  if (onDelete != null)
+                    PopupMenuItem(
+                      key: const Key('lesson-delete'),
+                      value: 'delete',
+                      child: ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        leading: Icon(
+                          LucideIcons.trash2,
+                          size: 18,
+                          color: scheme.error,
+                        ),
+                        title: Text(
+                          context.tr('O‘chirish'),
+                          style: TextStyle(color: scheme.error),
+                        ),
+                      ),
+                    ),
+                ],
               ),
           ],
         ),

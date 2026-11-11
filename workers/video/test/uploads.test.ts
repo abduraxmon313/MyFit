@@ -2,7 +2,9 @@ import { describe, expect, it } from "vitest";
 import { ApiError } from "../src/errors";
 import {
   createUpload,
+  deleteLesson,
   finalizeUpload,
+  updateLesson,
   LESSON_CATEGORY_IDS,
   MAX_VIDEO_BYTES,
   publicVideoUrl,
@@ -221,5 +223,102 @@ describe("finalizeUpload", () => {
     const dart = readFileSync(new URL("../../../lib/data/trainer_course.dart", import.meta.url), "utf8");
     const ids = [...dart.matchAll(/id: '([^']+)'/g)].map((m) => m[1]);
     expect(ids).toEqual([...LESSON_CATEGORY_IDS]);
+  });
+});
+
+describe("lesson editing (admin)", () => {
+  async function lessonWithVideo(env: ReturnType<typeof setup>, title = "1-dars") {
+    const bytes = mp4();
+    const up = await createUpload(env.deps, ADMIN, request({ sizeBytes: bytes.length, title }));
+    env.bucket.put(up.objectKey, bytes);
+    const done = await finalizeUpload(env.deps, ADMIN, { uploadId: up.uploadId });
+    return { ...done, objectKey: up.objectKey, bytes };
+  }
+
+  it("updates title and description only", async () => {
+    const env = setup();
+    const lesson = await lessonWithVideo(env);
+    const path = `courses/fullbody/lessons/${lesson.lessonId}`;
+    const before = { ...env.db.docs.get(path)! };
+    await updateLesson(env.deps, ADMIN, {
+      categoryId: "fullbody",
+      lessonId: lesson.lessonId,
+      title: "  Yangi nom ",
+      description: "Yangi tavsif",
+    });
+    const after = env.db.docs.get(path)!;
+    expect(after).toMatchObject({ title: "Yangi nom", description: "Yangi tavsif", updatedBy: ADMIN });
+    expect(after.videoUrl).toBe(before.videoUrl);
+    expect(after.order).toBe(before.order);
+    expect(env.bucket.deleted).toEqual([]);
+  });
+
+  it("replaces the video, keeps order/id and removes only the old object", async () => {
+    const env = setup();
+    const first = await lessonWithVideo(env, "Dars A");
+    const second = await lessonWithVideo(env, "Dars B");
+    const keep = "lessons/fullbody/2026/10/other.mp4";
+    env.bucket.put(keep, mp4());
+    const bytes = mp4({ seconds: 300 });
+    const up = await createUpload(
+      env.deps,
+      ADMIN,
+      request({ sizeBytes: bytes.length, title: "B (yangi)", replaceLessonId: second.lessonId }),
+    );
+    env.bucket.put(up.objectKey, bytes);
+    const done = await finalizeUpload(env.deps, ADMIN, { uploadId: up.uploadId });
+    expect(done.lessonId).toBe(second.lessonId);
+    const lesson = env.db.docs.get(`courses/fullbody/lessons/${second.lessonId}`)!;
+    expect(lesson).toMatchObject({
+      order: 2,
+      title: "B (yangi)",
+      objectKey: up.objectKey,
+      videoUrl: `https://pub-test.r2.dev/${up.objectKey}`,
+      durationMinutes: 5,
+    });
+    expect(env.bucket.deleted).toEqual([second.objectKey]);
+    expect(env.bucket.objects.has(first.objectKey)).toBe(true);
+    expect(env.bucket.objects.has(keep)).toBe(true);
+    // Still 2 lessons: no new lesson was created.
+    expect([...env.db.docs.keys()].filter((k) => k.startsWith("courses/fullbody/lessons/"))).toHaveLength(2);
+  });
+
+  it("rejects replacing a lesson that does not exist", async () => {
+    const env = setup();
+    await rejects(
+      createUpload(env.deps, ADMIN, request({ replaceLessonId: "missing" })),
+      404,
+      "lesson-not-found",
+    );
+  });
+
+  it("deletes a lesson, renumbers the rest and removes its video", async () => {
+    const env = setup();
+    const a = await lessonWithVideo(env, "Dars A");
+    const b = await lessonWithVideo(env, "Dars B");
+    const c = await lessonWithVideo(env, "Dars C");
+    await deleteLesson(env.deps, ADMIN, { categoryId: "fullbody", lessonId: b.lessonId });
+    expect(env.db.docs.has(`courses/fullbody/lessons/${b.lessonId}`)).toBe(false);
+    expect(env.db.docs.get(`courses/fullbody/lessons/${a.lessonId}`)!.order).toBe(1);
+    expect(env.db.docs.get(`courses/fullbody/lessons/${c.lessonId}`)!.order).toBe(2);
+    expect(env.bucket.deleted).toEqual([b.objectKey]);
+    expect(env.bucket.objects.has(a.objectKey) && env.bucket.objects.has(c.objectKey)).toBe(true);
+    // The next upload continues after the last lesson.
+    const d = await lessonWithVideo(env, "Dars D");
+    expect(env.db.docs.get(`courses/fullbody/lessons/${d.lessonId}`)!.order).toBe(3);
+  });
+
+  it("only admins can edit or delete; inputs are validated", async () => {
+    const env = setup();
+    const a = await lessonWithVideo(env);
+    const ref = { categoryId: "fullbody", lessonId: a.lessonId };
+    await rejects(updateLesson(env.deps, "user1", { ...ref, title: "X y" }), 403, "not-admin");
+    await rejects(deleteLesson(env.deps, "user1", ref), 403, "not-admin");
+    await rejects(updateLesson(env.deps, ADMIN, { ...ref, title: " " }), 400, "invalid-title");
+    await rejects(updateLesson(env.deps, ADMIN, { ...ref, lessonId: "../x", title: "Ok" }), 400, "lesson-not-found");
+    await rejects(deleteLesson(env.deps, ADMIN, { ...ref, categoryId: "unknown" }), 400, "unknown-category");
+    await rejects(deleteLesson(env.deps, ADMIN, { ...ref, lessonId: "missing" }), 404, "lesson-not-found");
+    expect(env.db.docs.has(`courses/fullbody/lessons/${a.lessonId}`)).toBe(true);
+    expect(env.bucket.deleted).toEqual([]);
   });
 });

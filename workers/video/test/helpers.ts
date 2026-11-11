@@ -113,6 +113,17 @@ export class FakeDb implements FirestoreApi {
     return max;
   }
 
+  async listLessons(courseId: string) {
+    const out: { id: string; order: number }[] = [];
+    for (const [path, fields] of this.docs) {
+      const parts = path.split("/");
+      if (parts.length === 4 && parts[0] === "courses" && parts[1] === courseId && parts[2] === "lessons") {
+        out.push({ id: parts[3]!, order: Number(fields.order) || 0 });
+      }
+    }
+    return out.sort((a, b) => a.order - b.order);
+  }
+
   async beginTransaction() {
     this.transactions += 1;
     return `tx${this.transactions}`;
@@ -130,9 +141,13 @@ export class FakeDb implements FirestoreApi {
     for (const write of writes) {
       const exists = this.docs.has(write.path);
       if (write.kind === "create" && exists) throw new Error(`exists ${write.path}`);
-      if (write.kind === "update" && !exists) throw new Error(`missing ${write.path}`);
+      if ((write.kind === "update" || write.kind === "delete") && !exists) throw new Error(`missing ${write.path}`);
     }
     for (const write of writes) {
+      if (write.kind === "delete") {
+        this.docs.delete(write.path);
+        continue;
+      }
       this.docs.set(
         write.path,
         write.kind === "set" ? { ...write.fields } : { ...(this.docs.get(write.path) ?? {}), ...write.fields },

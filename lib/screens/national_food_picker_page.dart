@@ -374,10 +374,7 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
                       itemBuilder: (_, index) {
                         final food = _basket[index];
                         return ListTile(
-                          leading: FoodThumbnail(
-                            icon: foodCategoryIcon(food),
-                            size: 40,
-                          ),
+                          leading: FoodThumbnail.forFood(food, size: 40),
                           title: Text(
                             food.displayNameFor(languageCode),
                             maxLines: 1,
@@ -668,10 +665,7 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
                             subtitle: dish.region == 'Umumiy'
                                 ? '100 ${context.tr(dish.nutrition.basisUnit)}'
                                 : '${dish.localizedRegion(languageCode)} · 100 ${context.tr(dish.nutrition.basisUnit)}',
-                            icon: foodCategoryIcon(
-                              dish.nutrition,
-                              region: dish.region,
-                            ),
+                            region: dish.region,
                             selected:
                                 _basketCounts[_foodKey(dish.nutrition)] ?? 0,
                             onTap: () => _choose(dish),
@@ -684,7 +678,6 @@ class _NationalFoodPickerPageState extends State<NationalFoodPickerPage> {
                             title: food.displayNameFor(languageCode),
                             subtitle:
                                 '${context.tr('Internet bazasi')} · 100 ${context.tr(food.basisUnit)}',
-                            icon: foodCategoryIcon(food),
                             selected: _basketCounts[_foodKey(food)] ?? 0,
                             onTap: () => _chooseGlobal(food),
                           ),
@@ -732,7 +725,7 @@ class _FoodResultCard extends StatelessWidget {
     required this.food,
     required this.title,
     required this.subtitle,
-    required this.icon,
+    this.region,
     required this.onTap,
     this.selected = 0,
   });
@@ -743,7 +736,9 @@ class _FoodResultCard extends StatelessWidget {
   final FoodNutrition food;
   final String title;
   final String subtitle;
-  final IconData icon;
+
+  /// Catalog region, used for the category icon fallback.
+  final String? region;
   final VoidCallback onTap;
 
   @override
@@ -801,7 +796,7 @@ class _FoodResultCard extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(14, 14, 12, 14),
       child: Row(
         children: [
-          FoodThumbnail(icon: icon),
+          FoodThumbnail.forFood(food, region: region),
           const SizedBox(width: 14),
           Expanded(
             child: Column(

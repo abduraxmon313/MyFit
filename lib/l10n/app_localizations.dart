@@ -461,6 +461,21 @@ class AppLocalizations {
       'Saqlangan {count} ta mahsulot menyuga qo‘shilmaydi. Chiqasizmi?':
           'Сохранённые продукты ({count}) не будут добавлены в меню. Выйти?',
       'Qolish': 'Остаться',
+      'Darsni tahrirlash': 'Редактировать урок',
+      'Videoni almashtirish (ixtiyoriy)': 'Заменить видео (необязательно)',
+      'Joriy video qoladi': 'Текущее видео останется',
+      'Saqlab bo‘lmadi. Qayta urinib ko‘ring.':
+          'Не удалось сохранить. Попробуйте ещё раз.',
+      'Dars topilmadi (o‘chirilgan bo‘lishi mumkin).':
+          'Урок не найден (возможно, удалён).',
+      'Amallar': 'Действия',
+      'Tahrirlash': 'Редактировать',
+      'Dars yangilandi': 'Урок обновлён',
+      'Darsni o‘chirasizmi?': 'Удалить урок?',
+      '“{title}” darsi va uning videosi butunlay o‘chiriladi. Buni qaytarib bo‘lmaydi.':
+          'Урок «{title}» и его видео будут удалены навсегда. Это нельзя отменить.',
+      'Dars o‘chirildi': 'Урок удалён',
+      'O‘chirish': 'Удалить',
       'Ko‘p marta noto‘g‘ri kiritildi. Yangi kod so‘rang.':
           'Слишком много неверных попыток. Запросите новый код.',
       'Yangi kodni biroz kutib so‘rang.':
@@ -1077,6 +1092,21 @@ class AppLocalizations {
       'Saqlangan {count} ta mahsulot menyuga qo‘shilmaydi. Chiqasizmi?':
           '{count} saved items will not be added to the meal. Leave?',
       'Qolish': 'Stay',
+      'Darsni tahrirlash': 'Edit lesson',
+      'Videoni almashtirish (ixtiyoriy)': 'Replace video (optional)',
+      'Joriy video qoladi': 'The current video stays',
+      'Saqlab bo‘lmadi. Qayta urinib ko‘ring.':
+          'Could not save. Please try again.',
+      'Dars topilmadi (o‘chirilgan bo‘lishi mumkin).':
+          'Lesson not found (it may have been deleted).',
+      'Amallar': 'Actions',
+      'Tahrirlash': 'Edit',
+      'Dars yangilandi': 'Lesson updated',
+      'Darsni o‘chirasizmi?': 'Delete this lesson?',
+      '“{title}” darsi va uning videosi butunlay o‘chiriladi. Buni qaytarib bo‘lmaydi.':
+          'The lesson “{title}” and its video will be deleted permanently. This cannot be undone.',
+      'Dars o‘chirildi': 'Lesson deleted',
+      'O‘chirish': 'Delete',
       'Ko‘p marta noto‘g‘ri kiritildi. Yangi kod so‘rang.':
           'Too many wrong attempts. Request a new code.',
       'Yangi kodni biroz kutib so‘rang.':
