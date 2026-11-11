@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:video_player/video_player.dart';
 
@@ -6,6 +7,7 @@ import '../l10n/app_localizations.dart';
 import '../theme/app_theme.dart';
 
 /// Streams a lesson video from its public URL (Cloudflare R2 or older hosts).
+/// The controls include a fullscreen button.
 class LessonVideoPlayer extends StatefulWidget {
   const LessonVideoPlayer({super.key, required this.url});
 
@@ -40,6 +42,7 @@ class _LessonVideoPlayerState extends State<LessonVideoPlayer> {
       _failed = uri == null;
       _controller = null;
     });
+    previous?.removeListener(_onChanged);
     await previous?.dispose();
     if (uri == null) return;
     final controller = VideoPlayerController.networkUrl(uri);
@@ -58,21 +61,23 @@ class _LessonVideoPlayerState extends State<LessonVideoPlayer> {
   void _onChanged() {
     if (!mounted) return;
     final hasError = _controller?.value.hasError ?? false;
-    setState(() => _failed = _failed || hasError);
+    if (hasError && !_failed) setState(() => _failed = true);
   }
 
-  void _toggle() {
+  Future<void> _openFullscreen() async {
     final controller = _controller;
     if (controller == null || !_ready) return;
-    final value = controller.value;
-    if (value.isPlaying) {
-      controller.pause();
-    } else {
-      if (value.duration > Duration.zero && value.position >= value.duration) {
-        controller.seekTo(Duration.zero);
-      }
-      controller.play();
-    }
+    await Navigator.of(context, rootNavigator: true).push(
+      PageRouteBuilder<void>(
+        opaque: true,
+        transitionDuration: const Duration(milliseconds: 180),
+        reverseTransitionDuration: const Duration(milliseconds: 150),
+        pageBuilder: (_, _, _) =>
+            LessonVideoFullscreenPage(controller: controller),
+        transitionsBuilder: (_, animation, _, child) =>
+            FadeTransition(opacity: animation, child: child),
+      ),
+    );
   }
 
   @override
@@ -80,14 +85,6 @@ class _LessonVideoPlayerState extends State<LessonVideoPlayer> {
     _controller?.removeListener(_onChanged);
     _controller?.dispose();
     super.dispose();
-  }
-
-  static String _time(Duration value) {
-    final minutes = value.inMinutes;
-    final seconds = value.inSeconds.remainder(60).toString().padLeft(2, '0');
-    if (minutes < 60) return '$minutes:$seconds';
-    final rest = minutes.remainder(60).toString().padLeft(2, '0');
-    return '${value.inHours}:$rest:$seconds';
   }
 
   @override
@@ -124,9 +121,189 @@ class _LessonVideoPlayerState extends State<LessonVideoPlayer> {
         ),
       );
     } else {
-      final value = controller.value;
-      child = GestureDetector(
+      child = VideoSurface(
         key: const Key('lesson-video-player'),
+        controller: controller,
+        fullscreen: false,
+        onFullscreen: _openFullscreen,
+      );
+    }
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(AppRadius.lg),
+      child: AspectRatio(
+        aspectRatio: 16 / 9,
+        child: ColoredBox(color: AppPalette.navy, child: child),
+      ),
+    );
+  }
+}
+
+/// Fullscreen playback of an already initialised [controller].
+///
+/// Hides the system bars and prefers landscape for wide videos; both are
+/// restored when the page closes (back button, gesture or exit button).
+class LessonVideoFullscreenPage extends StatefulWidget {
+  const LessonVideoFullscreenPage({super.key, required this.controller});
+
+  final VideoPlayerController controller;
+
+  @override
+  State<LessonVideoFullscreenPage> createState() =>
+      _LessonVideoFullscreenPageState();
+}
+
+class _LessonVideoFullscreenPageState extends State<LessonVideoFullscreenPage> {
+  @override
+  void initState() {
+    super.initState();
+    final wide = widget.controller.value.aspectRatio >= 1;
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+    SystemChrome.setPreferredOrientations(
+      wide
+          ? const [
+              DeviceOrientation.landscapeLeft,
+              DeviceOrientation.landscapeRight,
+            ]
+          : const [DeviceOrientation.portraitUp],
+    );
+  }
+
+  @override
+  void dispose() {
+    // Back to the app defaults: all orientations the app allows, normal bars.
+    SystemChrome.setPreferredOrientations(const []);
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: SystemUiOverlay.values,
+    );
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    key: const Key('lesson-video-fullscreen'),
+    backgroundColor: Colors.black,
+    body: VideoSurface(
+      controller: widget.controller,
+      fullscreen: true,
+      onFullscreen: () => Navigator.of(context).maybePop(),
+    ),
+  );
+}
+
+/// Video, play overlay and controls; shared by inline and fullscreen views.
+class VideoSurface extends StatelessWidget {
+  const VideoSurface({
+    super.key,
+    required this.controller,
+    required this.fullscreen,
+    required this.onFullscreen,
+  });
+
+  final VideoPlayerController controller;
+  final bool fullscreen;
+
+  /// Enters fullscreen (inline) or leaves it (fullscreen).
+  final VoidCallback onFullscreen;
+
+  static String _time(Duration value) {
+    final minutes = value.inMinutes;
+    final seconds = value.inSeconds.remainder(60).toString().padLeft(2, '0');
+    if (minutes < 60) return '$minutes:$seconds';
+    final rest = minutes.remainder(60).toString().padLeft(2, '0');
+    return '${value.inHours}:$rest:$seconds';
+  }
+
+  void _toggle() {
+    final value = controller.value;
+    if (!value.isInitialized) return;
+    if (value.isPlaying) {
+      controller.pause();
+    } else {
+      if (value.duration > Duration.zero && value.position >= value.duration) {
+        controller.seekTo(Duration.zero);
+      }
+      controller.play();
+    }
+  }
+
+  @override
+  Widget build(
+    BuildContext context,
+  ) => ValueListenableBuilder<VideoPlayerValue>(
+    valueListenable: controller,
+    builder: (context, value, _) {
+      final controls = Container(
+        padding: EdgeInsets.fromLTRB(12, 18, 4, fullscreen ? 12 : 4),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.transparent, Colors.black.withValues(alpha: .55)],
+          ),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: VideoProgressIndicator(
+                controller,
+                allowScrubbing: true,
+                padding: const EdgeInsets.symmetric(vertical: 6),
+                colors: VideoProgressColors(
+                  playedColor: Colors.white,
+                  bufferedColor: Colors.white.withValues(alpha: .35),
+                  backgroundColor: Colors.white.withValues(alpha: .15),
+                ),
+              ),
+            ),
+            Row(
+              children: [
+                Text(
+                  '${_time(value.position)} / ${_time(value.duration)}',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                    fontFeatures: [FontFeature.tabularFigures()],
+                  ),
+                ),
+                const SizedBox(width: 8),
+                if (value.isBuffering)
+                  const SizedBox(
+                    width: 14,
+                    height: 14,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
+                  ),
+                const Spacer(),
+                IconButton(
+                  key: Key(
+                    fullscreen
+                        ? 'lesson-video-exit-fullscreen'
+                        : 'lesson-video-fullscreen-button',
+                  ),
+                  tooltip: context.tr(
+                    fullscreen
+                        ? 'To‘liq ekrandan chiqish'
+                        : 'To‘liq ekranda ko‘rish',
+                  ),
+                  color: Colors.white,
+                  visualDensity: VisualDensity.compact,
+                  icon: Icon(
+                    fullscreen ? LucideIcons.minimize : LucideIcons.maximize,
+                    size: 20,
+                  ),
+                  onPressed: onFullscreen,
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+      return GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: _toggle,
         child: Stack(
@@ -141,16 +318,16 @@ class _LessonVideoPlayerState extends State<LessonVideoPlayer> {
             if (!value.isPlaying)
               Center(
                 child: Container(
-                  width: 56,
-                  height: 56,
+                  width: fullscreen ? 68 : 56,
+                  height: fullscreen ? 68 : 56,
                   decoration: BoxDecoration(
                     color: Colors.black.withValues(alpha: .45),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(
+                  child: Icon(
                     LucideIcons.play,
                     color: Colors.white,
-                    size: 26,
+                    size: fullscreen ? 32 : 26,
                   ),
                 ),
               ),
@@ -158,67 +335,13 @@ class _LessonVideoPlayerState extends State<LessonVideoPlayer> {
               left: 0,
               right: 0,
               bottom: 0,
-              child: Container(
-                padding: const EdgeInsets.fromLTRB(12, 18, 12, 8),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.transparent,
-                      Colors.black.withValues(alpha: .55),
-                    ],
-                  ),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    VideoProgressIndicator(
-                      controller,
-                      allowScrubbing: true,
-                      padding: const EdgeInsets.symmetric(vertical: 6),
-                      colors: VideoProgressColors(
-                        playedColor: Colors.white,
-                        bufferedColor: Colors.white.withValues(alpha: .35),
-                        backgroundColor: Colors.white.withValues(alpha: .15),
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          '${_time(value.position)} / ${_time(value.duration)}',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontFeatures: [FontFeature.tabularFigures()],
-                          ),
-                        ),
-                        const Spacer(),
-                        if (value.isBuffering)
-                          const SizedBox(
-                            width: 14,
-                            height: 14,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: Colors.white,
-                            ),
-                          ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+              child: fullscreen
+                  ? SafeArea(top: false, child: controls)
+                  : controls,
             ),
           ],
         ),
       );
-    }
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(AppRadius.lg),
-      child: AspectRatio(
-        aspectRatio: 16 / 9,
-        child: ColoredBox(color: AppPalette.navy, child: child),
-      ),
-    );
-  }
+    },
+  );
 }

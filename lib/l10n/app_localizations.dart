@@ -461,6 +461,10 @@ class AppLocalizations {
       'Saqlangan {count} ta mahsulot menyuga qo‘shilmaydi. Chiqasizmi?':
           'Сохранённые продукты ({count}) не будут добавлены в меню. Выйти?',
       'Qolish': 'Остаться',
+      'Rasm ombori vaqtincha ishlamayapti.':
+          'Хранилище фото временно недоступно.',
+      'To‘liq ekranda ko‘rish': 'Во весь экран',
+      'To‘liq ekrandan chiqish': 'Выйти из полноэкранного режима',
       'Server vaqtincha ishlamayapti. Keyinroq urinib ko‘ring.':
           'Сервер временно недоступен. Попробуйте позже.',
       'Video xizmati hali sozlanmagan.': 'Видеосервис ещё не настроен.',
@@ -1066,6 +1070,10 @@ class AppLocalizations {
       'Saqlangan {count} ta mahsulot menyuga qo‘shilmaydi. Chiqasizmi?':
           '{count} saved items will not be added to the meal. Leave?',
       'Qolish': 'Stay',
+      'Rasm ombori vaqtincha ishlamayapti.':
+          'Photo storage is temporarily unavailable.',
+      'To‘liq ekranda ko‘rish': 'Full screen',
+      'To‘liq ekrandan chiqish': 'Exit full screen',
       'Server vaqtincha ishlamayapti. Keyinroq urinib ko‘ring.':
           'The server is temporarily unavailable. Please try again later.',
       'Video xizmati hali sozlanmagan.':

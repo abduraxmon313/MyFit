@@ -51,7 +51,9 @@ class LessonsPage extends StatefulWidget {
 class _LessonsPageState extends State<LessonsPage> {
   late final LessonRepository _repository =
       widget.repository ?? defaultLessonRepository();
-  late final Stream<Map<String, int>> _counts = _repository.watchLessonCounts();
+  late final Stream<Map<String, int>> _counts = _repository.watchLessonCounts([
+    for (final category in widget.categories) category.id,
+  ]);
 
   @override
   Widget build(BuildContext context) => StreamBuilder<Map<String, int>>(

@@ -140,3 +140,24 @@ ffmpeg -i input.mov -c:v libx264 -preset slow -crf 23 -c:a aac -b:a 128k -movfla
 ## Testlar
 - `cd workers/video && npm test` — token xavfsizligi, Firestore REST, MP4, presign, yuklash, HTTP.
 - `flutter test` — ilova tomoni (Worker klienti, progress, bekor qilish, xatolar, pleyer).
+
+## Profil rasmlari (R2, Firebase Storage'siz)
+
+Endpointlar (shu Worker, admin shart emas):
+
+| Endpoint | So'rov | Javob |
+|---|---|---|
+| `POST /profile/upload?uid=<o'z UID>` | `Authorization: Bearer <ID token>`, `Content-Type: image/jpeg\|png\|webp`, tana: rasm baytlari (≤ 5 MB) | `{ url, objectKey, contentType, sizeBytes }` |
+| `POST /profile/delete` | JSON `{ "uid": "<o'z UID>" }` (ixtiyoriy) | `{ deleted }` |
+
+- UID faqat tekshirilgan tokendan olinadi; `uid` boshqa bo'lsa 403 `not-owner`.
+- Kalit server tomonida yaratiladi: `profile-images/{uid}/{vaqt}-{tasodifiy}.{ext}`.
+  Yangi rasm yuklangach, shu foydalanuvchining eski rasmlari o'chiriladi (boshqa papkalarga tegilmaydi).
+- Tur `Content-Type` va fayl boshidagi magic baytlar bo'yicha tekshiriladi (JPEG/PNG/WebP).
+- URL Firestore'dagi avvalgi maydonga yoziladi: `users/{uid}.photoUrl` (ilova yozadi, o'z hujjatiga).
+- Rasm ochiq `R2_PUBLIC_BASE_URL` orqali ko'rsatiladi (URL'ni bilgan kishi ko'ra oladi, avvalgidek).
+
+Xatolar: 401 token yo'q/yaroqsiz · 403 `not-owner` · 413 `too-large` · 415 `unsupported-format` ·
+400 `empty-file` · 503 `storage-unavailable`.
+
+Yangi endpointlar ishlashi uchun Worker'ni qayta deploy qiling: Actions → **Deploy video Worker** → Run workflow.

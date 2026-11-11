@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import '../l10n/app_localizations.dart';
 import '../models/user_profile.dart';
 import '../services/phone_format.dart';
+import '../services/profile_photo_api.dart';
 import '../services/profile_photo_picker.dart';
 import '../widgets/appearance_selector.dart';
 import '../widgets/profile_avatar.dart';
@@ -644,26 +645,28 @@ class _ProfilePageState extends State<ProfilePage> {
 
 /// Turns a photo pick/upload failure into a message that names the cause.
 (String, Map<String, Object>) photoErrorMessage(Object error) {
+  if (error is ProfilePhotoException) {
+    switch (error.reason) {
+      case 'sign-in-required':
+      case 'not-owner':
+        return ('Rasm yuklash uchun qayta kiring.', const {});
+      case 'too-large':
+      case 'unsupported-format':
+      case 'empty-file':
+        return ('Rasm juda katta yoki noto‘g‘ri formatda.', const {});
+      case 'network':
+        return ('Internet aloqasi yo‘q. Qayta urinib ko‘ring.', const {});
+      case 'storage-unavailable':
+        return ('Rasm ombori vaqtincha ishlamayapti.', const {});
+    }
+    return ('Rasmni yangilab bo‘lmadi ({code}).', {'code': error.reason});
+  }
   if (error is FirebaseException) {
     switch (error.code) {
-      case 'unauthorized':
-      case 'permission-denied':
-        return (
-          'Rasm saqlashga ruxsat yo‘q: Firebase Storage qoidalari o‘rnatilmagan.',
-          const {},
-        );
       case 'unauthenticated':
         return ('Rasm yuklash uchun qayta kiring.', const {});
-      case 'bucket-not-found':
-      case 'project-not-found':
-      case 'object-not-found':
-      case 'unknown':
-        return ('Firebase Storage yoqilmagan (Blaze rejasi kerak).', const {});
-      case 'quota-exceeded':
-        return ('Firebase Storage limiti tugagan.', const {});
-      case 'retry-limit-exceeded':
-      case 'network-request-failed':
       case 'unavailable':
+      case 'deadline-exceeded':
         return ('Internet aloqasi yo‘q. Qayta urinib ko‘ring.', const {});
     }
     return ('Rasmni yangilab bo‘lmadi ({code}).', {'code': error.code});

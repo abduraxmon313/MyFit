@@ -306,8 +306,8 @@ abstract class LessonRepository {
   /// Lessons of one category, ordered by `order`.
   Stream<List<CourseLesson>> watchLessons(String categoryId);
 
-  /// Number of lessons per category id.
-  Stream<Map<String, int>> watchLessonCounts();
+  /// Number of lessons for each of [categoryIds].
+  Stream<Map<String, int>> watchLessonCounts(List<String> categoryIds);
 
   /// Whether the signed-in user has an `admins/{uid}` document.
   Future<bool> isAdmin();
@@ -322,10 +322,53 @@ class EmptyLessonRepository implements LessonRepository {
       Stream.value(const []);
 
   @override
-  Stream<Map<String, int>> watchLessonCounts() => Stream.value(const {});
+  Stream<Map<String, int>> watchLessonCounts(List<String> categoryIds) =>
+      Stream.value(const {});
 
   @override
   Future<bool> isAdmin() async => false;
+}
+
+/// Merges per-category counts into one map. Emits once every category has
+/// reported (a failing category counts as 0), then on each change.
+Stream<Map<String, int>> combineLessonCounts(Map<String, Stream<int>> sources) {
+  late final StreamController<Map<String, int>> controller;
+  final subscriptions = <StreamSubscription<int>>[];
+  final counts = <String, int>{};
+  final reported = <String>{};
+
+  void report(String id, int count) {
+    counts[id] = count;
+    reported.add(id);
+    if (reported.length == sources.length && !controller.isClosed) {
+      controller.add(Map.unmodifiable(counts));
+    }
+  }
+
+  controller = StreamController<Map<String, int>>(
+    onListen: () {
+      if (sources.isEmpty) controller.add(const {});
+      for (final MapEntry(key: id, value: stream) in sources.entries) {
+        subscriptions.add(
+          stream.listen(
+            (value) => report(id, value),
+            onError: (Object error) {
+              if (kDebugMode) {
+                debugPrint('[MyFit] lesson count for $id failed: $error');
+              }
+              report(id, counts[id] ?? 0);
+            },
+          ),
+        );
+      }
+    },
+    onCancel: () async {
+      for (final subscription in subscriptions) {
+        await subscription.cancel();
+      }
+    },
+  );
+  return controller.stream;
 }
 
 class FirestoreLessonRepository implements LessonRepository {
@@ -336,56 +379,38 @@ class FirestoreLessonRepository implements LessonRepository {
   final FirebaseFirestore _firestore;
   final FirebaseAuth _auth;
 
-  @override
-  Stream<List<CourseLesson>> watchLessons(String categoryId) => _firestore
-      .collection('courses')
-      .doc(categoryId)
-      .collection('lessons')
-      .orderBy('order')
-      .snapshots()
-      // TEMP DEBUG: shows permission-denied if lesson rules are missing.
-      .handleError((Object error) {
-        debugPrint('[MyFit admin] courses/$categoryId/lessons failed: $error');
-        throw error;
-      })
-      .map(
-        (snapshot) => [
-          for (final doc in snapshot.docs)
-            CourseLesson.fromMap(doc.id, doc.data()),
-        ],
-      );
+  CollectionReference<Map<String, dynamic>> _lessons(String categoryId) =>
+      _firestore.collection('courses').doc(categoryId).collection('lessons');
 
   @override
-  Stream<Map<String, int>> watchLessonCounts() =>
-      _firestore.collectionGroup('lessons').snapshots().map((snapshot) {
-        final counts = <String, int>{};
-        for (final doc in snapshot.docs) {
-          final course = doc.reference.parent.parent;
-          if (course == null || course.parent.id != 'courses') continue;
-          counts[course.id] = (counts[course.id] ?? 0) + 1;
-        }
-        return counts;
+  Stream<List<CourseLesson>> watchLessons(String categoryId) =>
+      _lessons(categoryId)
+          .orderBy('order')
+          .snapshots()
+          .map(
+            (snapshot) => [
+              for (final doc in snapshot.docs)
+                CourseLesson.fromMap(doc.id, doc.data()),
+            ],
+          );
+
+  /// One listener per category on `courses/{id}/lessons` (the same path the
+  /// category page reads). A collection-group query is not used: it needs a
+  /// collection-group index and the recursive `{path=**}` rule.
+  @override
+  Stream<Map<String, int>> watchLessonCounts(List<String> categoryIds) =>
+      combineLessonCounts({
+        for (final id in categoryIds)
+          id: _lessons(id).snapshots().map((snapshot) => snapshot.size),
       });
 
   @override
   Future<bool> isAdmin() async {
     final uid = _auth.currentUser?.uid;
-    // TEMP DEBUG (admin tugmasi): logcat / Xcode konsolida `[MyFit admin]`.
-    debugPrint('[MyFit admin] auth uid=${uid ?? 'null (signed out)'}');
     if (uid == null) return false;
     try {
-      final doc = await _firestore.collection('admins').doc(uid).get();
-      debugPrint(
-        '[MyFit admin] admins/$uid exists=${doc.exists} '
-        'fromCache=${doc.metadata.isFromCache} data=${doc.data()}',
-      );
-      return doc.exists;
-    } on FirebaseException catch (error) {
-      // permission-denied => Firestore Rules (admins/{uid}) not deployed.
-      debugPrint('[MyFit admin] admins/$uid read failed: ${error.code}');
-      return false;
-    } catch (error) {
-      debugPrint('[MyFit admin] admins/$uid read failed: $error');
+      return (await _firestore.collection('admins').doc(uid).get()).exists;
+    } catch (_) {
       return false;
     }
   }

@@ -96,9 +96,10 @@ class FakeLessonRepository implements LessonRepository {
   Future<bool> isAdmin() async => admin;
 
   @override
-  Stream<Map<String, int>> watchLessonCounts() => Stream.value({
-    for (final entry in lessons.entries) entry.key: entry.value.length,
-  });
+  Stream<Map<String, int>> watchLessonCounts(List<String> categoryIds) =>
+      Stream.value({
+        for (final entry in lessons.entries) entry.key: entry.value.length,
+      });
 
   @override
   Stream<List<CourseLesson>> watchLessons(String categoryId) =>
