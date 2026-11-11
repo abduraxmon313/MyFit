@@ -24,8 +24,7 @@ workflows:
       - name: Testlar
         script: flutter test
       - name: APK yig'ish
-        # MYFIT_VIDEO_API: video Worker manzili (Codemagic Environment variables; maxfiy emas).
-        script: flutter build apk --debug --build-number=$BUILD_NUMBER --dart-define=MYFIT_VIDEO_API=${MYFIT_VIDEO_API:-}
+        script: flutter build apk --debug --build-number=$BUILD_NUMBER
     artifacts:
       - build/app/outputs/flutter-apk/*.apk
     publishing:

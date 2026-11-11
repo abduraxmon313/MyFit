@@ -8,6 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:image_picker/image_picker.dart' show XFile;
+import 'package:myfit/config/app_config.dart';
 import 'package:myfit/data/trainer_course.dart';
 import 'package:myfit/models/trainer_course.dart';
 import 'package:myfit/screens/lessons_page.dart';
@@ -308,6 +309,28 @@ void main() {
       expect(seen.headers['Authorization'], 'Bearer id-token');
       expect(jsonDecode(seen.body), {'a': 1});
     });
+
+    test(
+      'defaults to the central Worker URL for create and finalize',
+      () async {
+        expect(kVideoApiBaseUrl, 'https://myfit-video.myfit-app.workers.dev');
+        final uploader = LessonVideoUploader(
+          idToken: ({bool forceRefresh = false}) async => 't',
+        );
+        expect(uploader.apiBase, kVideoApiBaseUrl);
+        final urls = <String>[];
+        final client = MockClient((request) async {
+          urls.add(request.url.toString());
+          return http.Response('{}', 200);
+        });
+        await uploader.callApi(client, '/createVideoUpload', {});
+        await uploader.callApi(client, '/finalizeVideoUpload', {});
+        expect(urls, [
+          'https://myfit-video.myfit-app.workers.dev/createVideoUpload',
+          'https://myfit-video.myfit-app.workers.dev/finalizeVideoUpload',
+        ]);
+      },
+    );
 
     test('refreshes an expired token once', () async {
       final tokens = <bool>[];

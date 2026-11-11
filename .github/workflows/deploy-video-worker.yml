@@ -102,5 +102,5 @@ jobs:
             echo ""
             echo "URL: \`${{ steps.deploy.outputs.url }}\`"
             echo ""
-            echo "Codemagic: set \`MYFIT_VIDEO_API\` to this URL."
+            echo "App URL lives in lib/config/app_config.dart (kVideoApiBaseUrl)."
           } >> "$GITHUB_STEP_SUMMARY"
