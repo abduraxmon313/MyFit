@@ -42,26 +42,21 @@ class SignedInCredential implements UserCredential {
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
-class AutoVerifiedAuth extends AuthService {
-  AutoVerifiedAuth() : super(auth: UnusedAuth());
-  void Function(PhoneAuthCredential)? complete;
+class SmsAuth extends AuthService {
+  SmsAuth() : super(auth: UnusedAuth());
+  final requested = <String>[];
+  final verified = <String>[];
 
   @override
-  Future<void> sendOtp({
+  Future<void> requestSmsCode(String phoneNumber) async =>
+      requested.add(phoneNumber);
+
+  @override
+  Future<UserCredential> verifySmsCode({
     required String phoneNumber,
-    required void Function(String, int?) onCodeSent,
-    required void Function(FirebaseAuthException) onError,
-    void Function(PhoneAuthCredential)? onAutoVerified,
-    Duration timeout = const Duration(seconds: 60),
-    int? forceResendingToken,
+    required String code,
   }) async {
-    complete = onAutoVerified;
-  }
-
-  @override
-  Future<UserCredential> signInWithCredential(
-    PhoneAuthCredential credential,
-  ) async {
+    verified.add('$phoneNumber:$code');
     return SignedInCredential();
   }
 }
@@ -88,10 +83,8 @@ void main() {
     expect(find.text('Old result'), findsNothing);
   });
 
-  testWidgets('Automatic SMS verification closes the OTP route', (
-    tester,
-  ) async {
-    final auth = AutoVerifiedAuth();
+  testWidgets('A correct SMS code closes the OTP route', (tester) async {
+    final auth = SmsAuth();
     await tester.pumpWidget(
       MaterialApp(
         home: Builder(
@@ -113,13 +106,12 @@ void main() {
       ),
     );
     await tester.tap(find.text('Open OTP'));
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 400));
-    expect(auth.complete, isNotNull);
-    auth.complete!(
-      PhoneAuthProvider.credential(verificationId: 'test', smsCode: '123456'),
-    );
     await tester.pumpAndSettle();
+    expect(auth.requested, ['+998901234567']);
+    await tester.enterText(find.byType(TextFormField), '123456');
+    await tester.tap(find.text('Tasdiqlash'));
+    await tester.pumpAndSettle();
+    expect(auth.verified, ['+998901234567:123456']);
     expect(find.byType(OtpVerifyPage), findsNothing);
     expect(find.text('Open OTP'), findsOneWidget);
   });

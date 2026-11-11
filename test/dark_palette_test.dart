@@ -375,4 +375,68 @@ void main() {
     }
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets('System back walks tabs back and exits only from home', (
+    tester,
+  ) async {
+    final systemPops = <String>[];
+    tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+      SystemChannels.platform,
+      (call) async {
+        if (call.method == 'SystemNavigator.pop') systemPops.add(call.method);
+        return null;
+      },
+    );
+    addTearDown(
+      () => tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+        SystemChannels.platform,
+        null,
+      ),
+    );
+    await tester.pumpWidget(
+      MaterialApp(
+        home: HomePage(authService: _PreviewAuth(), profile: _profile),
+      ),
+    );
+    await tester.pumpAndSettle();
+    int selected() =>
+        tester.widget<NavigationBar>(find.byType(NavigationBar)).selectedIndex;
+
+    await tester.tap(find.text('Darslar'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Hisobotlar'));
+    await tester.pumpAndSettle();
+    expect(selected(), 3);
+
+    // Back (button or edge swipe) -> previous tab, never out of the app.
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+    expect(selected(), 2);
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+    expect(selected(), 0);
+    expect(systemPops, isEmpty);
+
+    // Profile opened from home returns home.
+    await tester.tap(find.byKey(const Key('home-profile')));
+    await tester.pumpAndSettle();
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('profile-back')), findsNothing);
+    expect(systemPops, isEmpty);
+
+    // Any tab -> back -> home.
+    await tester.tap(find.text('Ovqatlar'));
+    await tester.pumpAndSettle();
+    expect(selected(), 1);
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+    expect(selected(), 0);
+    expect(systemPops, isEmpty);
+
+    // From home the app may close.
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+    expect(systemPops, ['SystemNavigator.pop']);
+  });
 }

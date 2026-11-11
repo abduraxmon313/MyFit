@@ -3,3 +3,5 @@ R2_ACCESS_KEY_ID=
 R2_SECRET_ACCESS_KEY=
 # Whole service-account JSON on one line.
 FIREBASE_SERVICE_ACCOUNT=
+# Optional: devsms.uz token for SMS sign-in.
+DEVSMS_API_TOKEN=

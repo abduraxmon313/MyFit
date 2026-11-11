@@ -16,15 +16,13 @@ class OtpVerifyPage extends StatefulWidget {
     super.key,
     required this.authService,
     required this.phoneNumber,
-    this.verificationId,
-    this.resendToken,
     this.autoSend = false,
   });
 
   final AuthService authService;
   final String phoneNumber;
-  final String? verificationId;
-  final int? resendToken;
+
+  /// Request the SMS code as soon as the page opens.
   final bool autoSend;
 
   @override
@@ -35,8 +33,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
   final _codeController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  String? _verificationId;
-  int? _resendToken;
+  bool _codeSent = false;
   bool _sending = false;
   bool _loading = false;
   bool _resending = false;
@@ -48,12 +45,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
   @override
   void initState() {
     super.initState();
-    _verificationId = widget.verificationId;
-    _resendToken = widget.resendToken;
-    if (_verificationId != null) {
-      _startTimer();
-      _info = 'SMS kod yuborildi';
-    } else if (widget.autoSend) {
+    if (widget.autoSend) {
       WidgetsBinding.instance.addPostFrameCallback((_) => _requestCode());
     }
   }
@@ -65,9 +57,9 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
     super.dispose();
   }
 
-  void _startTimer() {
+  void _startTimer([int seconds = 60]) {
     _timer?.cancel();
-    setState(() => _secondsLeft = 60);
+    setState(() => _secondsLeft = seconds);
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_secondsLeft <= 1) {
         timer.cancel();
@@ -91,53 +83,28 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
     });
 
     try {
-      await widget.authService.sendOtp(
-        phoneNumber: widget.phoneNumber,
-        forceResendingToken: isResend ? _resendToken : null,
-        onCodeSent: (verificationId, resendToken) {
-          if (!mounted) return;
-          setState(() {
-            _verificationId = verificationId;
-            _resendToken = resendToken;
-            _sending = false;
-            _resending = false;
-            _info = 'SMS kod yuborildi. Xabarlarni tekshiring.';
-          });
-          _startTimer();
-        },
-        onError: (error) {
-          if (!mounted) return;
-          setState(() {
-            _sending = false;
-            _resending = false;
-            _info = null;
-            _error = _mapError(error);
-          });
-        },
-        onAutoVerified: (credential) async {
-          if (!mounted) return;
-          try {
-            await widget.authService.signInWithCredential(credential);
-            if (!mounted) return;
-            Navigator.of(context).popUntil((route) => route.isFirst);
-          } on FirebaseAuthException catch (e) {
-            if (!mounted) return;
-            setState(() {
-              _sending = false;
-              _resending = false;
-              _error = _mapError(e);
-            });
-          }
-        },
-      );
-    } on FirebaseAuthException catch (e) {
+      await widget.authService.requestSmsCode(widget.phoneNumber);
+      if (!mounted) return;
+      setState(() {
+        _codeSent = true;
+        _sending = false;
+        _resending = false;
+        _info = 'SMS kod yuborildi. Xabarlarni tekshiring.';
+      });
+      _startTimer();
+    } on SmsAuthException catch (e) {
       if (!mounted) return;
       setState(() {
         _sending = false;
         _resending = false;
         _info = null;
+        // A code sent a moment ago is still valid: allow typing it.
+        if (e.reason == 'resend-too-soon') _codeSent = true;
         _error = _mapError(e);
       });
+      if (e.retryAfterSeconds != null && e.retryAfterSeconds! <= 3600) {
+        _startTimer(e.retryAfterSeconds!);
+      }
     } catch (e) {
       if (!mounted) return;
       setState(() {
@@ -151,7 +118,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
 
   Future<void> _verify() async {
     if (!_formKey.currentState!.validate()) return;
-    if (_verificationId == null) {
+    if (!_codeSent) {
       setState(() => _error = context.tr('Avval SMS kodni oling.'));
       return;
     }
@@ -162,18 +129,26 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
     });
 
     try {
-      await widget.authService.verifyOtp(
-        verificationId: _verificationId!,
-        smsCode: _codeController.text,
+      await widget.authService.verifySmsCode(
+        phoneNumber: widget.phoneNumber,
+        code: _codeController.text,
       );
       if (!mounted) return;
       // AuthGate HomePage ga o‘tadi; OTP stackni tozalaymiz.
       Navigator.of(context).popUntil((route) => route.isFirst);
-    } on FirebaseAuthException catch (e) {
+    } on SmsAuthException catch (e) {
       if (!mounted) return;
       setState(() {
         _loading = false;
         _error = _mapError(e);
+      });
+    } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _loading = false;
+        _error = e.code == 'network-request-failed'
+            ? context.tr('Internet aloqasi yo‘q.')
+            : context.tr('Xatolik ({code}).', {'code': e.code});
       });
     } catch (e) {
       if (!mounted) return;
@@ -184,40 +159,34 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
     }
   }
 
-  String _mapError(FirebaseAuthException e) {
-    switch (e.code) {
-      case 'invalid-verification-code':
+  String _mapError(SmsAuthException e) {
+    switch (e.reason) {
+      case 'invalid-code':
         return context.tr('SMS kod noto‘g‘ri.');
-      case 'session-expired':
+      case 'code-expired':
         return context.tr('SMS kod muddati tugadi. Qayta yuboring.');
-      case 'invalid-phone-number':
+      case 'too-many-attempts':
+        return context.tr('Ko‘p marta noto‘g‘ri kiritildi. Yangi kod so‘rang.');
+      case 'invalid-phone':
         return context.tr('Telefon raqam noto‘g‘ri.');
+      case 'resend-too-soon':
+        return context.tr('Yangi kodni biroz kutib so‘rang.');
       case 'too-many-requests':
         return context.tr('Juda ko‘p urinish. Keyinroq qayta urinib ko‘ring.');
-      case 'network-request-failed':
+      case 'network':
         return context.tr('Internet aloqasi yo‘q.');
-      // Quyidagilar Firebase loyiha sozlamasi bilan bog'liq.
-      case 'billing-not-enabled':
+      case 'user-disabled':
+        return context.tr('Bu akkaunt bloklangan.');
+      case 'sms-unavailable':
+      case 'sms-misconfigured':
+      case 'auth-unavailable':
+      case 'auth-misconfigured':
+      case 'database-unavailable':
         return context.tr(
-          'SMS xizmati yoqilmagan: Firebase loyihasiga billing ulanmagan.',
-        );
-      case 'quota-exceeded':
-        return context.tr(
-          'Bugungi SMS limiti tugadi. Keyinroq urinib ko‘ring.',
-        );
-      case 'operation-not-allowed':
-        return context.tr(
-          'Telefon orqali kirish Firebase’da yoqilmagan yoki bu davlatga SMS ruxsat etilmagan.',
-        );
-      case 'app-not-authorized':
-      case 'missing-client-identifier':
-      case 'invalid-app-credential':
-      case 'captcha-check-failed':
-        return context.tr(
-          'Ilova Firebase’da tasdiqlanmagan (SHA kalitlari yoki APNs sozlanmagan).',
+          'SMS xizmati vaqtincha ishlamayapti. Keyinroq urinib ko‘ring.',
         );
       default:
-        return context.tr('Xatolik ({code}).', {'code': e.code});
+        return context.tr('Xatolik ({code}).', {'code': e.reason});
     }
   }
 
@@ -289,7 +258,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                           ],
                           TextFormField(
                             controller: _codeController,
-                            enabled: !_sending && _verificationId != null,
+                            enabled: !_sending && _codeSent,
                             keyboardType: TextInputType.number,
                             textAlign: TextAlign.center,
                             style: TextStyle(
@@ -343,10 +312,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                           ],
                           const SizedBox(height: 20),
                           FilledButton(
-                            onPressed:
-                                (_loading ||
-                                    _sending ||
-                                    _verificationId == null)
+                            onPressed: (_loading || _sending || !_codeSent)
                                 ? null
                                 : _verify,
                             child: _loading

@@ -157,7 +157,9 @@ void main() {
       final orientation = systemCalls.lastWhere(
         (c) => c.method == 'SystemChrome.setPreferredOrientations',
       );
+      // Follows the phone: upright or sideways (portrait or landscape video).
       expect(orientation.arguments, [
+        'DeviceOrientation.portraitUp',
         'DeviceOrientation.landscapeLeft',
         'DeviceOrientation.landscapeRight',
       ]);
@@ -180,6 +182,39 @@ void main() {
         systemCalls.map((c) => c.method),
         contains('SystemChrome.setEnabledSystemUIOverlays'),
       );
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('video fits the screen upright and sideways', (tester) async {
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: LessonVideoPlayer(url: 'https://pub.r2.dev/lesson.mp4'),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('lesson-video-fullscreen-button')));
+      await tester.pumpAndSettle();
+      Size videoSize() => tester.getSize(
+        find.descendant(
+          of: find.byKey(const Key('lesson-video-fullscreen')),
+          matching: find.byKey(const Key('fake-video-view')),
+        ),
+      );
+      // Upright phone: full width, 16:9 height.
+      tester.view.physicalSize = const Size(400, 800);
+      await tester.pumpAndSettle();
+      expect(videoSize().width, 400);
+      expect(videoSize().height, closeTo(225, 1));
+      // Phone turned sideways: video fills the height.
+      tester.view.physicalSize = const Size(800, 400);
+      await tester.pumpAndSettle();
+      expect(videoSize().height, closeTo(400, 1));
+      expect(videoSize().width, closeTo(711, 1));
       expect(tester.takeException(), isNull);
     });
 

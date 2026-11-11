@@ -4,7 +4,10 @@
 #   CLOUDFLARE_API_TOKEN       Cloudflare token, template "Edit Cloudflare Workers"
 #   R2_ACCESS_KEY_ID           R2 API token access key (myfit-videos, Object Read & Write)
 #   R2_SECRET_ACCESS_KEY       R2 API token secret
-#   FIREBASE_SERVICE_ACCOUNT   whole service-account JSON (role: Cloud Datastore User)
+#   FIREBASE_SERVICE_ACCOUNT   whole service-account JSON (roles: Cloud Datastore User,
+#                              Firebase Authentication Admin for SMS sign-in)
+# Optional:
+#   DEVSMS_API_TOKEN           devsms.uz API token (SMS sign-in, /auth/sms/*)
 # Secret values are never printed; GitHub masks them in logs.
 name: Deploy video Worker
 
@@ -50,6 +53,7 @@ jobs:
           R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          DEVSMS_API_TOKEN: ${{ secrets.DEVSMS_API_TOKEN }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
           if [ -z "$CLOUDFLARE_API_TOKEN" ]; then echo "::error::CLOUDFLARE_API_TOKEN secret is missing"; exit 1; fi

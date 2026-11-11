@@ -1,9 +1,39 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
 
+import '../config/app_config.dart';
+
+/// SMS sign-in failure. [reason] matches the Worker `error.reason`
+/// (`invalid-code`, `code-expired`, `resend-too-soon`, …) plus `network`.
+class SmsAuthException implements Exception {
+  const SmsAuthException(this.reason, {this.retryAfterSeconds, this.detail});
+
+  final String reason;
+  final int? retryAfterSeconds;
+  final String? detail;
+
+  @override
+  String toString() => 'SmsAuthException($reason)';
+}
+
+/// Firebase Auth session; SMS codes come from the MyFit Worker (DevSMS),
+/// not from Firebase Phone Auth. The Worker returns a Firebase custom token
+/// for the existing user of that phone number, so UIDs and data stay.
 class AuthService {
-  AuthService({FirebaseAuth? auth}) : _auth = auth ?? FirebaseAuth.instance;
+  AuthService({FirebaseAuth? auth, this.client, String? apiBase})
+    : _authOverride = auth,
+      _apiBase = apiBase ?? kVideoApiBaseUrl;
 
-  final FirebaseAuth _auth;
+  final FirebaseAuth? _authOverride;
+
+  /// Defaults to a new client per request.
+  final http.Client? client;
+  final String _apiBase;
+
+  FirebaseAuth get _auth => _authOverride ?? FirebaseAuth.instance;
 
   User? get currentUser => _auth.currentUser;
 
@@ -21,50 +51,74 @@ class AuthService {
     if (digits.length == 9) {
       return '+998$digits';
     }
-    if (input.trim().startsWith('+')) {
-      return '+$digits';
-    }
     return '+$digits';
   }
 
-  Future<void> sendOtp({
+  /// Asks the Worker to send a 6 digit SMS code.
+  Future<void> requestSmsCode(String phoneNumber) async {
+    await _post('/auth/sms/send', {'phone': normalizePhone(phoneNumber)});
+  }
+
+  /// Checks the code with the Worker and signs in with the custom token.
+  Future<UserCredential> verifySmsCode({
     required String phoneNumber,
-    required void Function(String verificationId, int? resendToken) onCodeSent,
-    required void Function(FirebaseAuthException error) onError,
-    void Function(PhoneAuthCredential credential)? onAutoVerified,
-    Duration timeout = const Duration(seconds: 60),
-    int? forceResendingToken,
+    required String code,
   }) async {
-    await _auth.verifyPhoneNumber(
-      phoneNumber: normalizePhone(phoneNumber),
-      timeout: timeout,
-      forceResendingToken: forceResendingToken,
-      verificationCompleted: (credential) async {
-        if (onAutoVerified != null) {
-          onAutoVerified(credential);
-          return;
-        }
-        await _auth.signInWithCredential(credential);
-      },
-      verificationFailed: onError,
-      codeSent: onCodeSent,
-      codeAutoRetrievalTimeout: (_) {},
-    );
+    final result = await _post('/auth/sms/verify', {
+      'phone': normalizePhone(phoneNumber),
+      'code': code.trim(),
+    });
+    final token = result['customToken'];
+    if (token is! String || token.isEmpty) {
+      throw const SmsAuthException('internal', detail: 'No token');
+    }
+    return _auth.signInWithCustomToken(token);
   }
 
-  Future<UserCredential> verifyOtp({
-    required String verificationId,
-    required String smsCode,
-  }) {
-    final credential = PhoneAuthProvider.credential(
-      verificationId: verificationId,
-      smsCode: smsCode.trim(),
-    );
-    return _auth.signInWithCredential(credential);
-  }
-
-  Future<UserCredential> signInWithCredential(PhoneAuthCredential credential) {
-    return _auth.signInWithCredential(credential);
+  Future<Map<String, dynamic>> _post(String path, Object body) async {
+    final base = _apiBase.trim().replaceAll(RegExp(r'/+$'), '');
+    final httpClient = client ?? http.Client();
+    try {
+      final http.Response response;
+      try {
+        response = await httpClient
+            .post(
+              Uri.parse('$base$path'),
+              headers: const {'Content-Type': 'application/json'},
+              body: jsonEncode(body),
+            )
+            .timeout(const Duration(seconds: 30));
+      } on TimeoutException {
+        throw const SmsAuthException('network', detail: 'timeout');
+      } on http.ClientException catch (error) {
+        throw SmsAuthException('network', detail: error.message);
+      }
+      Object? decoded;
+      try {
+        decoded = jsonDecode(utf8.decode(response.bodyBytes));
+      } catch (_) {
+        decoded = null;
+      }
+      if (response.statusCode == 200 && decoded is Map) {
+        return Map<String, dynamic>.from(decoded);
+      }
+      final error = decoded is Map ? decoded['error'] : null;
+      final reason = error is Map && error['reason'] is String
+          ? error['reason'] as String
+          : switch (response.statusCode) {
+              429 => 'too-many-requests',
+              502 || 503 || 504 => 'sms-unavailable',
+              _ => 'internal',
+            };
+      final retry = error is Map ? error['retryAfterSeconds'] : null;
+      throw SmsAuthException(
+        reason,
+        retryAfterSeconds: retry is num ? retry.toInt() : null,
+        detail: error is Map ? '${error['message']}' : null,
+      );
+    } finally {
+      if (client == null) httpClient.close();
+    }
   }
 
   Future<void> signOut() => _auth.signOut();
