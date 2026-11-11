@@ -75,11 +75,10 @@ function providerError(status: number, json: any, operation: string): ApiError {
   console.error(`DevSMS ${operation} failed`, status, code);
   if (status === 401) return new ApiError(502, "sms-misconfigured", "DevSMS token is invalid or expired");
   if (status === 403) {
-    return new ApiError(
-      502,
-      "sms-misconfigured",
-      code === "forbidden" ? `DevSMS key lacks the permission for ${operation}` : "DevSMS refused the request",
-    );
+    // `forbidden` = key permission; anything else = text/moderation refusal.
+    return code === "forbidden"
+      ? new ApiError(502, "sms-misconfigured", `DevSMS key lacks the permission for ${operation}`)
+      : new ApiError(502, "sms-rejected", "DevSMS refused the SMS text (moderation)");
   }
   if (status === 402 || code === "insufficient_balance") {
     return new ApiError(503, "sms-unavailable", "SMS balance is empty");
