@@ -461,6 +461,10 @@ class AppLocalizations {
       'Saqlangan {count} ta mahsulot menyuga qo‘shilmaydi. Chiqasizmi?':
           'Сохранённые продукты ({count}) не будут добавлены в меню. Выйти?',
       'Qolish': 'Остаться',
+      'Kameraga ruxsat berilmagan. Telefon sozlamalaridan ruxsat bering yoki galereyadan tanlang.': 'Нет доступа к камере. Разрешите его в настройках телефона или выберите фото из галереи.',
+      'Kamerani ochib bo‘lmadi. Galereyadan rasm tanlang.': 'Не удалось открыть камеру. Выберите фото из галереи.',
+      'Suratga olib bo‘lmadi. Qayta urinib ko‘ring.': 'Не удалось сделать снимок. Попробуйте ещё раз.',
+      'Rasmni tanlab bo‘lmadi.': 'Не удалось выбрать фото.',
       'Darsni tahrirlash': 'Редактировать урок',
       'Videoni almashtirish (ixtiyoriy)': 'Заменить видео (необязательно)',
       'Joriy video qoladi': 'Текущее видео останется',
@@ -1092,6 +1096,10 @@ class AppLocalizations {
       'Saqlangan {count} ta mahsulot menyuga qo‘shilmaydi. Chiqasizmi?':
           '{count} saved items will not be added to the meal. Leave?',
       'Qolish': 'Stay',
+      'Kameraga ruxsat berilmagan. Telefon sozlamalaridan ruxsat bering yoki galereyadan tanlang.': 'Camera access is denied. Allow it in phone settings or pick a photo from the gallery.',
+      'Kamerani ochib bo‘lmadi. Galereyadan rasm tanlang.': 'Could not open the camera. Pick a photo from the gallery.',
+      'Suratga olib bo‘lmadi. Qayta urinib ko‘ring.': 'Could not take the photo. Please try again.',
+      'Rasmni tanlab bo‘lmadi.': 'Could not pick the photo.',
       'Darsni tahrirlash': 'Edit lesson',
       'Videoni almashtirish (ixtiyoriy)': 'Replace video (optional)',
       'Joriy video qoladi': 'The current video stays',

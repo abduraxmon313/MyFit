@@ -1,6 +1,7 @@
 import '../theme/app_theme.dart';
 import 'dart:io';
 
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -10,19 +11,36 @@ import '../services/food_vision_service.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class FoodScanPage extends StatefulWidget {
-  const FoodScanPage({super.key, required this.service});
+  const FoodScanPage({
+    super.key,
+    required this.service,
+    this.pickFromGallery,
+    this.cameras,
+  });
 
   final FoodVisionService service;
+
+  /// Overrides the gallery picker (tests).
+  final Future<XFile?> Function()? pickFromGallery;
+
+  /// Overrides camera discovery (tests); defaults to [availableCameras].
+  final Future<List<CameraDescription>> Function()? cameras;
 
   @override
   State<FoodScanPage> createState() => _FoodScanPageState();
 }
 
-class _FoodScanPageState extends State<FoodScanPage> {
+class _FoodScanPageState extends State<FoodScanPage>
+    with WidgetsBindingObserver {
   static const _green = Color(0xFF2F5BEA);
   static const _navy = Color(0xFF10223C);
   final _picker = ImagePicker();
   final _grams = TextEditingController(text: '100');
+
+  /// In-app camera shown behind the frame (no external camera app).
+  CameraController? _camera;
+  bool _cameraStarting = false;
+  String? _cameraError;
 
   XFile? _image;
   FoodNutrition? _nutrition;
@@ -36,36 +54,142 @@ class _FoodScanPageState extends State<FoodScanPage> {
         : 0;
   }
 
+  bool get _cameraReady => _camera?.value.isInitialized ?? false;
+
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _capture());
+    WidgetsBinding.instance.addObserver(this);
+    _startCamera();
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _camera?.dispose();
     _grams.dispose();
     super.dispose();
   }
 
-  Future<void> _capture({ImageSource source = ImageSource.camera}) async {
-    if (!mounted || _analyzing) return;
+  /// The camera is released in the background and reopened on return.
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.paused) {
+      final camera = _camera;
+      _camera = null;
+      camera?.dispose();
+      if (mounted) setState(() {});
+    } else if (state == AppLifecycleState.resumed && _camera == null) {
+      _startCamera();
+    }
+  }
+
+  Future<void> _startCamera() async {
+    if (_cameraStarting) return;
     setState(() {
+      _cameraStarting = true;
+      _cameraError = null;
+    });
+    try {
+      final cameras = await (widget.cameras ?? availableCameras)();
+      if (cameras.isEmpty) throw CameraException('noCamera', null);
+      final back = cameras.firstWhere(
+        (camera) => camera.lensDirection == CameraLensDirection.back,
+        orElse: () => cameras.first,
+      );
+      final controller = CameraController(
+        back,
+        ResolutionPreset.high,
+        enableAudio: false,
+        imageFormatGroup: ImageFormatGroup.jpeg,
+      );
+      await controller.initialize();
+      if (!mounted) {
+        await controller.dispose();
+        return;
+      }
+      final previous = _camera;
+      setState(() => _camera = controller);
+      await previous?.dispose();
+    } on CameraException catch (error) {
+      if (!mounted) return;
+      final denied = error.code.contains('AccessDenied') ||
+          error.code.contains('AccessRestricted');
+      setState(
+        () => _cameraError = context.tr(
+          denied
+              ? 'Kameraga ruxsat berilmagan. Telefon sozlamalaridan ruxsat bering yoki galereyadan tanlang.'
+              : 'Kamerani ochib bo‘lmadi. Galereyadan rasm tanlang.',
+        ),
+      );
+    } catch (_) {
+      if (!mounted) return;
+      setState(
+        () => _cameraError = context.tr(
+          'Kamerani ochib bo‘lmadi. Galereyadan rasm tanlang.',
+        ),
+      );
+    } finally {
+      if (mounted) setState(() => _cameraStarting = false);
+    }
+  }
+
+  /// Shutter: photo from the in-app camera.
+  Future<void> _takePhoto() async {
+    final camera = _camera;
+    if (_analyzing || camera == null || !_cameraReady) {
+      if (_cameraError != null) await _startCamera();
+      return;
+    }
+    if (camera.value.isTakingPicture) return;
+    try {
+      final photo = await camera.takePicture();
+      await _analyze(photo);
+    } on CameraException {
+      if (!mounted) return;
+      setState(
+        () => _error = context.tr('Suratga olib bo‘lmadi. Qayta urinib ko‘ring.'),
+      );
+    }
+  }
+
+  Future<void> _fromGallery() async {
+    if (_analyzing) return;
+    try {
+      final image = await (widget.pickFromGallery ??
+          () => _picker.pickImage(
+            source: ImageSource.gallery,
+            imageQuality: 88,
+            maxWidth: 1600,
+          ))();
+      if (image != null) await _analyze(image);
+    } catch (_) {
+      if (!mounted) return;
+      setState(() => _error = context.tr('Rasmni tanlab bo‘lmadi.'));
+    }
+  }
+
+  /// Back to the live camera for a new photo.
+  void _retake() {
+    if (_analyzing) return;
+    setState(() {
+      _image = null;
+      _nutrition = null;
+      _error = null;
+    });
+    if (_camera == null) _startCamera();
+  }
+
+  Future<void> _analyze(XFile image) async {
+    if (!mounted) return;
+    setState(() {
+      _image = image;
+      _analyzing = true;
       _error = null;
       _nutrition = null;
     });
     try {
-      final image = await _picker.pickImage(
-        source: source,
-        imageQuality: 88,
-        maxWidth: 1600,
-        preferredCameraDevice: CameraDevice.rear,
-      );
-      if (image == null || !mounted) return;
-      setState(() {
-        _image = image;
-        _analyzing = true;
-      });
       final result = await widget.service.analyzeFile(image.path);
       if (!mounted) return;
       setState(() {
@@ -117,6 +241,8 @@ class _FoodScanPageState extends State<FoodScanPage> {
         children: [
           if (_image != null)
             Image.file(File(_image!.path), fit: BoxFit.cover)
+          else if (_cameraReady)
+            _CameraBackground(controller: _camera!)
           else
             const DecoratedBox(
               decoration: BoxDecoration(
@@ -183,7 +309,15 @@ class _FoodScanPageState extends State<FoodScanPage> {
                           if (_error != null) ...[
                             _ScannerError(
                               message: _error!,
-                              onRetry: _analyzing ? null : _capture,
+                              onRetry: _analyzing ? null : _retake,
+                            ),
+                            const SizedBox(height: 12),
+                          ] else if (_cameraError != null &&
+                              _image == null) ...[
+                            _ScannerError(
+                              key: const Key('camera-error'),
+                              message: _cameraError!,
+                              onRetry: _cameraStarting ? null : _startCamera,
                             ),
                             const SizedBox(height: 12),
                           ],
@@ -192,10 +326,9 @@ class _FoodScanPageState extends State<FoodScanPage> {
                             galleryLabel: context.tr('Galereya'),
                             captureLabel: context.tr('Suratga olish'),
                             retryLabel: context.tr('Qayta olish'),
-                            onGallery: () =>
-                                _capture(source: ImageSource.gallery),
-                            onCapture: _capture,
-                            onRetry: _capture,
+                            onGallery: _fromGallery,
+                            onCapture: _takePhoto,
+                            onRetry: _retake,
                           ),
                         ],
                       ),
@@ -226,7 +359,7 @@ class _FoodScanPageState extends State<FoodScanPage> {
                 child: Padding(
                   padding: const EdgeInsets.all(14),
                   child: IconButton.filled(
-                    onPressed: () => setState(() => _nutrition = null),
+                    onPressed: _retake,
                     style: IconButton.styleFrom(
                       foregroundColor: context.appColor(_navy, surface: false),
                       backgroundColor: context.appColor(
@@ -829,7 +962,11 @@ class _ScanCornersPainter extends CustomPainter {
 }
 
 class _ScannerError extends StatelessWidget {
-  const _ScannerError({required this.message, required this.onRetry});
+  const _ScannerError({
+    super.key,
+    required this.message,
+    required this.onRetry,
+  });
 
   final String message;
   final VoidCallback? onRetry;
@@ -1114,6 +1251,33 @@ class _Nutrient extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Live camera preview filling the screen (cropped like a photo app).
+class _CameraBackground extends StatelessWidget {
+  const _CameraBackground({required this.controller});
+
+  final CameraController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final size = controller.value.previewSize;
+    if (size == null) return CameraPreview(controller);
+    return ClipRect(
+      key: const Key('camera-preview'),
+      child: SizedBox.expand(
+        child: FittedBox(
+          fit: BoxFit.cover,
+          // previewSize is landscape; the page is portrait.
+          child: SizedBox(
+            width: size.height,
+            height: size.width,
+            child: CameraPreview(controller),
+          ),
+        ),
       ),
     );
   }
