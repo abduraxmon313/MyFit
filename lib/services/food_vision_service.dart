@@ -1,13 +1,28 @@
 import 'package:google_mlkit_image_labeling/google_mlkit_image_labeling.dart';
 
 import '../models/food_nutrition.dart';
+import 'calorie_api_service.dart';
 import 'food_data_service.dart';
 
 class FoodVisionService {
-  FoodVisionService({FoodDataService? foodDataService})
+  FoodVisionService({FoodDataService? foodDataService, this.calorieApi})
     : _foodDataService = foodDataService ?? FoodDataService();
 
   final FoodDataService _foodDataService;
+
+  /// Tried first for each photo label when set (Calorie API via the Worker).
+  final CalorieApiService? calorieApi;
+
+  /// First usable food for a photo label: Calorie API, then the app's
+  /// existing search (local catalog, FatSecret, USDA, Open Food Facts).
+  Future<FoodNutrition?> lookupLabel(String query) async {
+    final calorie = await calorieApi?.search(query, limit: 3) ?? const [];
+    for (final food in calorie) {
+      if (!food.hasMissingCoreNutrients) return food;
+    }
+    final foods = await _foodDataService.search(query);
+    return foods.isNotEmpty ? foods.first : null;
+  }
 
   static const _genericLabels = {
     'food',
@@ -82,9 +97,9 @@ class FoodVisionService {
       for (final label in useful.take(5)) {
         final raw = label.label.trim();
         final query = _queryOverrides[raw.toLowerCase()] ?? raw;
-        final foods = await _foodDataService.search(query);
-        if (foods.isNotEmpty) {
-          bestFood = foods.first;
+        final food = await lookupLabel(query);
+        if (food != null) {
+          bestFood = food;
           matchedLabel = label;
           break;
         }

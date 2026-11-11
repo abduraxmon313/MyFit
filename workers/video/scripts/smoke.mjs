@@ -62,6 +62,10 @@ const validBody = {
   check("SMS send with invalid phone -> 400 invalid-phone", r.status === 400 && r.reason === "invalid-phone", `${r.status} ${r.reason}`);
 }
 {
+  const r = await call("/food/barcode", { body: { barcode: "5449000000996" } });
+  check("food barcode without token -> 401", r.status === 401, `${r.status} ${r.reason}`);
+}
+{
   const r = await call("/admin");
   check("unknown path -> 404", r.status === 404, `${r.status}`);
 }
@@ -103,6 +107,16 @@ if (rawAccount && apiKey) {
       );
       const spoof = await call("/createVideoUpload", { token: idToken, body: { ...validBody, uid: "someone-else" } });
       check("client-supplied uid is ignored -> 403", spoof.status === 403, `${spoof.status} ${spoof.reason}`);
+      if (process.env.EXPECT_CALORIE_API === "true") {
+        // One real Calorie API call (cached for a day): Coca-Cola 330 ml.
+        const food = await call("/food/barcode", { token: idToken, body: { barcode: "5449000000996" } });
+        check(
+          "food barcode with real token -> 200 (Calorie API key works)",
+          food.status === 200 && "food" in (food.json ?? {}),
+          `${food.status} ${food.reason}`,
+        );
+        if (food.status === 200) console.log(`      barcode result: ${food.json.food ? food.json.food.name : "not found"}`);
+      }
     }
   } finally {
     if (idToken) {

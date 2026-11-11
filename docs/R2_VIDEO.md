@@ -201,3 +201,21 @@ Sozlash (bir marta):
 
 Barcha parametrlar to'ldirilmasa yoki shablon topilmasa, SMS yuborilmaydi (`sms-misconfigured`).
 Token faqat GitHub Secret va Worker secret'ida; Flutter ilovasida yo'q.
+
+## Calorie API (shtrix-kod va rasm skaneri)
+
+Worker [calorieapi.com](https://calorieapi.com/docs) bilan `X-API-Key` orqali ishlaydi; kalit faqat
+Worker secret'ida (`CALORIE_API_KEY`), ilovada yo'q. Ikkala endpoint ham Firebase ID token talab qiladi.
+
+| Endpoint | Tana | Calorie API |
+|---|---|---|
+| `POST /food/barcode` | `{ "barcode": "5449000000996" }` | `GET /api/v1/search/barcode/{upc}` |
+| `POST /food/search` | `{ "query": "egg", "limit": 5 }` | `GET /api/v1/search/foods` |
+
+- Natijalar 100 g/ml uchun normallashtiriladi va kvotani tejash uchun 1 kun keshlanadi.
+- Ilovada: shtrix-kod → avval Calorie API, keyin Open Food Facts va FatSecret (avvalgidek).
+  Rasm skaneri → telefondagi ML Kit ovqat nomini aniqlaydi → nom avval Calorie API'da, keyin
+  avvalgi qidiruvda izlanadi. Calorie API REST'ida rasmdan kaloriya aniqlash yo'q (faqat Enterprise).
+- Sozlash: GitHub Secrets → `CALORIE_API_KEY`, so'ng Deploy workflow. Smoke test bitta haqiqiy
+  shtrix-kod so'rovini tekshiradi.
+- Bepul tarif: oyiga 1 000 so'rov, daqiqasiga 10, tijoriy foydalanish uchun emas (Plus tarifi kerak).

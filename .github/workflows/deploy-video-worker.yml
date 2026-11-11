@@ -8,6 +8,7 @@
 #                              Firebase Authentication Admin for SMS sign-in)
 # Optional:
 #   DEVSMS_API_TOKEN           devsms.uz API token (SMS sign-in, /auth/sms/*)
+#   CALORIE_API_KEY            calorieapi.com REST key (barcode/food lookup, /food/*)
 # Secret values are never printed; GitHub masks them in logs.
 name: Deploy video Worker
 
@@ -54,6 +55,7 @@ jobs:
           R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           DEVSMS_API_TOKEN: ${{ secrets.DEVSMS_API_TOKEN }}
+          CALORIE_API_KEY: ${{ secrets.CALORIE_API_KEY }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
           if [ -z "$CLOUDFLARE_API_TOKEN" ]; then echo "::error::CLOUDFLARE_API_TOKEN secret is missing"; exit 1; fi
@@ -83,11 +85,13 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           HAS_DEVSMS: ${{ secrets.DEVSMS_API_TOKEN != '' }}
+          HAS_CALORIE: ${{ secrets.CALORIE_API_KEY != '' }}
         run: |
           names=$(npx wrangler secret list --format json | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(JSON.parse(s).map(x=>x.name).sort().join(" ")))')
           echo "Secrets on Worker: $names"
           required="FIREBASE_SERVICE_ACCOUNT R2_ACCESS_KEY_ID R2_SECRET_ACCESS_KEY"
           if [ "$HAS_DEVSMS" = "true" ]; then required="$required DEVSMS_API_TOKEN"; fi
+          if [ "$HAS_CALORIE" = "true" ]; then required="$required CALORIE_API_KEY"; fi
           for n in $required; do
             echo " $names " | grep -q " $n " || { echo "::error::$n missing on Worker"; exit 1; }
           done
@@ -98,6 +102,7 @@ jobs:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           # Public Firebase web API key (already in lib/firebase_options.dart).
           FIREBASE_WEB_API_KEY: AIzaSyCnauQ_F9uxwJC9wsG3lEtY5oV76bRwPCM
+          EXPECT_CALORIE_API: ${{ secrets.CALORIE_API_KEY != '' }}
         run: |
           sleep 5
           node scripts/smoke.mjs

@@ -2,7 +2,7 @@
   // MyFit lesson video API (see docs/R2_VIDEO.md).
   // Secrets are NOT stored here; set them with `wrangler secret put`:
   //   R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, FIREBASE_SERVICE_ACCOUNT,
-  //   DEVSMS_API_TOKEN (optional, SMS sign-in)
+  //   DEVSMS_API_TOKEN (optional, SMS sign-in), CALORIE_API_KEY (optional, food lookup)
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "myfit-video",
   "main": "src/index.ts",

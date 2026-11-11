@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../models/food_nutrition.dart';
+import 'calorie_api_service.dart';
 import 'fatsecret_service.dart';
 
 /// Open Food Facts packaged-food database fallback.
@@ -10,10 +11,17 @@ import 'fatsecret_service.dart';
 /// Read requests do not require an API key. Results are community-provided, so
 /// this service only returns products that contain usable macro information.
 class OpenFoodFactsService {
-  OpenFoodFactsService({http.Client? client, FatSecretService? fatSecret})
-    : _client = client ?? http.Client(), _fatSecret = fatSecret ?? FatSecretService();
+  OpenFoodFactsService({
+    http.Client? client,
+    FatSecretService? fatSecret,
+    this.calorieApi,
+  }) : _client = client ?? http.Client(),
+       _fatSecret = fatSecret ?? FatSecretService();
 
   final FatSecretService _fatSecret;
+
+  /// Tried first for barcodes when set (Calorie API via the Worker).
+  final CalorieApiService? calorieApi;
 
   static const _host = 'world.openfoodfacts.org';
   static const _userAgent =
@@ -26,10 +34,16 @@ class OpenFoodFactsService {
     String barcode, {
     String languageCode = 'uz',
   }) async {
-    final primary = await _findOpenFoodFactsBarcode(barcode, languageCode: languageCode);
+    final calorie = await calorieApi?.findByBarcode(barcode);
+    if (calorie != null && !calorie.hasMissingCoreNutrients) return calorie;
+    final primary =
+        await _findOpenFoodFactsBarcode(barcode, languageCode: languageCode) ??
+        calorie;
     if (primary != null && !primary.hasMissingCoreNutrients) return primary;
     final secondary = await _fatSecret.findByBarcode(barcode);
-    if (secondary != null && !secondary.hasMissingCoreNutrients) return secondary;
+    if (secondary != null && !secondary.hasMissingCoreNutrients) {
+      return secondary;
+    }
     return primary ?? secondary;
   }
 
@@ -198,7 +212,13 @@ class OpenFoodFactsService {
           ? raw.toDouble()
           : double.tryParse(raw?.toString() ?? '');
       if (parsed != null && parsed.isFinite && parsed >= 0) {
-        details[entry.key] = parsed * (entry.key.endsWith('Mcg') ? 1000000 : entry.key.endsWith('Mg') ? 1000 : 1);
+        details[entry.key] =
+            parsed *
+            (entry.key.endsWith('Mcg')
+                ? 1000000
+                : entry.key.endsWith('Mg')
+                ? 1000
+                : 1);
       }
     }
     return FoodNutrition(

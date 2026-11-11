@@ -52,6 +52,10 @@ if (problems.length) {
 const devSms = process.env.DEVSMS_API_TOKEN?.trim() ?? "";
 if (!devSms) console.log("DEVSMS_API_TOKEN not set: SMS sign-in stays disabled");
 
+// Optional: Calorie API key for barcode/food lookup (/food/*).
+const calorieKey = process.env.CALORIE_API_KEY?.trim() ?? "";
+if (!calorieKey) console.log("CALORIE_API_KEY not set: Calorie API lookup stays disabled");
+
 writeFileSync(
   out,
   JSON.stringify({
@@ -60,6 +64,7 @@ writeFileSync(
     // Compact single-line JSON (well under the 5 KB secret limit).
     FIREBASE_SERVICE_ACCOUNT: JSON.stringify(account),
     ...(devSms ? { DEVSMS_API_TOKEN: devSms } : {}),
+    ...(calorieKey ? { CALORIE_API_KEY: calorieKey } : {}),
   }),
   { mode: 0o600 },
 );
