@@ -90,6 +90,23 @@ describe("SMS sign-in", () => {
     expect(again).toMatchObject({ status: 410, reason: "code-expired" });
   });
 
+  it("keeps the code usable when Firebase sign-in fails", async () => {
+    const h = harness();
+    await h.call("/auth/sms/send", { phone: "998901234567" });
+    const original = h.identity.uidForPhone.bind(h.identity);
+    h.identity.uidForPhone = async () => {
+      throw Object.assign(new (await import("../src/errors")).ApiError(500, "auth-misconfigured", "no role"));
+    };
+    expect(await h.call("/auth/sms/verify", { phone: "998901234567", code: "123456" })).toMatchObject({
+      status: 500,
+      reason: "auth-misconfigured",
+    });
+    h.identity.uidForPhone = original;
+    const retry = await h.call("/auth/sms/verify", { phone: "998901234567", code: "123456" });
+    expect(retry.status).toBe(200);
+    expect(retry.json.customToken).toBe("custom-token-for-existing-uid");
+  });
+
   it("creates a Firebase user for a new phone", async () => {
     const h = harness();
     await h.call("/auth/sms/send", { phone: "+998931112233" });

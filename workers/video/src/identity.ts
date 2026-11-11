@@ -98,7 +98,8 @@ export class IdentityRest implements IdentityApi {
     const { response, json } = await this.post("/accounts:lookup", { phoneNumber: [phone] });
     if (!response.ok) {
       console.error("accounts:lookup failed", response.status, json?.error?.message);
-      if (response.status === 403) {
+      const message = String(json?.error?.message ?? "");
+      if (response.status === 403 || message.includes("INSUFFICIENT_PERMISSION") || message.includes("PERMISSION_DENIED")) {
         throw new ApiError(500, "auth-misconfigured", "Service account lacks Firebase Authentication Admin");
       }
       throw unavailable("auth-unavailable", "User lookup failed");

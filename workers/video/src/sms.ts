@@ -214,7 +214,7 @@ export async function verifySmsCode(deps: SmsDeps, body: unknown) {
       tx,
     );
     return match
-      ? { ok: true as const }
+      ? { ok: true as const, previous: fields }
       : { ok: false as const, reason: attempts + 1 >= MAX_ATTEMPTS ? "too-many-attempts" : "invalid-code" };
   });
 
@@ -226,8 +226,19 @@ export async function verifySmsCode(deps: SmsDeps, body: unknown) {
         : invalid("invalid-code", "Wrong code");
   }
 
-  const uid = await deps.identity.uidForPhone(`+${phone}`);
-  return { customToken: await deps.identity.customToken(uid) };
+  try {
+    const uid = await deps.identity.uidForPhone(`+${phone}`);
+    return { customToken: await deps.identity.customToken(uid) };
+  } catch (error) {
+    // Sign-in failed on our side: give the code back so the user can retry
+    // it (same expiry; the wrong-attempt counter is unchanged).
+    try {
+      await deps.db.commit([{ kind: "set", path: phoneDoc, fields: outcome.previous }]);
+    } catch {
+      console.error("could not restore SMS code after sign-in failure");
+    }
+    throw error;
+  }
 }
 
 /** Which DevSMS template the OTP uses (chosen by the owner, see docs). */
