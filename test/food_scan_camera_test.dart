@@ -7,6 +7,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart' as picker;
 import 'package:myfit/models/food_nutrition.dart';
 import 'package:myfit/screens/food_scan_page.dart';
+import 'package:myfit/screens/meals_page.dart';
+import 'package:myfit/widgets/meal_type_picker.dart';
 import 'package:myfit/services/food_vision_service.dart';
 
 const _back = CameraDescription(
@@ -225,5 +227,61 @@ void main() {
     await tester.tap(find.text('Galereya'));
     await tester.pumpAndSettle(const Duration(milliseconds: 100));
     expect(vision.analyzed, ['/tmp/gallery.jpg']);
+  });
+
+  test('suggested meal follows the time of day', () {
+    expect(suggestedMealType(DateTime(2026, 1, 1, 8)), MealType.breakfast);
+    expect(suggestedMealType(DateTime(2026, 1, 1, 13)), MealType.lunch);
+    expect(suggestedMealType(DateTime(2026, 1, 1, 19)), MealType.dinner);
+    expect(suggestedMealType(DateTime(2026, 1, 1, 23)), MealType.fifthSnack);
+  });
+
+  testWidgets('no "AI" wording; the chosen meal is returned', (tester) async {
+    final vision = FakeVision();
+    FoodNutrition? added;
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(400, 1200);
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Builder(
+          builder: (context) => Scaffold(
+            body: TextButton(
+              onPressed: () async =>
+                  added = await Navigator.push<FoodNutrition>(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => FoodScanPage(
+                        service: vision,
+                        pickFromGallery: () async => picker.XFile('/tmp/g.jpg'),
+                      ),
+                    ),
+                  ),
+              child: const Text('open'),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.tap(find.text('open'));
+    await tester.pumpAndSettle(const Duration(milliseconds: 100));
+    expect(find.text('Ovqat skaneri'), findsOneWidget);
+    expect(find.textContaining('AI'), findsNothing);
+
+    await tester.tap(find.text('Galereya'));
+    await tester.pumpAndSettle(const Duration(milliseconds: 100));
+    expect(find.textContaining('AI'), findsNothing);
+    expect(find.text('Aniqlandi · 90%'), findsOneWidget);
+    expect(find.text('Qaysi ovqatlanishga qo‘shilsin?'), findsOneWidget);
+    for (final meal in MealType.values) {
+      expect(find.byKey(Key('meal-${meal.name}')), findsOneWidget);
+    }
+    await tester.tap(find.byKey(const Key('meal-lunch')));
+    await tester.pump();
+    await tester.tap(find.text('Hisoblash va qo‘shish'));
+    await tester.pumpAndSettle();
+    expect(added?.mealType, 'lunch');
+    expect(added?.name, 'Tomato');
   });
 }

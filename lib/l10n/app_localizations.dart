@@ -369,8 +369,8 @@ class AppLocalizations {
       'Kiriting': 'Введите значение',
       '1 dan 5000 grammgacha miqdor kiriting.':
           'Введите количество от 1 до 5000 граммов.',
-      'AI ovqatni aniqlamoqda...': 'ИИ распознаёт блюдо...',
-      'AI ovqat skaneri': 'ИИ-сканер еды',
+      'Ovqat tahlil qilinmoqda...': 'Блюдо анализируется...',
+      'Ovqat skaneri': 'Сканер еды',
       'Mahsulot tarkibini bir zumda biling':
           'Узнайте состав продукта за секунды',
       'Ovqatni ramka ichiga joylashtiring': 'Поместите блюдо внутрь рамки',
@@ -378,7 +378,7 @@ class AppLocalizations {
       'Suratga olish': 'Сделать снимок',
       'Galereya': 'Галерея',
       'Qayta olish': 'Переснять',
-      'AI aniqlandi': 'Распознано ИИ',
+      'Aniqlandi': 'Распознано',
       'Og‘irlik (g)': 'Вес (г)',
       'Bu mahsulot Open Food Facts bazasida topilmadi.':
           'Продукт не найден в базе Open Food Facts.',
@@ -461,6 +461,7 @@ class AppLocalizations {
       'Saqlangan {count} ta mahsulot menyuga qo‘shilmaydi. Chiqasizmi?':
           'Сохранённые продукты ({count}) не будут добавлены в меню. Выйти?',
       'Qolish': 'Остаться',
+      'Qaysi ovqatlanishga qo‘shilsin?': 'В какой приём пищи добавить?',
       'Kameraga ruxsat berilmagan. Telefon sozlamalaridan ruxsat bering yoki galereyadan tanlang.': 'Нет доступа к камере. Разрешите его в настройках телефона или выберите фото из галереи.',
       'Kamerani ochib bo‘lmadi. Galereyadan rasm tanlang.': 'Не удалось открыть камеру. Выберите фото из галереи.',
       'Suratga olib bo‘lmadi. Qayta urinib ko‘ring.': 'Не удалось сделать снимок. Попробуйте ещё раз.',
@@ -1007,8 +1008,8 @@ class AppLocalizations {
       'Kiriting': 'Enter a value',
       '1 dan 5000 grammgacha miqdor kiriting.':
           'Enter an amount from 1 to 5000 grams.',
-      'AI ovqatni aniqlamoqda...': 'AI is identifying the food...',
-      'AI ovqat skaneri': 'AI food scanner',
+      'Ovqat tahlil qilinmoqda...': 'Analyzing the food...',
+      'Ovqat skaneri': 'Food scanner',
       'Mahsulot tarkibini bir zumda biling':
           'Discover food nutrition in seconds',
       'Ovqatni ramka ichiga joylashtiring': 'Place the food inside the frame',
@@ -1016,7 +1017,7 @@ class AppLocalizations {
       'Suratga olish': 'Take a photo',
       'Galereya': 'Gallery',
       'Qayta olish': 'Retake',
-      'AI aniqlandi': 'Identified by AI',
+      'Aniqlandi': 'Identified',
       'Og‘irlik (g)': 'Weight (g)',
       'Bu mahsulot Open Food Facts bazasida topilmadi.':
           'This product was not found in Open Food Facts.',
@@ -1096,6 +1097,7 @@ class AppLocalizations {
       'Saqlangan {count} ta mahsulot menyuga qo‘shilmaydi. Chiqasizmi?':
           '{count} saved items will not be added to the meal. Leave?',
       'Qolish': 'Stay',
+      'Qaysi ovqatlanishga qo‘shilsin?': 'Add to which meal?',
       'Kameraga ruxsat berilmagan. Telefon sozlamalaridan ruxsat bering yoki galereyadan tanlang.': 'Camera access is denied. Allow it in phone settings or pick a photo from the gallery.',
       'Kamerani ochib bo‘lmadi. Galereyadan rasm tanlang.': 'Could not open the camera. Pick a photo from the gallery.',
       'Suratga olib bo‘lmadi. Qayta urinib ko‘ring.': 'Could not take the photo. Please try again.',
