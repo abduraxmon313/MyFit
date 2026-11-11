@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:myfit/models/user_profile.dart';
 import 'package:myfit/screens/auth_gate.dart';
 import 'package:myfit/screens/profile_setup_page.dart';
 import 'package:myfit/services/auth_service.dart';
+import 'package:myfit/services/profile_photo_api.dart';
 import 'package:myfit/services/profile_service.dart';
 
 class StubAuth implements FirebaseAuth {
@@ -17,11 +17,6 @@ class StubAuth implements FirebaseAuth {
 }
 
 class StubFirestore implements FirebaseFirestore {
-  @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-}
-
-class StubStorage implements FirebaseStorage {
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
@@ -44,7 +39,8 @@ class TestAuth extends AuthService {
 }
 
 class TestProfiles extends ProfileService {
-  TestProfiles() : super(firestore: StubFirestore(), storage: StubStorage());
+  TestProfiles()
+    : super(firestore: StubFirestore(), photoApi: ProfilePhotoApi());
   int subscriptions = 0;
   @override
   Stream<UserProfile?> watchProfile(String uid) {

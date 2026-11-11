@@ -42,7 +42,6 @@ dependencies:
   http: ^1.6.0
   image_picker: ^1.2.1
   google_mlkit_image_labeling: ^0.15.0
-  firebase_storage: ^13.4.5
   mobile_scanner: ^7.4.0
   cloud_functions: ^6.3.5
   shared_preferences: ^2.5.5
@@ -59,6 +58,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
+  video_player_platform_interface: ^6.9.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

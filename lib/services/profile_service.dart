@@ -1,17 +1,19 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 import '../models/user_profile.dart';
+import 'profile_photo_api.dart';
 
 class ProfileService {
-  ProfileService({FirebaseFirestore? firestore, FirebaseStorage? storage})
+  ProfileService({FirebaseFirestore? firestore, ProfilePhotoApi? photoApi})
     : _firestore = firestore ?? FirebaseFirestore.instance,
-      _storage = storage ?? FirebaseStorage.instance;
+      _photoApi = photoApi ?? ProfilePhotoApi();
 
   final FirebaseFirestore _firestore;
-  final FirebaseStorage _storage;
+
+  /// Profile photos live in Cloudflare R2 via the Worker (no Firebase Storage).
+  final ProfilePhotoApi _photoApi;
 
   DocumentReference<Map<String, dynamic>> _profileRef(String uid) {
     return _firestore.collection('users').doc(uid);
@@ -36,22 +38,18 @@ class ProfileService {
     }, SetOptions(merge: true));
   }
 
+  /// Uploads to R2 (`profile-images/{uid}/…`) and stores the public URL in
+  /// `users/{uid}.photoUrl`, the same field as before. The previous photo is
+  /// replaced by the Worker.
   Future<String> uploadProfilePhoto({
     required String uid,
     required Uint8List bytes,
-    required String fileName,
+    String? fileName,
   }) async {
-    if (bytes.isEmpty || bytes.length >= 5 * 1024 * 1024) {
+    if (bytes.isEmpty || bytes.length > kMaxProfileImageBytes) {
       throw ArgumentError('Profile photo must be smaller than 5 MB.');
     }
-    final extension = fileName.toLowerCase().endsWith('.png') ? 'png' : 'jpg';
-    final contentType = extension == 'png' ? 'image/png' : 'image/jpeg';
-    // Avoid cached avatars and preserve the old image until upload succeeds.
-    final ref = _storage.ref(
-      'profile_photos/$uid/avatar_${DateTime.now().microsecondsSinceEpoch}.$extension',
-    );
-    await ref.putData(bytes, SettableMetadata(contentType: contentType));
-    final url = await ref.getDownloadURL();
+    final url = await _photoApi.upload(uid: uid, bytes: bytes);
     await _profileRef(uid).set({
       'photoUrl': url,
       'updatedAt': FieldValue.serverTimestamp(),
@@ -59,8 +57,12 @@ class ProfileService {
     return url;
   }
 
-  Future<void> removeProfilePhoto(String uid) => _profileRef(uid).update({
-    'photoUrl': FieldValue.delete(),
-    'updatedAt': FieldValue.serverTimestamp(),
-  });
+  /// Deletes the R2 photo(s), then clears `photoUrl`.
+  Future<void> removeProfilePhoto(String uid) async {
+    await _photoApi.delete(uid: uid);
+    await _profileRef(uid).update({
+      'photoUrl': FieldValue.delete(),
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
+  }
 }

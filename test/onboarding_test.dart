@@ -10,6 +10,7 @@ import 'package:myfit/screens/language_picker_page.dart';
 import 'package:myfit/screens/profile_page.dart';
 import 'package:myfit/screens/lessons_page.dart';
 import 'package:myfit/services/locale_store.dart';
+import 'package:myfit/services/profile_photo_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'appearance_test.dart' show SignedOutAuth;
@@ -76,23 +77,34 @@ void main() {
   test('photo errors name the real cause', () {
     String text(Object error) => photoErrorMessage(error).$1;
     expect(
-      text(FirebaseException(plugin: 'firebase_storage', code: 'unauthorized')),
-      contains('qoidalari'),
+      text(const ProfilePhotoException('sign-in-required')),
+      contains('qayta kiring'),
     );
     expect(
-      text(
-        FirebaseException(plugin: 'firebase_storage', code: 'bucket-not-found'),
-      ),
-      contains('Blaze'),
+      text(const ProfilePhotoException('too-large')),
+      contains('juda katta'),
+    );
+    expect(
+      text(const ProfilePhotoException('unsupported-format')),
+      contains('formatda'),
+    );
+    expect(text(const ProfilePhotoException('network')), contains('Internet'));
+    expect(
+      text(const ProfilePhotoException('storage-unavailable')),
+      contains('ombori'),
     );
     expect(
       text(PlatformException(code: 'photo_access_denied')),
       contains('ruxsat'),
     );
-    final other = photoErrorMessage(
-      FirebaseException(plugin: 'firebase_storage', code: 'weird'),
-    );
+    final other = photoErrorMessage(const ProfilePhotoException('weird'));
     expect(other.$2['code'], 'weird');
+    expect(
+      photoErrorMessage(
+        FirebaseException(plugin: 'cloud_firestore', code: 'aborted'),
+      ).$2['code'],
+      'aborted',
+    );
   });
 
   testWidgets('lessons tab lists categories and opens one', (tester) async {

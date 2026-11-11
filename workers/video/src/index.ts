@@ -3,6 +3,12 @@ import { ApiError } from "./errors";
 import { FirestoreRest, parseServiceAccount, type FirestoreApi } from "./firestore";
 import { presignPut } from "./presign";
 import {
+  deleteProfileImages,
+  uploadProfileImage,
+  type ProfileBucket,
+  type ProfileDeps,
+} from "./profile";
+import {
   createUpload,
   finalizeUpload,
   UPLOAD_URL_TTL_SECONDS,
@@ -40,6 +46,27 @@ export function r2VideoBucket(bucket: R2Bucket): VideoBucket {
     },
     async delete(key) {
       await bucket.delete(key);
+    },
+  };
+}
+
+export function r2ProfileBucket(bucket: R2Bucket): ProfileBucket {
+  return {
+    async put(key, bytes, contentType) {
+      await bucket.put(key, bytes, {
+        httpMetadata: {
+          contentType,
+          // Keys are unique per upload, so the public URL can be cached.
+          cacheControl: "public, max-age=31536000, immutable",
+        },
+      });
+    },
+    async list(prefix, limit) {
+      const listed = await bucket.list({ prefix, limit });
+      return listed.objects.map((object) => object.key);
+    },
+    async delete(keys) {
+      await bucket.delete(keys);
     },
   };
 }
@@ -130,11 +157,17 @@ async function readJson(request: Request): Promise<unknown> {
 export async function handle(
   request: Request,
   env: Env,
-  override?: { verify?: (h: string | null) => Promise<{ uid: string }>; deps?: UploadDeps },
+  override?: {
+    verify?: (h: string | null) => Promise<{ uid: string }>;
+    deps?: UploadDeps;
+    profile?: ProfileDeps;
+  },
 ): Promise<Response> {
   const cors = corsHeaders(request, env);
   const { pathname } = new URL(request.url);
-  const routes = ["/createVideoUpload", "/finalizeVideoUpload"];
+  const videoRoutes = ["/createVideoUpload", "/finalizeVideoUpload"];
+  const profileRoutes = ["/profile/upload", "/profile/delete"];
+  const routes = [...videoRoutes, ...profileRoutes];
   try {
     if (!routes.includes(pathname)) {
       throw new ApiError(404, "not-found", "Unknown endpoint");
@@ -146,11 +179,26 @@ export async function handle(
       throw new ApiError(405, "method-not-allowed", "POST only");
     }
 
-    let verify = override?.verify;
+    const verify =
+      override?.verify ?? ((header: string | null) => tokenVerifier(env).verify(header));
+
+    if (profileRoutes.includes(pathname)) {
+      // Any signed-in user; only for their own UID (no admin needed).
+      const { uid } = await verify(request.headers.get("authorization"));
+      const profile: ProfileDeps = override?.profile ?? {
+        bucket: r2ProfileBucket(env.VIDEOS),
+        publicBaseUrl: env.R2_PUBLIC_BASE_URL,
+      };
+      const result =
+        pathname === "/profile/upload"
+          ? await uploadProfileImage(profile, uid, request)
+          : await deleteProfileImages(profile, uid, await readJson(request));
+      return json(result, 200, cors);
+    }
+
     let deps = override?.deps;
-    if (!verify || !deps) {
-      verify ??= (header) => tokenVerifier(env).verify(header);
-      deps ??= {
+    if (!deps) {
+      deps = {
         db: lazyFirestore(env),
         bucket: r2VideoBucket(env.VIDEOS),
         publicBaseUrl: env.R2_PUBLIC_BASE_URL,
