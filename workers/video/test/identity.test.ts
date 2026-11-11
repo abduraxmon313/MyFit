@@ -62,6 +62,12 @@ describe("IdentityRest", () => {
     await expect(new IdentityRest("p1234", account, denied.fetcher).uidForPhone("+998901234567")).rejects.toMatchObject({
       reason: "auth-misconfigured",
     });
+    const insufficient = google(() =>
+      Response.json({ error: { message: "INSUFFICIENT_PERMISSION" } }, { status: 400 }),
+    );
+    await expect(
+      new IdentityRest("p1234", account, insufficient.fetcher).uidForPhone("+998901234567"),
+    ).rejects.toMatchObject({ reason: "auth-misconfigured" });
   });
 
   it("signs Firebase custom tokens with the service account", async () => {
