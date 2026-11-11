@@ -48,6 +48,10 @@ if (problems.length) {
   process.exit(1);
 }
 
+// Optional: DevSMS token for SMS sign-in (/auth/sms/*).
+const devSms = process.env.DEVSMS_API_TOKEN?.trim() ?? "";
+if (!devSms) console.log("DEVSMS_API_TOKEN not set: SMS sign-in stays disabled");
+
 writeFileSync(
   out,
   JSON.stringify({
@@ -55,6 +59,7 @@ writeFileSync(
     R2_SECRET_ACCESS_KEY: secretAccessKey,
     // Compact single-line JSON (well under the 5 KB secret limit).
     FIREBASE_SERVICE_ACCOUNT: JSON.stringify(account),
+    ...(devSms ? { DEVSMS_API_TOKEN: devSms } : {}),
   }),
   { mode: 0o600 },
 );

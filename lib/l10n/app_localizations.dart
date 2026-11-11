@@ -461,6 +461,13 @@ class AppLocalizations {
       'Saqlangan {count} ta mahsulot menyuga qo‘shilmaydi. Chiqasizmi?':
           'Сохранённые продукты ({count}) не будут добавлены в меню. Выйти?',
       'Qolish': 'Остаться',
+      'Ko‘p marta noto‘g‘ri kiritildi. Yangi kod so‘rang.':
+          'Слишком много неверных попыток. Запросите новый код.',
+      'Yangi kodni biroz kutib so‘rang.':
+          'Подождите немного перед запросом нового кода.',
+      'Bu akkaunt bloklangan.': 'Этот аккаунт заблокирован.',
+      'SMS xizmati vaqtincha ishlamayapti. Keyinroq urinib ko‘ring.':
+          'SMS-сервис временно недоступен. Попробуйте позже.',
       'Rasm ombori vaqtincha ishlamayapti.':
           'Хранилище фото временно недоступно.',
       'To‘liq ekranda ko‘rish': 'Во весь экран',
@@ -1070,6 +1077,13 @@ class AppLocalizations {
       'Saqlangan {count} ta mahsulot menyuga qo‘shilmaydi. Chiqasizmi?':
           '{count} saved items will not be added to the meal. Leave?',
       'Qolish': 'Stay',
+      'Ko‘p marta noto‘g‘ri kiritildi. Yangi kod so‘rang.':
+          'Too many wrong attempts. Request a new code.',
+      'Yangi kodni biroz kutib so‘rang.':
+          'Please wait a moment before requesting a new code.',
+      'Bu akkaunt bloklangan.': 'This account is blocked.',
+      'SMS xizmati vaqtincha ishlamayapti. Keyinroq urinib ko‘ring.':
+          'The SMS service is temporarily unavailable. Please try again later.',
       'Rasm ombori vaqtincha ishlamayapti.':
           'Photo storage is temporarily unavailable.',
       'To‘liq ekranda ko‘rish': 'Full screen',

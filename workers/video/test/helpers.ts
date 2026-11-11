@@ -133,7 +133,10 @@ export class FakeDb implements FirestoreApi {
       if (write.kind === "update" && !exists) throw new Error(`missing ${write.path}`);
     }
     for (const write of writes) {
-      this.docs.set(write.path, { ...(this.docs.get(write.path) ?? {}), ...write.fields });
+      this.docs.set(
+        write.path,
+        write.kind === "set" ? { ...write.fields } : { ...(this.docs.get(write.path) ?? {}), ...write.fields },
+      );
     }
   }
 }

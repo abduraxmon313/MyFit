@@ -57,6 +57,11 @@ const validBody = {
   check("GET -> 405", r.status === 405, `${r.status}`);
 }
 {
+  // Invalid number: validated before any SMS is sent (costs nothing).
+  const r = await call("/auth/sms/send", { body: { phone: "123" } });
+  check("SMS send with invalid phone -> 400 invalid-phone", r.status === 400 && r.reason === "invalid-phone", `${r.status} ${r.reason}`);
+}
+{
   const r = await call("/admin");
   check("unknown path -> 404", r.status === 404, `${r.status}`);
 }

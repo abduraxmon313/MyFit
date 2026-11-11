@@ -161,3 +161,26 @@ Xatolar: 401 token yo'q/yaroqsiz · 403 `not-owner` · 413 `too-large` · 415 `u
 400 `empty-file` · 503 `storage-unavailable`.
 
 Yangi endpointlar ishlashi uchun Worker'ni qayta deploy qiling: Actions → **Deploy video Worker** → Run workflow.
+
+## SMS orqali kirish (DevSMS, Firebase Phone Auth'siz)
+
+SMS kodni Worker yaratadi va [DevSMS](https://devsms.uz/docs/api) "Universal OTP" orqali yuboradi
+(oldindan tasdiqlangan shablon: *"MyService tizimi: MyFit xizmatiga kirish uchun tasdiqlash kodi: …"*,
+moderatsiya kerak emas). Foydalanuvchilar, telefon raqamlari va profillar Firebase'da qoladi.
+
+| Endpoint | Tana | Javob |
+|---|---|---|
+| `POST /auth/sms/send` | `{ "phone": "+998901234567" }` | `{ sent, expiresInSeconds: 300, resendAfterSeconds: 60 }` |
+| `POST /auth/sms/verify` | `{ "phone": "...", "code": "123456" }` | `{ customToken }` → ilova `signInWithCustomToken` |
+
+- Kod 6 xonali, 5 daqiqa amal qiladi, bir marta ishlatiladi; Firestore'da faqat HMAC xeshi saqlanadi
+  (`sms_codes/{sha256(telefon)}`, ilovadan kirish yo'q).
+- Cheklovlar: bitta raqamga 60 soniyada 1 ta, kuniga 5 ta SMS; bitta IP'dan soatiga 10 ta; 5 marta noto'g'ri kod → yangi kod kerak.
+- Firebase foydalanuvchisi telefon raqami bo'yicha topiladi (Identity Toolkit), shuning uchun mavjud
+  foydalanuvchilar o'z UID'i va ma'lumotlari bilan kiradi; yangi raqam uchun foydalanuvchi yaratiladi.
+
+Sozlash (bir marta):
+1. Google Cloud → IAM → service account (`FIREBASE_SERVICE_ACCOUNT`) ga **Firebase Authentication Admin**
+   rolini qo'shing (Cloud Datastore User ham qoladi). Kalitni almashtirish shart emas.
+2. devsms.uz → API kalitlari → kalit (`sms:send` ruxsati bilan). GitHub → Secrets → `DEVSMS_API_TOKEN`.
+3. Actions → **Deploy video Worker** → Run workflow.

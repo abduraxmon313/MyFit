@@ -140,8 +140,15 @@ class _LessonVideoPlayerState extends State<LessonVideoPlayer> {
 
 /// Fullscreen playback of an already initialised [controller].
 ///
-/// Hides the system bars and prefers landscape for wide videos; both are
-/// restored when the page closes (back button, gesture or exit button).
+/// Hides the system bars and follows the phone: upright shows the whole
+/// video (letterboxed), turning the phone sideways fills the screen. Works
+/// for both landscape and portrait videos. Restored when the page closes.
+const kFullscreenOrientations = [
+  DeviceOrientation.portraitUp,
+  DeviceOrientation.landscapeLeft,
+  DeviceOrientation.landscapeRight,
+];
+
 class LessonVideoFullscreenPage extends StatefulWidget {
   const LessonVideoFullscreenPage({super.key, required this.controller});
 
@@ -156,16 +163,8 @@ class _LessonVideoFullscreenPageState extends State<LessonVideoFullscreenPage> {
   @override
   void initState() {
     super.initState();
-    final wide = widget.controller.value.aspectRatio >= 1;
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-    SystemChrome.setPreferredOrientations(
-      wide
-          ? const [
-              DeviceOrientation.landscapeLeft,
-              DeviceOrientation.landscapeRight,
-            ]
-          : const [DeviceOrientation.portraitUp],
-    );
+    SystemChrome.setPreferredOrientations(kFullscreenOrientations);
   }
 
   @override

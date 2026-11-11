@@ -56,6 +56,34 @@ class _HomePageState extends State<HomePage> {
   bool _logLoadFailed = false;
   int _navIndex = 0;
 
+  /// Tabs visited before the current one (system back walks this back).
+  final List<int> _navHistory = [];
+
+  /// Opens tab [index]; the home tab resets the history.
+  void _goTo(int index) {
+    if (index == _navIndex) return;
+    setState(() {
+      if (index == 0) {
+        _navHistory.clear();
+      } else {
+        _navHistory
+          ..remove(_navIndex)
+          ..remove(index)
+          ..add(_navIndex);
+      }
+      _navIndex = index;
+    });
+  }
+
+  /// System back / swipe: one tab back, then home; the app closes only from
+  /// the home tab.
+  void _goBack() {
+    setState(() {
+      _navIndex = _navHistory.isEmpty ? 0 : _navHistory.removeLast();
+      if (_navIndex == 0) _navHistory.clear();
+    });
+  }
+
   double get _calories =>
       _foods.fold(0, (total, food) => total + food.calories);
   double get _protein => _foods.fold(0, (total, food) => total + food.protein);
@@ -351,7 +379,7 @@ class _HomePageState extends State<HomePage> {
             header: _HomeHeader(
               greeting: _greeting(context),
               profile: widget.profile,
-              onProfileTap: () => setState(() => _navIndex = 3),
+              onProfileTap: () => _goTo(3),
             ),
             profile: widget.profile,
             calories: _calories,
@@ -412,7 +440,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     TextButton.icon(
                       key: const Key('profile-back'),
-                      onPressed: () => setState(() => _navIndex = 0),
+                      onPressed: _goBack,
                       icon: const Icon(LucideIcons.chevronLeft, size: 18),
                       label: Text(context.tr('Bosh sahifa')),
                     ),
@@ -425,55 +453,61 @@ class _HomePageState extends State<HomePage> {
         : page;
     final wide = MediaQuery.sizeOf(context).width >= 900;
     final scheme = Theme.of(context).colorScheme;
-    void select(int index) => setState(() => _navIndex = pageForTab[index]);
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: SafeArea(
-        child: wide
-            ? Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  NavigationRail(
-                    selectedIndex: selectedTab,
-                    onDestinationSelected: select,
-                    labelType: NavigationRailLabelType.all,
-                    minWidth: 88,
-                    groupAlignment: -.9,
-                    leading: Padding(
-                      padding: const EdgeInsets.only(top: 8, bottom: 20),
-                      child: AppIconTile(
-                        icon: LucideIcons.activity,
-                        size: 40,
-                        color: scheme.onPrimary,
-                        background: scheme.primary,
-                      ),
-                    ),
-                    destinations: [
-                      for (final (icon, label) in destinations)
-                        NavigationRailDestination(
-                          icon: Icon(icon),
-                          label: Text(label),
+    void select(int index) => _goTo(pageForTab[index]);
+    return PopScope(
+      canPop: _navIndex == 0,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) _goBack();
+      },
+      child: Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        body: SafeArea(
+          child: wide
+              ? Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    NavigationRail(
+                      selectedIndex: selectedTab,
+                      onDestinationSelected: select,
+                      labelType: NavigationRailLabelType.all,
+                      minWidth: 88,
+                      groupAlignment: -.9,
+                      leading: Padding(
+                        padding: const EdgeInsets.only(top: 8, bottom: 20),
+                        child: AppIconTile(
+                          icon: LucideIcons.activity,
+                          size: 40,
+                          color: scheme.onPrimary,
+                          background: scheme.primary,
                         ),
-                    ],
-                  ),
-                  VerticalDivider(width: 1, color: scheme.outlineVariant),
-                  Expanded(child: body),
-                ],
-              )
-            : Column(
-                children: [
-                  Expanded(child: body),
-                  Divider(height: 1, color: scheme.outlineVariant),
-                  NavigationBar(
-                    selectedIndex: selectedTab,
-                    onDestinationSelected: select,
-                    destinations: [
-                      for (final (icon, label) in destinations)
-                        NavigationDestination(icon: Icon(icon), label: label),
-                    ],
-                  ),
-                ],
-              ),
+                      ),
+                      destinations: [
+                        for (final (icon, label) in destinations)
+                          NavigationRailDestination(
+                            icon: Icon(icon),
+                            label: Text(label),
+                          ),
+                      ],
+                    ),
+                    VerticalDivider(width: 1, color: scheme.outlineVariant),
+                    Expanded(child: body),
+                  ],
+                )
+              : Column(
+                  children: [
+                    Expanded(child: body),
+                    Divider(height: 1, color: scheme.outlineVariant),
+                    NavigationBar(
+                      selectedIndex: selectedTab,
+                      onDestinationSelected: select,
+                      destinations: [
+                        for (final (icon, label) in destinations)
+                          NavigationDestination(icon: Icon(icon), label: label),
+                      ],
+                    ),
+                  ],
+                ),
+        ),
       ),
     );
   }

@@ -1,7 +1,15 @@
 import { FirebaseTokenVerifier } from "./auth";
 import { ApiError } from "./errors";
 import { FirestoreRest, parseServiceAccount, type FirestoreApi } from "./firestore";
+import { IdentityRest, type IdentityApi } from "./identity";
 import { presignPut } from "./presign";
+import {
+  DevSmsSender,
+  hmacKeyFromSecret,
+  sendSmsCode,
+  verifySmsCode,
+  type SmsDeps,
+} from "./sms";
 import {
   deleteProfileImages,
   uploadProfileImage,
@@ -27,6 +35,8 @@ export interface Env {
   R2_ACCESS_KEY_ID: string;
   R2_SECRET_ACCESS_KEY: string;
   FIREBASE_SERVICE_ACCOUNT: string;
+  /** DevSMS API token (optional until SMS sign-in is enabled). */
+  DEVSMS_API_TOKEN?: string;
 }
 
 const MAX_BODY_BYTES = 8 * 1024;
@@ -96,6 +106,33 @@ function firestoreApi(env: Env): FirestoreApi {
   return firestore.api;
 }
 
+let identity: { key: string; api: IdentityApi } | null = null;
+let otpKey: { key: string; value: Promise<CryptoKey> } | null = null;
+
+function smsDeps(env: Env): SmsDeps {
+  const key = `${env.FIREBASE_PROJECT_ID}|${env.FIREBASE_SERVICE_ACCOUNT?.length}`;
+  if (!identity || identity.key !== key) {
+    identity = {
+      key,
+      api: new IdentityRest(env.FIREBASE_PROJECT_ID, parseServiceAccount(env.FIREBASE_SERVICE_ACCOUNT)),
+    };
+  }
+  if (!otpKey || otpKey.key !== key) {
+    // Derived from an existing secret: no extra secret to manage.
+    otpKey = {
+      key,
+      value: hmacKeyFromSecret(parseServiceAccount(env.FIREBASE_SERVICE_ACCOUNT).private_key),
+    };
+  }
+  const hmac = otpKey.value;
+  return {
+    db: lazyFirestore(env),
+    identity: identity.api,
+    sender: new DevSmsSender(env.DEVSMS_API_TOKEN ?? ""),
+    hmacKey: () => hmac,
+  };
+}
+
 /** Defers every Firestore call to [firestoreApi]. */
 function lazyFirestore(env: Env): FirestoreApi {
   return {
@@ -161,13 +198,15 @@ export async function handle(
     verify?: (h: string | null) => Promise<{ uid: string }>;
     deps?: UploadDeps;
     profile?: ProfileDeps;
+    sms?: SmsDeps;
   },
 ): Promise<Response> {
   const cors = corsHeaders(request, env);
   const { pathname } = new URL(request.url);
   const videoRoutes = ["/createVideoUpload", "/finalizeVideoUpload"];
   const profileRoutes = ["/profile/upload", "/profile/delete"];
-  const routes = [...videoRoutes, ...profileRoutes];
+  const smsRoutes = ["/auth/sms/send", "/auth/sms/verify"];
+  const routes = [...videoRoutes, ...profileRoutes, ...smsRoutes];
   try {
     if (!routes.includes(pathname)) {
       throw new ApiError(404, "not-found", "Unknown endpoint");
@@ -177,6 +216,17 @@ export async function handle(
     }
     if (request.method !== "POST") {
       throw new ApiError(405, "method-not-allowed", "POST only");
+    }
+
+    if (smsRoutes.includes(pathname)) {
+      // Public: the user is not signed in yet. Rate limits live in sms.ts.
+      const body = await readJson(request);
+      const sms = override?.sms ?? smsDeps(env);
+      const result =
+        pathname === "/auth/sms/send"
+          ? await sendSmsCode(sms, body, request.headers.get("cf-connecting-ip"))
+          : await verifySmsCode(sms, body);
+      return json(result, 200, cors);
     }
 
     const verify =
@@ -228,10 +278,17 @@ export async function handle(
     return json(result, 200, cors);
   } catch (error) {
     if (error instanceof ApiError) {
+      const retryAfter = (error as ApiError & { retryAfter?: number }).retryAfter;
       return json(
-        { error: { reason: error.reason, message: error.message } },
+        {
+          error: {
+            reason: error.reason,
+            message: error.message,
+            ...(retryAfter ? { retryAfterSeconds: retryAfter } : {}),
+          },
+        },
         error.status,
-        cors,
+        retryAfter ? { ...cors, "retry-after": String(retryAfter) } : cors,
       );
     }
     console.error("video api failed", (error as Error)?.name, (error as Error)?.message);

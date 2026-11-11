@@ -97,7 +97,9 @@ export interface FsDocument {
 
 export type FsWrite =
   | { kind: "create"; path: string; fields: FsFields }
-  | { kind: "update"; path: string; fields: FsFields };
+  | { kind: "update"; path: string; fields: FsFields }
+  /** Create or fully replace (no precondition). */
+  | { kind: "set"; path: string; fields: FsFields };
 
 /** The subset of Firestore used by the video API (injectable for tests). */
 export interface FirestoreApi {
@@ -270,7 +272,14 @@ export class FirestoreRest implements FirestoreApi {
   async commit(writes: FsWrite[], transaction?: string): Promise<void> {
     const body = {
       writes: writes.map((write) =>
-        write.kind === "create"
+        write.kind === "set"
+          ? {
+              update: {
+                name: this.name(write.path),
+                fields: encodeFields(write.fields),
+              },
+            }
+          : write.kind === "create"
           ? {
               update: {
                 name: this.name(write.path),
